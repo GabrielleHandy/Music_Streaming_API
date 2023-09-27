@@ -1,11 +1,16 @@
 package com.example.musicstreamingapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "profile")
+@Table(name = "profiles")
 public class UserProfile {
     @Id
     @Column
@@ -25,6 +30,9 @@ public class UserProfile {
     @OneToOne(mappedBy = "UserProfile")
     private User user;
 
+    @OneToMany(mappedBy = "userProfile", orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Playlist> playlists = new ArrayList<>();
     public UserProfile(){
 
     }
@@ -75,6 +83,14 @@ public class UserProfile {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists;
     }
 
     @Override

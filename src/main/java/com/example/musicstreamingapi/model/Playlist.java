@@ -23,7 +23,7 @@ public class Playlist {
     private LocalDate dateCreated = LocalDate.now();
 
     @ManyToOne
-    @JoinColumn(name = "userProfile_id", nullable = false)
+    @JoinColumn(name = "profile_id", nullable = false)
     @JsonIgnore
     private UserProfile userProfile;
 
