@@ -1,7 +1,12 @@
 package com.example.musicstreamingapi.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "songs")
@@ -12,10 +17,17 @@ public class Song {
     private Long id;
     @Column
     private String title;
-    @Column
-    private String genre;
 
-    public Song(Long id, String title, String genre) {
+
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    @JsonIgnore
+    private Genre genre;
+
+    public Song() {
+
+    }
+    public Song(Long id, String title, Genre genre) {
         this.id = id;
         this.title = title;
         this.genre = genre;
@@ -37,19 +49,20 @@ public class Song {
         this.title = title;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
+
     @Override
     public String toString() {
-        return "Recipe{" +
+        return "Song{" +
                 "id=" + id +
-                ", name='" + title + '\'' +
-                ", time='" + genre + '\'' +
+                ", title='" + title + '\'' +
+                ", genre=" + genre +
                 '}';
     }
 }

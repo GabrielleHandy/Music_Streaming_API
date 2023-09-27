@@ -1,10 +1,14 @@
 package com.example.musicstreamingapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "genres")
-
 public class Genre {
 
     @Id
@@ -15,6 +19,11 @@ public class Genre {
     private String name;
     @Column
     private String description;
+
+    @OneToMany(mappedBy = "genre")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Song> songsList;
+
 
     public Genre () {
         //Default Constructor
@@ -47,5 +56,15 @@ public class Genre {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", songsList=" + songsList +
+                '}';
     }
 }
