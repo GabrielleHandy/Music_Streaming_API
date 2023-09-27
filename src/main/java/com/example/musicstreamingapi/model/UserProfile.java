@@ -2,6 +2,7 @@ package com.example.musicstreamingapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 import javax.persistence.*;
 @Entity
 @Table(name = "profile")
@@ -18,7 +19,7 @@ public class UserProfile {
     private String lastName;
 
     @Column
-    private String profileDescription;
+    private String profileBio;
 
     @JsonIgnore
     @OneToOne(mappedBy = "UserProfile")
@@ -28,11 +29,11 @@ public class UserProfile {
 
     }
 
-    public UserProfile(Long id, String firstName, String lastName, String profileDescription, User user) {
+    public UserProfile(Long id, String firstName, String lastName, String profileBio, User user) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.profileDescription = profileDescription;
+        this.profileBio = profileBio;
         this.user = user;
     }
 
@@ -60,12 +61,12 @@ public class UserProfile {
         this.lastName = lastName;
     }
 
-    public String getProfileDescription() {
-        return profileDescription;
+    public String getProfileBio (){
+        return profileBio;
     }
 
-    public void setProfileDescription(String profileDescription) {
-        this.profileDescription = profileDescription;
+    public void setProfileBio(String profileBio) {
+        this.profileBio = profileBio;
     }
 
     public User getUser() {
@@ -82,7 +83,7 @@ public class UserProfile {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", profileDescription='" + profileDescription + '\'' +
+                ", profileBio='" + profileBio + '\'' +
                 ", user=" + user +
                 '}';
     }

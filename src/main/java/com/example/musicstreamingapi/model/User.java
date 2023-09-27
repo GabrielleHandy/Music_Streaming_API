@@ -1,5 +1,7 @@
 package com.example.musicstreamingapi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,10 +9,13 @@ import javax.persistence.*;
 public class User {
     @Column
     private String name;
-    @Column
-    private String emailAddress;
+
     @Column(unique = true)
+    private String emailAddress;
+    @Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passWord;
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
