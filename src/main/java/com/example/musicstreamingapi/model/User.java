@@ -22,7 +22,7 @@ public class User {
     private Long id;
 
     // UserProfile
-    @OneToOne
+   @OneToOne
     @JoinColumn(name="profile_id",referencedColumnName = "id")
     private UserProfile userProfile;
 
