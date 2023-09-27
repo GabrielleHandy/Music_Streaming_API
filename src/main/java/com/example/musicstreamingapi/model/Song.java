@@ -14,4 +14,11 @@ public class Song {
     private String title;
     @Column
     private String genre;
+
+    public Song(Long id, String title, String genre) {
+        this.id = id;
+        this.title = title;
+        this.genre = genre;
+    }
 }
+
