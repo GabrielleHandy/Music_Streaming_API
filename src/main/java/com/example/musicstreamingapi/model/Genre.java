@@ -15,7 +15,10 @@ public class Genre {
     private String name;
     @Column
     private String description;
-    @Column
+
+    public Genre () {
+        //Default Constructor
+    }
     public Genre(Long id, String name, String description) {
         this.id = id;
         this.name = name;
