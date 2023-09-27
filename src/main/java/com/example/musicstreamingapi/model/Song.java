@@ -44,5 +44,13 @@ public class Song {
     public void setGenre(String genre) {
         this.genre = genre;
     }
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", name='" + title + '\'' +
+                ", time='" + genre + '\'' +
+                '}';
+    }
 }
 
