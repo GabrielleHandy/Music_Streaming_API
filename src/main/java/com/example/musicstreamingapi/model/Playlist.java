@@ -5,6 +5,7 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -94,8 +95,7 @@ public class Playlist {
         return "Playlist{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", dateCreated=" + dateCreated +
-                ", userProfile=" + userProfile.getEmailAddress() +
+                ", Created by=" + userProfile +
                 ", songs=" + songs +
                 '}';
     }

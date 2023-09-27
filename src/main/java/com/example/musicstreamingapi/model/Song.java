@@ -6,7 +6,9 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "songs")
@@ -23,6 +25,15 @@ public class Song {
     @JoinColumn(name = "genre_id")
     @JsonIgnore
     private Genre genre;
+
+    @ManyToMany(
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "songs")
+    @JsonIgnore
+    private Set<Playlist> playlists = new HashSet<>();
 
     public Song() {
 
@@ -55,6 +66,14 @@ public class Song {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Set<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Set<Playlist> playlists) {
+        this.playlists = playlists;
     }
 
     @Override
