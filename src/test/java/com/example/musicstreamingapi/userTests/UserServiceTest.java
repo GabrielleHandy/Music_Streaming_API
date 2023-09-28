@@ -11,7 +11,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 
 public class UserServiceTest {
@@ -33,6 +34,11 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         Optional<User> result = userService.getUserById(userId);
+
+        verify(userRepository, times(1)).findById(userId);
+        assertTrue(result.isPresent());
+
+
 
     }
 
