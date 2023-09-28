@@ -13,8 +13,9 @@ public class SeedData implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final GenreRepository genreRepository;
-    private final SongRepository genreRepository; // Updated repository name
-    private final PlaylistRepository bookRepository;
+    private final SongRepository songRepository;
+    private final PlaylistRepository playlistRepository;
+
 
 
 
