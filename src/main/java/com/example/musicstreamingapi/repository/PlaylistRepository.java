@@ -5,8 +5,12 @@ import com.example.musicstreamingapi.model.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
-    Object findByNameAndUserProfile(String name, UserProfile userProfile);
+    Playlist findByNameAndUserProfile(String name, UserProfile userProfile);
+
+    List<Playlist> findAllByUserProfileId(Long userProfile_id);
 }

@@ -52,6 +52,14 @@ public class PlaylistServiceTests {
     }
 
     @Test
+    @DisplayName("Returns a Playlist when getPlaylistByUserProfileId is called")
+    void testGetPlaylistById(){
+        when(playlistRepository.findAllByUserProfileId(Mockito.anyLong())).thenReturn(testListPlaylist);
+        List<Playlist> result = playlistServiceMock.getPlaylistById(1);
+        Assert.assertEquals(3, result.size());
+    }
+
+    @Test
     @DisplayName("Returns a Playlist when createPlaylist is called")
     void testCreatePlaylist(){
         when(playlistRepository.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
