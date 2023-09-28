@@ -42,7 +42,6 @@ public class UserServiceTest {
         assertEquals("Marco", result.get().getName());
         assertEquals("marco@example.com",result.get().getEmailAddress());
 
-
     }
 
 

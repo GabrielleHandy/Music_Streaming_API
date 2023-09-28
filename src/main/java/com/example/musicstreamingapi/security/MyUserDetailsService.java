@@ -16,9 +16,9 @@ public class MyUserDetailsService {
         this.userService = userService;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-        User user = userService.findUserByEmailAddress(emailAddress);
-        return new MyUserDetails(user);
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
+//        User user = userService.findUserByEmailAddress(emailAddress);
+//        return new MyUserDetails(user);
+//    }
 }
