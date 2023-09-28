@@ -56,5 +56,11 @@ public class PlaylistServiceTests {
         Playlist result = playlistServiceMock.createPlaylist(new Playlist());
         Assert.assertSame(testPlaylist1, result);
     }
+    @Test(expected = RuntimeException.class)
+    @DisplayName("When playlist already found in database InformationExistException is thrown")
+    void testCreatePlaylistExceptionThrow(){
+        when(playlistRepository.findByNameAndUserProfile(Mockito.anyString(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
+        playlistServiceMock.createPlaylist(new Playlist());
+    }
 
 }
