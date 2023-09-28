@@ -8,12 +8,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.junit.Assert;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 
@@ -37,6 +36,11 @@ public class PlaylistServiceTests {
         Assert.assertEquals(3, result.size());
     }
 
-
+    @Test
+    @DisplayName("Returns a Playlist when getPlaylistID is called")
+    void testGetPlaylistById(){
+        when(playlistRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(testPlaylist1));
+        Assert.assertTrue(playlistServiceMock.getPlaylistById(1).isPresent());
+    }
 
 }
