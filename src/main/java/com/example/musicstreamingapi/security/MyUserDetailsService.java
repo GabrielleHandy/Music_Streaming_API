@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.security;
 
+import com.example.musicstreamingapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
