@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
+/**
+ * creates all variables associated with a user profile
+ * returns a one to one relationship with User
+ * returns firstname, lastname, and a profile bio
+ */
 @Entity
 @Table(name = "profile")
 public class UserProfile {
