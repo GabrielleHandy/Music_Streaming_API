@@ -77,5 +77,13 @@ public class PlaylistServiceTests {
         Playlist result = playlistServiceMock.deletePlaylist(testPlaylist1);
         Assert.assertSame(testPlaylist1, result);
     }
+    @Test
+    @DisplayName("When playlist not found in database InformationNotFoundException is thrown")
+    void testDeletePlaylistExceptionThrow(){
+        when(playlistRepository.findById(1L)).thenReturn(Optional.empty());
+
+        playlistServiceMock.deletePlaylist(testPlaylist1);
+
+    }
 
 }
