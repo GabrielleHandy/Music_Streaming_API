@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.seed;
 
+import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.repository.GenreRepository;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.repository.SongRepository;
@@ -24,8 +25,17 @@ public class SeedData implements CommandLineRunner {
         this.playlistRepository = playlistRepository;
     }
 
-
     @Override
     public void run(String... args) throws Exception {
+        User user = new User();
+        user.setName("suresh");
+        user.setEmailAddress("suresh@ga.com");
+        user.setPassWord(passwordEncoder.encode("suresh123"));
+        userRepository.save(user);
+
+
+
     }
+
+
 }
