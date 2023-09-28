@@ -7,27 +7,43 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Represents a playlist entity that can contain a collection of songs.
+ *
+ * This class is annotated with JPA annotations to map it to a database table named "playlists".
+ */
 @Entity
 @Table(name = "playlists")
 public class Playlist {
-    @Getter
+    /**
+     * The unique identifier for the playlist.
+     */
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * The name of the playlist.
+     */
     @Column
     private String name;
 
+    /**
+     * The date when the playlist was created. It is set to the current date by default.
+     */
     @Column
     private LocalDate dateCreated = LocalDate.now();
-
+    /**
+     * The user profile associated with this playlist.
+     */
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     @JsonIgnore
     private UserProfile userProfile;
-
+    /**
+     * The set of songs contained in the playlist.
+     */
     //Many to Many Logic provided by Suresh Sigera and Bezdoker.com https://www.bezkoder.com/jpa-many-to-many/
     @ManyToMany(
             cascade = {
@@ -38,9 +54,21 @@ public class Playlist {
             joinColumns = { @JoinColumn(name = "playlist_id") },
             inverseJoinColumns = { @JoinColumn(name = "song_id") })
     private Set<Song> songs = new HashSet<>();
-
+    /**
+     * Default constructor for the Playlist class.
+     */
     public Playlist() {
     }
+
+    /**
+     * Parameterized constructor for the Playlist class.
+     *
+     * @param id           The unique identifier for the playlist.
+     * @param name         The name of the playlist.
+     * @param dateCreated  The date when the playlist was created.
+     * @param userProfile  The user profile associated with this playlist.
+     * @param songs        The set of songs contained in the playlist.
+     */
 
     public Playlist(Long id, String name, LocalDate dateCreated, UserProfile userProfile, Set<Song> songs) {
         this.id = id;
@@ -49,6 +77,8 @@ public class Playlist {
         this.userProfile = userProfile;
         this.songs = songs;
     }
+
+    // Getter and setter methods for the fields...
 
     public Long getId() {
         return id;
@@ -89,6 +119,11 @@ public class Playlist {
     public void setId(Long id) {
         this.id = id;
     }
+    /**
+     * Overrides the toString method to provide a string representation of the Playlist object.
+     *
+     * @return A string representation of the Playlist object.
+     */
 
     @Override
     public String toString() {
