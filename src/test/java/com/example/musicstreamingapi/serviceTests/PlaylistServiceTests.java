@@ -3,6 +3,7 @@ package com.example.musicstreamingapi.serviceTests;
 import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
+import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.service.PlaylistService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
