@@ -40,12 +40,12 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String emailAddress, String passWord, UserProfile userProfile) {
+
+    public User(Long id, String name, String emailAddress, String passWord) {
         this.id = id;
         this.name = name;
         this.emailAddress = emailAddress;
         this.passWord = passWord;
-        this.userProfile = userProfile;
     }
 
     public String getName() {
@@ -72,6 +72,13 @@ public class User {
         this.passWord = passWord;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public Long getId() {
+        return id;
+    }
+
     // toString() method
     @Override
     public String toString() {
@@ -82,11 +89,6 @@ public class User {
                 '}';
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Long getId() {
-        return id;
-    }
+
 
 }

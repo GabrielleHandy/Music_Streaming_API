@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.userTests;
 
+import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.repository.UserRepository;
 import com.example.musicstreamingapi.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,7 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.userdetails.User;
+
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
+
 
 public class UserServiceTest {
     @InjectMocks
@@ -22,6 +27,10 @@ public class UserServiceTest {
     }
     @Test
     public void testGetUserById(){
+        Long userId = 1L;
+        User user = new User(1L, "Marco", "marco@example.com", "password123");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
     }
 
