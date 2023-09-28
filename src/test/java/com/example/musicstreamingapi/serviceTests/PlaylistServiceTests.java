@@ -54,19 +54,19 @@ public class PlaylistServiceTests {
         Assert.assertEquals(3, result.size());
     }
 
-//    @Test
-//    @DisplayName("Returns a Playlist when getPlaylistID is called")
-//    public void testGetPlaylistById(){
-//        when(playlistRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(testPlaylist1));
-//        Playlist result = playlistServiceMock.getPlaylistById(1L);
-//        Assert.assertSame(testPlaylist1, result);
-//    }
-//    @Test(expected = RuntimeException.class)
-//    @DisplayName("When playlist not found in database InformationNotFoundException is thrown")
-//    public void testGetPlaylistByIdExceptionThrow(){
-//        when(playlistRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-//        playlistServiceMock.getPlaylistById(1L);
-//    }
+    @Test
+    @DisplayName("Returns a Playlist when getPlaylistID is called")
+    public void testGetPlaylistById(){
+        when(playlistRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testPlaylist1));
+        Playlist result = playlistService.getPlaylistById(1L);
+        Assert.assertSame(testPlaylist1, result);
+    }
+    @Test(expected = RuntimeException.class)
+    @DisplayName("When playlist not found in database InformationNotFoundException is thrown")
+    public void testGetPlaylistByIdExceptionThrow(){
+        when(playlistRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        playlistService.getPlaylistById(1L);
+    }
 
 //    @Test
 //    @DisplayName("Returns a Playlist when getPlaylistByUserProfileId is called")
