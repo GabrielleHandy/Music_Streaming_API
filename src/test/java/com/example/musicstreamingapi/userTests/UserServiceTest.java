@@ -32,6 +32,8 @@ public class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
+        Optional<User> result = userService.getUserById(userId);
+
     }
 
 
