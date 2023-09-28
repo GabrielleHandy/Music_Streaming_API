@@ -3,26 +3,21 @@ package com.example.musicstreamingapi.serviceTests;
 import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
+import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.service.PlaylistService;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.junit.Assert;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PlaylistServiceTests {
@@ -32,11 +27,13 @@ public class PlaylistServiceTests {
 
     @Mock
     PlaylistRepository playlistRepositoryMock;
+    @Mock
+    UserProfileRepository userProfileRepositoryMock;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        playlistService = new PlaylistService(playlistRepositoryMock);
+        playlistService = new PlaylistService(playlistRepositoryMock,userProfileRepositoryMock);
     }
 
     private final UserProfile testUserProfile = new UserProfile(1l, "TestUser", "Test", "TestBio", null);
@@ -68,13 +65,14 @@ public class PlaylistServiceTests {
         playlistService.getPlaylistById(1L);
     }
 
-//    @Test
-//    @DisplayName("Returns a Playlist when getPlaylistByUserProfileId is called")
-//    void testGetPlaylistByUserProfileId(){
-//        when(playlistRepository.findAllByUserProfileId(Mockito.anyLong())).thenReturn(testListPlaylist);
-//        List<Playlist> result = playlistServiceMock.getPlaylistById(1);
-//        Assert.assertEquals(3, result.size());
-//    }
+    @Test
+    @DisplayName("Returns a User's Playlist when getPlaylistsByUserProfileId is called")
+    public void testGetPlaylistsByUserProfileId(){
+        when(userProfileRepositoryMock.findById(1L)).thenReturn(Optional.of(testUserProfile));
+        when(playlistRepositoryMock.findAllByUserProfileId(Mockito.anyLong())).thenReturn(testListPlaylist);
+        List<Playlist> result = playlistService.getAllPlaylistsUserProfileId(1L);
+        Assert.assertEquals(3, result.size());
+    }
 //
 //    @Test
 //    @DisplayName("Returns a Playlist when createPlaylist is called")

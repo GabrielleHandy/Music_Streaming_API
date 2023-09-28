@@ -2,7 +2,9 @@ package com.example.musicstreamingapi.service;
 
 import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
+import com.example.musicstreamingapi.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +13,13 @@ import java.util.Optional;
 
 @Service
 public class PlaylistService {
-    private PlaylistRepository playlistRepository;
-
+    private final PlaylistRepository playlistRepository;
+    private final UserProfileRepository userProfileRepository;
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository) {
         this.playlistRepository = playlistRepository;
+
+        this.userProfileRepository = userProfileRepository;
     }
 
 
@@ -34,4 +38,14 @@ public class PlaylistService {
     }
 
 
+    public List<Playlist> getAllPlaylistsUserProfileId(Long userProfileId) {
+        Optional<UserProfile> optionalUserProfile = userProfileRepository.findById(userProfileId);
+        if(optionalUserProfile.isPresent()){
+            return playlistRepository.findAllByUserProfileId(userProfileId);
+        }
+        throw new InformationNotFoundException("UserProfile with Id "+ userProfileId+ " not found");
+    }
+
+
 }
+
