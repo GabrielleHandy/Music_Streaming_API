@@ -13,6 +13,12 @@ import javax.persistence.*;
 @Table(name = "user")   // Define the "name" property and map it to a table column.
 public class User {
 
+    // Define the "id" property and mark it as the primary key with automatic generation.
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column
     private String name;
 
@@ -25,11 +31,6 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passWord;
 
-    // Define the "id" property and mark it as the primary key with automatic generation.
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     // Define a one-to-one relationship with UserProfile and specify the foreign key.
     @OneToOne
@@ -39,10 +40,12 @@ public class User {
     public User() {
     }
 
-    public User(String name, String emailAddress, String passWord) {
+    public User(Long id, String name, String emailAddress, String passWord, UserProfile userProfile) {
+        this.id = id;
         this.name = name;
         this.emailAddress = emailAddress;
         this.passWord = passWord;
+        this.userProfile = userProfile;
     }
 
     public String getName() {
