@@ -14,9 +14,11 @@ public class PlaylistService {
     private PlaylistRepository playlistRepository;
 
     @Autowired
-    public void setPlaylistRepository(PlaylistRepository playlistRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository) {
         this.playlistRepository = playlistRepository;
     }
+
+
 
     public List<Playlist> getAllPlaylists() {
         return playlistRepository.findAll();

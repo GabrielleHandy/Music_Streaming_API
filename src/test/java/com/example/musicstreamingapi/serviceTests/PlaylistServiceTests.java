@@ -4,13 +4,18 @@ import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.service.PlaylistService;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.junit.Assert;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -21,11 +26,18 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PlaylistServiceTests {
-    @Mock
-    PlaylistService playlistServiceMock;
-    @Mock
-    PlaylistRepository playlistRepository;
 
+    PlaylistService playlistService;
+
+
+    @Mock
+    PlaylistRepository playlistRepositoryMock;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        playlistService = new PlaylistService(playlistRepositoryMock);
+    }
 
     private final UserProfile testUserProfile = new UserProfile(1l, "TestUser", "Test", "TestBio", null);
     private final Playlist testPlaylist1 = new Playlist(1L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
@@ -37,9 +49,8 @@ public class PlaylistServiceTests {
     @Test
     @DisplayName("Returns a List of Playlists when GetAllPlaylists is called")
     public void testGetAllPlaylists(){
-        playlistServiceMock.setPlaylistRepository(playlistRepository);
-        when(playlistRepository.findAll()).thenReturn(testListPlaylist);
-        List<Playlist> result = playlistServiceMock.getAllPlaylists();
+        when(playlistRepositoryMock.findAll()).thenReturn(testListPlaylist);
+        List<Playlist> result = playlistService.getAllPlaylists();
         Assert.assertEquals(3, result.size());
     }
 
