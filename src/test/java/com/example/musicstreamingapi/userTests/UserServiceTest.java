@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -38,6 +39,8 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findById(userId);
         assertTrue(result.isPresent());
 
+        assertEquals("Marco", result.get().getName());
+        assertEquals("marco@example.com",result.get().getEmailAddress());
 
 
     }
