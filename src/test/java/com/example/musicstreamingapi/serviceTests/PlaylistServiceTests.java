@@ -1,13 +1,13 @@
 package com.example.musicstreamingapi.serviceTests;
 
 import com.example.musicstreamingapi.model.Playlist;
-import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.service.PlaylistService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.junit.Assert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +27,15 @@ public class PlaylistServiceTests {
     private final Playlist testPlaylist2 = new Playlist(2L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
     private final Playlist testPlaylist3 = new Playlist(3L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
     private final List<Playlist> testListPlaylist = new ArrayList<>(Arrays.asList(testPlaylist1, testPlaylist2, testPlaylist3));
+
+
+    @Test
+    @DisplayName("Returns a List of Playlists when GetAllPlaylists is called")
+    void testGetAllPlaylists(){
+        when(playlistRepository.findAll()).thenReturn(testListPlaylist);
+        List<Playlist> result = playlistServiceMock.getAllPlaylists();
+        Assert.assertEquals(3, result.size());
+    }
 
 
 
