@@ -11,8 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -44,5 +43,15 @@ public class UserServiceTest {
 
     }
 
+    @Test
+    public void testGetUserByIdNotFound() {
+        Long userId = 77L;
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        Optional<User> result = userService.getUserById(userId);
+
+        verify(userRepository, times(1)).findById(userId);
+        assertFalse(result.isPresent());
+    }
 
 }
