@@ -16,7 +16,13 @@ public class SeedData implements CommandLineRunner {
     private final SongRepository songRepository;
     private final PlaylistRepository playlistRepository;
 
-
+    public SeedData(PasswordEncoder passwordEncoder, UserRepository userRepository, GenreRepository genreRepository, SongRepository songRepository, PlaylistRepository playlistRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.genreRepository = genreRepository;
+        this.songRepository = songRepository;
+        this.playlistRepository = playlistRepository;
+    }
 
 
     @Override
