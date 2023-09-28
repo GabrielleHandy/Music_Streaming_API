@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -13,4 +14,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private MyUserDetailsService myUserDetailsService;
     private JWTUtils jwtUtils;
+
+    @Autowired
+    public void setMyUserDetailsService(MyUserDetailsService myUserDetailsService) {
+        this.myUserDetailsService = myUserDetailsService;
+    }
+
+    @Autowired
+    public void setJwtUtils(JWTUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
 }
