@@ -5,7 +5,7 @@ import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.service.PlaylistService;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.junit.Assert;
 import org.mockito.Mockito;
@@ -36,11 +36,18 @@ public class PlaylistServiceTests {
         Assert.assertEquals(3, result.size());
     }
 
+
     @Test
     @DisplayName("Returns a Playlist when getPlaylistID is called")
     void testGetPlaylistById(){
         when(playlistRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(testPlaylist1));
         Assert.assertTrue(playlistServiceMock.getPlaylistById(1).isPresent());
+    }
+    @Test(expected = RuntimeException.class)
+    @DisplayName("When playlist not found in database InformationNotFoundException is thrown")
+    void testGetPlaylistByIdExceptionThrow(){
+        when(playlistRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        playlistServiceMock.getPlaylistById(1);
     }
 
 }
