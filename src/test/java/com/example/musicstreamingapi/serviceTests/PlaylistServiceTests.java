@@ -36,7 +36,6 @@ public class PlaylistServiceTests {
         Assert.assertEquals(3, result.size());
     }
 
-
     @Test
     @DisplayName("Returns a Playlist when getPlaylistID is called")
     void testGetPlaylistById(){
@@ -48,6 +47,14 @@ public class PlaylistServiceTests {
     void testGetPlaylistByIdExceptionThrow(){
         when(playlistRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         playlistServiceMock.getPlaylistById(1);
+    }
+
+    @Test
+    @DisplayName("Returns a Playlist when createPlaylist is called")
+    void testCreatePlaylist(){
+        when(playlistRepository.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
+        Playlist result = playlistServiceMock.createPlaylist(new Playlist());
+        Assert.assertSame(testPlaylist1, result);
     }
 
 }
