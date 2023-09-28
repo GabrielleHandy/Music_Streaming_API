@@ -6,16 +6,18 @@ import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.service.PlaylistService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.junit.Assert;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.*;
 
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
-
+@ExtendWith(MockitoExtension.class)
 public class PlaylistServiceTests {
     @Mock
     PlaylistService playlistServiceMock;
@@ -61,6 +63,19 @@ public class PlaylistServiceTests {
     void testCreatePlaylistExceptionThrow(){
         when(playlistRepository.findByNameAndUserProfile(Mockito.anyString(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
         playlistServiceMock.createPlaylist(new Playlist());
+    }
+
+    @Test
+    @DisplayName("Returns deleted Playlist when deletePlaylist is called")
+    void testDeletePlaylist(){
+        when(playlistRepository.findById(1L)).thenReturn(Optional.of(testPlaylist1));
+        doAnswer(invocationOnMock -> {
+            Assert.assertSame(testPlaylist1, invocationOnMock.getArgument(0));
+            return null;
+        }).when(playlistRepository).delete(Mockito.any(Playlist.class));
+
+        Playlist result = playlistServiceMock.deletePlaylist(testPlaylist1);
+        Assert.assertSame(testPlaylist1, result);
     }
 
 }
