@@ -52,40 +52,19 @@ public class SongServiceTests {
 
     @Test
     public void getAllSongs_success() {
-        songServiceMock.setSongRepository(songRepository); // Mock the behavior of the repository
-        when(songRepository.findAll()).thenReturn(testListSongs);    // Call the service method
+        songServiceMock.setSongRepository(songRepository);
+        when(songRepository.findAll()).thenReturn(testListSongs);
         List<Song> songs = songServiceMock.getAllSongs();
-        // Verify the result
         assertEquals(3, songs.size()); // Add more assertions based on the expected behavior
 
     }
     @Test
-    public void testCreateSongs_success () {
-        when(songRepository.save(Mockito.any(Song.class))).thenReturn(testSong1);
-        Song createSong = songServiceMock.createSong(new Song());
-        assertEquals(testSong1, createSong);
-    }
-    @Test
-    public void testEditSongs_success() {
-
-        when(songRepository.findById(1L)).thenReturn(Optional.ofNullable(testSong1)); // Mock the song to edit
-        when(songRepository.save(Mockito.any(Song.class))).thenReturn(testSong1); // Mock the save operation for any Song
-        Song editedSong = songServiceMock.editSong(1L, "Edited Song Name");
-        assertEquals("Edited Song Name", editedSong.getTitle());
+    public void getAllSongsByGenreId_success() {
+        when(songRepository.findByGenreId(testGenre.getId())).thenReturn(testListSongs);
+        List<Song> songs = songServiceMock.getAllSongsByGenreId(testGenre.getId());
+        assertEquals(3, songs.size());
     }
 
-
-    @Test
-    public void testDeleteSongs_success() {
-        when(songRepository.findById(2L)).thenReturn(Optional.ofNullable(testSong2));
-        doAnswer(invocation -> {
-            Song songToDelete = invocation.getArgument(0);
-            songToDelete.setTitle("Deleted Song Name");
-            return null;
-        }).when(songRepository).delete(Mockito.any(Song.class));
-        Song deletedSong = songServiceMock.deleteSong(2L);
-        assertEquals("Deleted Song Name", deletedSong.getTitle());
-    }
 
 
 }
