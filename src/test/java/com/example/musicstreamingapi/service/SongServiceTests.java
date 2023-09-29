@@ -43,6 +43,15 @@ public class SongServiceTests {
     private final List<Song> testListSongs = new ArrayList<>(Arrays.asList(testSong1, testSong2, testSong3));
 
 
+    @Test
+    public void getAllSongs_success() {
+        songServiceMock.setSongRepository(songRepository); // Mock the behavior of the repository
+        when(songRepository.findAll()).thenReturn(testListSongs);    // Call the service method
+        List<Song> songs = songServiceMock.getAllSongs();
+        // Verify the result
+        assertEquals(3, songs.size()); // Add more assertions based on the expected behavior
+
+    }
 
 
 }
