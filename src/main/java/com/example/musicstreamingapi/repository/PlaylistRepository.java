@@ -11,6 +11,6 @@ import java.util.List;
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     Playlist findByNameAndUserProfile(String name, UserProfile userProfile);
-
+    Playlist findByIdAndUserProfile(Long id, UserProfile userProfile);
     List<Playlist> findAllByUserProfileId(Long userProfile_id);
 }

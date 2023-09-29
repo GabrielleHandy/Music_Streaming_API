@@ -66,5 +66,14 @@ public class PlaylistService {
         }
         throw new InformationExistException("Playlist with name " + playlist.getName()+ " already exists");
     }
+
+    public Playlist deletePlaylist(Long playlistId) {
+        Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
+        if(optionalPlaylist != null) {
+            playlistRepository.delete(optionalPlaylist);
+            return optionalPlaylist;
+        }
+        throw new InformationExistException("You don't have a playlist with Id " + playlistId);
+    }
 }
 
