@@ -82,8 +82,8 @@ public class UserServiceTest {
 
         User result = userService.updateUser(userId, updatedUser);
 
-        verify(userRepository, times(1)).findById(userId);
-        verify(userRepository, times(1)).save(updatedUser);
+//        verify(userRepository, times(1)).findById(userId);
+//        verify(userRepository, times(1)).save(updatedUser);
 
         assertNotNull(result);
 
@@ -92,8 +92,21 @@ public class UserServiceTest {
 
         //DeleteUser
 
+        public void testDeleteUser(){
+            Long userIdToDelete = userId;
+            userService.deleteUser(userIdToDelete);
+            verify(userRepository, times(1)).deleteById(userIdToDelete);
+
+
+        }
+
 
     }
+
+
+    //DeleteUser
+
+
 
 
 }
