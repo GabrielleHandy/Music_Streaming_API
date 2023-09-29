@@ -1,4 +1,4 @@
-package com.example.musicstreamingapi.userTests;
+package com.example.musicstreamingapi.serviceTests;
 
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.repository.UserRepository;
