@@ -71,17 +71,10 @@ public class UserServiceTest {
 
     }
     // UpdateUser
-    public User updateUser(Long userId, User updatedUser){
-        Optional<User> currentUserOptional = userRepository.findById(userId);
-        if(currentUserOptional.isPresent()){
-            User newCurrentUser = currentUserOptional.get();
-
-            newCurrentUser.setName(updatedUser.getName());
-            newCurrentUser.setEmailAddress(updatedUser.getEmailAddress());
-            newCurrentUser.setPassWord(updatedUser.getPassWord());
-        }
-
-    }
+    @Test
+public void testUpdateUser(){
+        Long userId = 3L;
+}
 
     //DeleteUser
 
