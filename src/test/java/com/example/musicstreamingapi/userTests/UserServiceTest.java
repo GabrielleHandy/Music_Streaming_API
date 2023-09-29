@@ -57,7 +57,7 @@ public class UserServiceTest {
 
 
     //CreateUser
-
+@Test
     public void testCreateUser(){
         User userToCreate = new User(userId,"Betselot","Bets@gmail.com","newpassword456");
         when(userRepository.save(userToCreate)).thenReturn(userToCreate);
