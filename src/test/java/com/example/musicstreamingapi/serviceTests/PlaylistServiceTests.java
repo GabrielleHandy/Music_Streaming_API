@@ -1,9 +1,11 @@
 package com.example.musicstreamingapi.serviceTests;
 
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.repository.UserProfileRepository;
+import com.example.musicstreamingapi.security.MyUserDetails;
 import com.example.musicstreamingapi.service.PlaylistService;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +16,9 @@ import org.junit.Assert;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -34,9 +39,13 @@ public class PlaylistServiceTests {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         playlistService = new PlaylistService(playlistRepositoryMock,userProfileRepositoryMock);
+        //Creates SecurityContextHolder
+        UserDetails userDetails = new MyUserDetails(testUser);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
-
-    private final UserProfile testUserProfile = new UserProfile(1l, "TestUser", "Test", "TestBio", null);
+    private final User testUser = new User(1L, "TestUser", "test@test.com", "1234", null);
+    private final UserProfile testUserProfile = new UserProfile(1l, "TestUser", "Test", "TestBio", testUser);
     private final Playlist testPlaylist1 = new Playlist(1L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
     private final Playlist testPlaylist2 = new Playlist(2L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
     private final Playlist testPlaylist3 = new Playlist(3L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
@@ -73,20 +82,21 @@ public class PlaylistServiceTests {
         List<Playlist> result = playlistService.getAllPlaylistsUserProfileId(1L);
         Assert.assertEquals(3, result.size());
     }
-//
-//    @Test
-//    @DisplayName("Returns a Playlist when createPlaylist is called")
-//    public void testCreatePlaylist(){
-//        when(playlistRepositoryMock.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
-//        Playlist result = playlistService.createPlaylist(new Playlist());
-//        Assert.assertSame(testPlaylist1, result);
-//    }
-//    @Test(expected = RuntimeException.class)
-//    @DisplayName("When playlist already found in database InformationExistException is thrown")
-//    void testCreatePlaylistExceptionThrow(){
-//        when(playlistRepository.findByNameAndUserProfile(Mockito.anyString(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
-//        playlistServiceMock.createPlaylist(new Playlist());
-//    }
+
+    @Test
+    @DisplayName("Returns a Playlist when createPlaylist is called")
+    public void testCreatePlaylist(){
+        when(playlistRepositoryMock.findByNameAndUserProfile(Mockito.anyString(), Mockito.any(UserProfile.class))).thenReturn(null);
+        when(playlistRepositoryMock.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
+        Playlist result = playlistService.createPlaylist(testPlaylist1);
+        Assert.assertSame(testPlaylist1, result);
+    }
+    @Test(expected = RuntimeException.class)
+    @DisplayName("When playlist already found in database InformationExistException is thrown")
+    public void testCreatePlaylistExceptionThrow(){
+        when(playlistRepositoryMock.findByNameAndUserProfile(testPlaylist1.getName(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
+        playlistService.createPlaylist(testPlaylist1);
+    }
 //
 //    @Test
 //    @DisplayName("Returns deleted Playlist when deletePlaylist is called")

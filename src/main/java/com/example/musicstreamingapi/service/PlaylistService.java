@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.service;
 
+import com.example.musicstreamingapi.exception.InformationExistException;
 import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.User;
@@ -8,6 +9,7 @@ import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +28,11 @@ public class PlaylistService {
     }
 
     public User getCurrentLoggedInUser(){
-        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return myUserDetails.getUser();
+
+            MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return myUserDetails.getUser();
+
+
     }
 
     public List<Playlist> getAllPlaylists() {
@@ -53,8 +58,13 @@ public class PlaylistService {
     }
 
 
-//    public Playlist createPlaylist(Playlist playlist) {
-//        Optional<Playlist> optionalPlaylist = playlistRepository.findByNameAndUserProfile(playlist.getName(), )
-//    }
+    public Playlist createPlaylist(Playlist playlist) {
+        Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByNameAndUserProfile(playlist.getName(),getCurrentLoggedInUser().getUserProfile()));
+        if(optionalPlaylist.isEmpty()) {
+            playlist.setUserProfile(getCurrentLoggedInUser().getUserProfile());
+            return playlistRepository.save(playlist);
+        }
+        throw new InformationExistException("Playlist with name " + playlist.getName()+ " already exists");
+    }
 }
 

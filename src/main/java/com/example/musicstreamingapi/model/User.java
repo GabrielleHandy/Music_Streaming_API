@@ -72,6 +72,14 @@ public class User {
         this.passWord = passWord;
     }
 
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
     // toString() method
     @Override
     public String toString() {
