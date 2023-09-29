@@ -39,7 +39,7 @@ public class UserService {
             return userRepository.save(existingUser);
         } else {
             // Handle the case where the user with the given ID doesn't exist
-            return null;
+            throw new IllegalArgumentException();
         }
     }
 

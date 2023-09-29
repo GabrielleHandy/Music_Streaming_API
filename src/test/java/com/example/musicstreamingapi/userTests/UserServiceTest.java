@@ -73,24 +73,26 @@ public class UserServiceTest {
     // UpdateUser
     @Test
     public void testUpdateUser() {
-        Long userId = 3L;
-        User newCurrentUser = new User(userId, "Gabrielle", "gabrielle@gmail.com", "oldPassword");
-        User updatedUser = new User(userId, "Gabrielle J", "gabrielle@gmail.com", "newpassword");
+        Long Id = 2L;
+        User currentUser = new User(Id, "Gabrielle", "gabrielle@gmail.com", "oldPassword");
+        User updatedUser = new User(Id, "Gabrielle H", "gabrielle@gmail.com", "newpassword");
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(newCurrentUser));
-        when(userRepository.save(updatedUser)).thenReturn(updatedUser);
+        when(userRepository.findById(Id)).thenReturn(Optional.of(currentUser));
+        when(userRepository.save(currentUser)).thenReturn(updatedUser);
 
-        User result = userService.updateUser(userId, updatedUser);
 
-//        verify(userRepository, times(1)).findById(userId);
-//        verify(userRepository, times(1)).save(updatedUser);
+        User result = userService.updateUser(Id, updatedUser);
+
+        verify(userRepository, times(1)).findById(Id);
+        verify(userRepository, times(1)).save(currentUser);
 
         assertNotNull(result);
 
-        assertEquals("Gabrielle J", result.getName());
+        assertEquals("Gabrielle H", result.getName());
         assertEquals("newpassword", result.getPassWord());
     }
-        //DeleteUser
+
+    //DeleteUser
          @Test
         public void testDeleteUser(){
             Long userIdToDelete = userId;
@@ -103,8 +105,6 @@ public class UserServiceTest {
 
     }
 
-
-    //DeleteUser
 
 
 
