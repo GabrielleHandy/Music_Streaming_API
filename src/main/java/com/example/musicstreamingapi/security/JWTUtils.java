@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 public class JWTUtils {
     Logger logger = Logger.getLogger(JWTUtils.class.getName());
 
-    @Value("${jwt-secret}")
+    @Value("")
     private String jwtSecret;
 
-    @Value("${jwt-expiration-ms")
+    @Value("86400")
     private int jwtExpirationMs;
 
     public String generateJwtToken(MyUserDetails myUserDetails) {

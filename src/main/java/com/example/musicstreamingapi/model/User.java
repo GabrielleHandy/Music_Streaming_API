@@ -10,7 +10,7 @@ import javax.persistence.*;
  * returns name, emailaddress, and password
  */
 @Entity
-@Table(name = "user")   // Define the "name" property and map it to a table column.
+@Table(name = "users")   // Define the "name" property and map it to a table column.
 public class User {
 
     // Define the "id" property and mark it as the primary key with automatic generation.
@@ -40,7 +40,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String emailAddress, String passWord, UserProfile userProfile) {
+    public User(Long id, String name, String emailAddress, String passWord,UserProfile userProfile) {
         this.id = id;
         this.name = name;
         this.emailAddress = emailAddress;
