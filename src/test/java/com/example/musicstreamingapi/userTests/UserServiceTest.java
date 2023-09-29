@@ -72,30 +72,28 @@ public class UserServiceTest {
     }
     // UpdateUser
     @Test
-public void testUpdateUser(){
+    public void testUpdateUser() {
         Long userId = 3L;
-        User newCurrentUser = new User(userId,"Gabrielle","gabrielle@gmail.com","oldPassword");
-        User updatedUser = new User(userId,"Gabrielle J","gabrielle@gmail.com","newpassword");
+        User newCurrentUser = new User(userId, "Gabrielle", "gabrielle@gmail.com", "oldPassword");
+        User updatedUser = new User(userId, "Gabrielle J", "gabrielle@gmail.com", "newpassword");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(newCurrentUser));
         when(userRepository.save(updatedUser)).thenReturn(updatedUser);
 
-        User result = userService.updateUser(userId,updatedUser);
+        User result = userService.updateUser(userId, updatedUser);
 
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).save(updatedUser);
 
         assertNotNull(result);
 
-        assertEquals("Gabrielle J",result.getName());
+        assertEquals("Gabrielle J", result.getName());
         assertEquals("newpassword", result.getPassWord());
 
-}
-
-    //DeleteUser
+        //DeleteUser
 
 
-
+    }
 
 
 }
