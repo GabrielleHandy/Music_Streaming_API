@@ -11,10 +11,19 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
+    /**
+     * Constructs a new instance of the UserService class with the provided
+     * UserRepository dependency. This constructor is used to initialize the
+     * service with the necessary repository for performing user-related operations.
+     */
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+    /**
+     * Retrieves a user by their unique identifier from the UserRepository.
+     * @param userId The unique identifier (ID) of the user to retrieve.
+     * @return An Optional containing the user if found, or an empty Optional if not found.
+     */
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
     }
