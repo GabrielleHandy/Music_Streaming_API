@@ -62,4 +62,10 @@ public class UserControllerTests {
 
     }
 
-}
+    @Test
+    public void testCreateUser() throws Exception {
+
+    }
+
+
+    }
