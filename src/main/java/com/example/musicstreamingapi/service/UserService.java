@@ -27,7 +27,11 @@ public class UserService {
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
     }
-
+    /**
+     * Creates a new user by saving the provided user object to the UserRepository.
+     * @param user The user object to be created and saved.
+     * @return The new user object with any assigned identifiers.
+     */
     public User createUser(User user) {
         // You can add validation logic here if needed
         return userRepository.save(user);
