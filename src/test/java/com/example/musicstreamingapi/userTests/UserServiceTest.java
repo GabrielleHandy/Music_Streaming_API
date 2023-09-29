@@ -74,8 +74,13 @@ public class UserServiceTest {
     public User updateUser(Long userId, User updatedUser){
         Optional<User> currentUserOptional = userRepository.findById(userId);
         if(currentUserOptional.isPresent()){
-            User currentUser = currentUserOptional.get();
+            User newCurrentUser = currentUserOptional.get();
+
+            newCurrentUser.setName(updatedUser.getName());
+            newCurrentUser.setEmailAddress(updatedUser.getEmailAddress());
+            newCurrentUser.setPassWord(updatedUser.getPassWord());
         }
+
     }
 
     //DeleteUser
