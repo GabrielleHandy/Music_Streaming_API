@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,16 +17,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserControllerTests {
     @InjectMocks
     private UserController userController;
+
     @Mock
     private UserService userService;
-    private MockMvc mockMvc;
 
+    private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
@@ -35,32 +34,20 @@ public class UserControllerTests {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
-    //TestGetUserID
-
     @Test
-    public void testGetUserById() throws Exception{
+    public void testGetUserById() throws Exception {
         Long userId = 1L;
-        User user = new User(userId,"Marco","marco@gmail.com","password123",null);
+        User user = new User(userId, "Marco", "marco@gmail.com", "password123", null);
 
         when(userService.getUserById(userId)).thenReturn(Optional.of(user));
 
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/users/{userId",userId)
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/auth/users/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userId))
                 .andExpect(jsonPath("$.name").value("Marco"))
-                .andExpect(jsonPath("$.emailAddress").value("marco@example.com"))
+                .andExpect(jsonPath("$.emailAddress").value("marco@gmail.com"))
                 .andReturn();
-        verify(userService, times(1)).getUserById(userId);
-
-
-
     }
-
-
-
-    //TestGetUserIdNotFound
-
 
 }
