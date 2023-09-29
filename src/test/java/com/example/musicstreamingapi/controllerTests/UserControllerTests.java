@@ -50,4 +50,10 @@ public class UserControllerTests {
                 .andReturn();
     }
 
+    @Test
+    public void testGetUserByIdNotFound()throws Exception{
+        Long userId = 100L;
+
+    }
+
 }
