@@ -53,6 +53,12 @@ public class UserControllerTests {
     @Test
     public void testGetUserByIdNotFound()throws Exception{
         Long userId = 100L;
+        when(userService.getUserById(userId)).thenReturn(Optional.empty());
+        mockMvc.perform(MockMvcRequestBuilders.get("/auth/users/{userId}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isNotFound());
+
+        verify(userService, times(1)).getUserById(userId);
 
     }
 
