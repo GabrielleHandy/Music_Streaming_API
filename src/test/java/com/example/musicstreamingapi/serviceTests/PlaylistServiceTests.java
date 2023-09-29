@@ -76,9 +76,9 @@ public class PlaylistServiceTests {
 //
 //    @Test
 //    @DisplayName("Returns a Playlist when createPlaylist is called")
-//    void testCreatePlaylist(){
-//        when(playlistRepository.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
-//        Playlist result = playlistServiceMock.createPlaylist(new Playlist());
+//    public void testCreatePlaylist(){
+//        when(playlistRepositoryMock.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
+//        Playlist result = playlistService.createPlaylist(new Playlist());
 //        Assert.assertSame(testPlaylist1, result);
 //    }
 //    @Test(expected = RuntimeException.class)
