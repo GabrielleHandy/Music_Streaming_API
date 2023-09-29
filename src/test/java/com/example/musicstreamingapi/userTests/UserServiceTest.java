@@ -21,7 +21,6 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     Long userId = 1L;
-
     @BeforeEach // Initializes Mockito annotations before each test method.
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -59,7 +58,6 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findById(userId);
         assertFalse(result.isPresent());
     }
-
     /**
      * This test method verifies the functionality of the createUser method
      * in the UserService class. It checks if the method correctly creates
@@ -79,38 +77,39 @@ public class UserServiceTest {
 
     }
     // UpdateUser
+    /**
+     * This test method verifies the functionality of the  updateUser method
+     * in the UserService class. It checks if the method correctly updates
+     * an existing user's information, including their name,email,and  password
+     * returns the updated user object with the expected details.
+     */
     @Test
     public void testUpdateUser() {
         Long Id = 2L;
         User currentUser = new User(Id, "Gabrielle", "gabrielle@gmail.com", "oldPassword");
         User updatedUser = new User(Id, "Gabrielle H", "gabrielle@gmail.com", "newpassword");
-
+        // Configure the UserRepository to return the current user when findById is called
         when(userRepository.findById(Id)).thenReturn(Optional.of(currentUser));
+        // Configure the UserRepository to return the updated user when save is called
         when(userRepository.save(currentUser)).thenReturn(updatedUser);
-
-
+        // Call the updateUser method to update the user's information
         User result = userService.updateUser(Id, updatedUser);
-
         verify(userRepository, times(1)).findById(Id);
         verify(userRepository, times(1)).save(currentUser);
-
         assertNotNull(result);
-
         assertEquals("Gabrielle H", result.getName());
         assertEquals("newpassword", result.getPassWord());
     }
-
-    //DeleteUser
-         @Test
-        public void testDeleteUser(){
-            Long userIdToDelete = userId;
-            userService.deleteUser(userIdToDelete);
-            verify(userRepository, times(1)).deleteById(userIdToDelete);
+    /**
+     * This test method verifies the functionality of the deleteUser method
+     * in the UserService class. It checks if the method correctly deletes
+     * a user by their ID and ensures that the UserRepository's deleteById method is
+     * called with the specified user ID.
+     */
+    @Test
+    public void testDeleteUser(){
+        Long userIdToDelete = userId;
+        userService.deleteUser(userIdToDelete);
+        verify(userRepository, times(1)).deleteById(userIdToDelete);
         }
-
-
     }
-
-
-
-
