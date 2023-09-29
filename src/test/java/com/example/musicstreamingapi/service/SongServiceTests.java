@@ -4,13 +4,16 @@ import com.example.musicstreamingapi.model.Genre;
 import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.repository.SongRepository;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@RunWith(MockitoJUnitRunner.class)
 public class SongServiceTests {
 
     @InjectMocks
@@ -31,7 +35,7 @@ public class SongServiceTests {
     @Mock
     private SongRepository songRepository;
 
-    @BeforeEach
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
          // Create an instance of your service with the mock repository
@@ -54,11 +58,11 @@ public class SongServiceTests {
 
     }
     @Test
-     public void testCreateSongs() {
+    public void testCreateSongs_success () {
         when(songRepository.save(Mockito.any(Song.class))).thenReturn(testSong1);
-        Song result = songServiceMock.createSong(new Song());
-        assertEquals(testSong1, result);
-     }
+        Song createSong = songServiceMock.createSong(new Song());
+        assertEquals(testSong1, createSong);
+    }
 
 
 }
