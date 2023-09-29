@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,11 +68,25 @@ public class SongServiceTests {
     @Test
     public void testEditSongs_success() {
 
-        when(songRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(testSong1)); // Mock the song to edit
+        when(songRepository.findById(1L)).thenReturn(Optional.ofNullable(testSong1)); // Mock the song to edit
         when(songRepository.save(Mockito.any(Song.class))).thenReturn(testSong1); // Mock the save operation for any Song
         Song editedSong = songServiceMock.editSong(1L, "Edited Song Name");
         assertEquals("Edited Song Name", editedSong.getTitle());
     }
+
+
+    @Test
+    public void testDeleteSongs_success() {
+        when(songRepository.findById(2L)).thenReturn(Optional.ofNullable(testSong2));
+        doAnswer(invocation -> {
+            Song songToDelete = invocation.getArgument(0);
+            songToDelete.setTitle("Deleted Song Name");
+            return null;
+        }).when(songRepository).delete(Mockito.any(Song.class));
+        Song deletedSong = songServiceMock.deleteSong(2L);
+        assertEquals("Deleted Song Name", deletedSong.getTitle());
+    }
+
 
 }
 

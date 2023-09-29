@@ -41,4 +41,11 @@ public class SongService {
         }
     }
 
+    public Song deleteSong(long songId) {
+        Song deletedSong = songRepository.findById(songId)
+                .orElseThrow(() -> new IllegalArgumentException("Song not found with ID: " + songId));
+
+        songRepository.delete(deletedSong);
+        return deletedSong;
+    }
 }
