@@ -42,7 +42,6 @@ public class UserServiceTest {
         assertEquals("marco@example.com",result.get().getEmailAddress());
 
     }
-
     @Test
     public void testGetUserByIdNotFound() {
         Long userId = 77L;
@@ -53,5 +52,17 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findById(userId);
         assertFalse(result.isPresent());
     }
+
+    // GETALLUSER PROFILEs
+
+    //CreateUser
+
+    // UpdateUser
+
+    //DeleteUser
+
+
+
+
 
 }

@@ -4,6 +4,7 @@ import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,4 +18,7 @@ public class UserService {
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
     }
+
+
+
 }
