@@ -89,9 +89,9 @@ public class UserServiceTest {
 
         assertEquals("Gabrielle J", result.getName());
         assertEquals("newpassword", result.getPassWord());
-
+    }
         //DeleteUser
-
+         @Test
         public void testDeleteUser(){
             Long userIdToDelete = userId;
             userService.deleteUser(userIdToDelete);
@@ -108,5 +108,3 @@ public class UserServiceTest {
 
 
 
-
-}
