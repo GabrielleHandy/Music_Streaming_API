@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SongService {
     private SongRepository songRepository;
@@ -24,7 +26,19 @@ public class SongService {
         return songRepository.findAll(); // Return the list of songs
     }
 
-    public Song createSong(Song song) {
+    public Song createSong(Song song) { //creates a new Song object, and saves it to the database
         return songRepository.save(song);
     }
+
+    public Song editSong(long songId, String editedSongName) {
+        Optional<Song> optionalSong = songRepository.findById(songId);
+        if (optionalSong.isPresent()) {
+            Song existingSong = optionalSong.get();
+            existingSong.setTitle(editedSongName);
+            return songRepository.save(existingSong);
+        } else {
+            throw new IllegalArgumentException("Song not found with ID: " + songId + "not found");
+        }
+    }
+
 }
