@@ -19,5 +19,10 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public User createUser(User user) {
+        // You can add validation logic here if needed
+        return userRepository.save(user);
+    }
+
 
 }
