@@ -64,7 +64,21 @@ public class UserControllerTests {
 
     @Test
     public void testCreateUser() throws Exception {
+        User userToCreate = new User(null, "bob", "bob@gmail.com", "newpassword", null);
+        User createdUser = new User(1L, "bob", "bob@gmail.com", "newpassword", null);
 
+        when(userService.createUser(userToCreate)).thenReturn(createdUser);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/auth/users/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"bob\",\"emailAddress\":\"bob@gmail.com\",\"passWord\":\"newpassword\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("bob"))
+                .andExpect(jsonPath("$.emailAddress").value("bob@gmail.com"))
+                .andReturn();
+
+        verify(userService, times(1)).createUser(userToCreate);
     }
 
 
