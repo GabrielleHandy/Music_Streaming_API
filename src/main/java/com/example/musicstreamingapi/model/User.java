@@ -10,7 +10,7 @@ import javax.persistence.*;
  * returns name, emailaddress, and password
  */
 @Entity
-@Table(name = "user")   // Define the "name" property and map it to a table column.
+@Table(name = "users")   // Define the "name" property and map it to a table column.
 public class User {
 
     @Column
