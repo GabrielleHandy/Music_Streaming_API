@@ -20,7 +20,7 @@ public class UserServiceTest {
     private UserService userService;
     @Mock
     private UserRepository userRepository;
-
+    Long userId = 1L;
 
     @BeforeEach // Initializes Mockito annotations before each test method.
     public void setUp(){
@@ -28,7 +28,7 @@ public class UserServiceTest {
     }
     @Test
     public void testGetUserById(){
-        Long userId = 1L;
+
         User user = new User(1L, "Marco", "marco@example.com", "password123");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -55,8 +55,17 @@ public class UserServiceTest {
 
     // GETALLUSER PROFILEs
 
+
     //CreateUser
 
+    public void testCreateUser(){
+        User userToCreate = new User(userId,"Betselot","Bets@gmail.com","newpassword456");
+        when(userRepository.save(userToCreate)).thenReturn(userToCreate);
+
+        User createdUser = userService.createUser(userToCreate);
+
+
+    }
     // UpdateUser
 
     //DeleteUser
