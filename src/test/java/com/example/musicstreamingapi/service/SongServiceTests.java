@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -52,6 +53,12 @@ public class SongServiceTests {
         assertEquals(3, songs.size()); // Add more assertions based on the expected behavior
 
     }
+    @Test
+     public void testCreateSongs() {
+        when(songRepository.save(Mockito.any(Song.class))).thenReturn(testSong1);
+        Song result = songServiceMock.createSong(new Song());
+        assertEquals(testSong1, result);
+     }
 
 
 }

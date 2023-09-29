@@ -24,4 +24,7 @@ public class SongService {
         return songRepository.findAll(); // Return the list of songs
     }
 
+    public Song createSong(Song song) {
+        return songRepository.save(song);
     }
+}
