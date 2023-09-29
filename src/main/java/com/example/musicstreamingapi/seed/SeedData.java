@@ -1,8 +1,6 @@
 package com.example.musicstreamingapi.seed;
 
-import com.example.musicstreamingapi.model.Genre;
-import com.example.musicstreamingapi.model.Song;
-import com.example.musicstreamingapi.model.User;
+import com.example.musicstreamingapi.model.*;
 import com.example.musicstreamingapi.repository.GenreRepository;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
 import com.example.musicstreamingapi.repository.SongRepository;
@@ -40,7 +38,9 @@ public class SeedData implements CommandLineRunner {
         user.setName("suresh");
         user.setEmailAddress("suresh@ga.com");
         user.setPassWord(passwordEncoder.encode("suresh123"));
-        user.setUserProfile(null);
+        UserProfile userProfile = new UserProfile();
+        userProfile.setUser(user);
+        user.setUserProfile(userProfile);
         userRepository.save(user);
 
 
@@ -112,6 +112,11 @@ public class SeedData implements CommandLineRunner {
         countryRoads.setGenre(countryGenre);
         songRepository.save(countryRoads);
 
+
+        Playlist playlist = new Playlist();
+        playlist.setUserProfile(userProfile);
+        playlist.addSong(countryRoads);
+        playlistRepository.save(playlist);
     }
 
 
