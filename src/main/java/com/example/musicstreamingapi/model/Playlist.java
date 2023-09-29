@@ -1,7 +1,5 @@
 package com.example.musicstreamingapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -9,7 +7,6 @@ import java.util.Set;
 
 /**
  * Represents a playlist entity that can contain a collection of songs.
- *
  * This class is annotated with JPA annotations to map it to a database table named "playlists".
  */
 @Entity
