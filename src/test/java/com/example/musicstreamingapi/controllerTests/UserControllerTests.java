@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class UserControllerTests {
@@ -64,21 +65,22 @@ public class UserControllerTests {
 
     @Test
     public void testCreateUser() throws Exception {
-        User userToCreate = new User(null, "bob", "bob@gmail.com", "newpassword", null);
+        User userToCreate = new User(1L, "bob", "bob@gmail.com", "newpassword", null);
         User createdUser = new User(1L, "bob", "bob@gmail.com", "newpassword", null);
 
-        when(userService.createUser(userToCreate)).thenReturn(createdUser);
+        when(userService.createUser(any(User.class))).thenReturn(createdUser);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/auth/users/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"bob\",\"emailAddress\":\"bob@gmail.com\",\"passWord\":\"newpassword\"}"))
+                .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("bob"))
-                .andExpect(jsonPath("$.emailAddress").value("bob@gmail.com"))
+                .andExpect(jsonPath("$.data.id").value(1L))
+                .andExpect(jsonPath("$.data.name").value("bob"))
+                .andExpect(jsonPath("$.data.emailAddress").value("bob@gmail.com"))
                 .andReturn();
 
-        verify(userService, times(1)).createUser(userToCreate);
+        verify(userService, times(1)).createUser(any(User.class));
     }
 
 

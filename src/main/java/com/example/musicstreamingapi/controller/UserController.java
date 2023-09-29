@@ -3,9 +3,12 @@ package com.example.musicstreamingapi.controller;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -13,6 +16,8 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+
+    HashMap<String, Object > response = new HashMap<>();
 
     @Autowired
     public UserController(UserService userService) {
@@ -28,5 +33,14 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        response.put("message","success");
+        response.put("data", createdUser);
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
+    }
+
 
 }
