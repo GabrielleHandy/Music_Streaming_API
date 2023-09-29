@@ -31,17 +31,17 @@ public class SGControllerTest {
 
     @Test
     public void testGetAllSongsNotEmpty() {
-        // Arrange
-        List<Song> songsList = Collections.singletonList(new Song(/* song details here */));
+        List<Song> songsList = Collections.singletonList(new Song());
         when(songServiceMock.getAllSongs()).thenReturn(songsList);
-
-        // Act
         ResponseEntity<?> responseEntity = songGenreController.getAllSongs();
-
-        // A
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        // add more assertions based on your expected behavior
     }
 
-
+    @Test
+    public void testGetAllSongsEmpty() {
+        List<Song> emptySongsList = Collections.emptyList();
+        when(songServiceMock.getAllSongs()).thenReturn(emptySongsList);
+        ResponseEntity<?> responseEntity = songGenreController.getAllSongs();
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+    }
 }

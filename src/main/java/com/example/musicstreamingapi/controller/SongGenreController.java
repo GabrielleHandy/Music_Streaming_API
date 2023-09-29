@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/songs")  // Adjust the mapping as needed
+@RequestMapping("/api/songs")
 public class SongGenreController {
 
     private final SongService songService;
@@ -45,12 +45,3 @@ public class SongGenreController {
 
 
 
-//@RestController
-//@RequestMapping("/api/songs")
-//public class SongGenreController {
-//    @GetMapping(path = "/songs/")
-//    public ResponseEntity<?> getAllSongs() {
-//      //placeholder method
-//        return new ResponseEntity<>("Placeholder", HttpStatus.OK);
-//    }
-//}
