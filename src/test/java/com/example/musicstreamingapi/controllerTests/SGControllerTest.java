@@ -29,4 +29,19 @@ public class SGControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Test
+    public void testGetAllSongsNotEmpty() {
+        // Arrange
+        List<Song> songsList = Collections.singletonList(new Song(/* song details here */));
+        when(songServiceMock.getAllSongs()).thenReturn(songsList);
+
+        // Act
+        ResponseEntity<?> responseEntity = songGenreController.getAllSongs();
+
+        // A
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        // add more assertions based on your expected behavior
+    }
+
+
 }
