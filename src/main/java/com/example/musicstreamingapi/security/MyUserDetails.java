@@ -1,7 +1,8 @@
 package com.example.musicstreamingapi.security;
 
+import com.example.musicstreamingapi.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -21,12 +22,12 @@ public class MyUserDetails  implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.getPassWord();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmailAddress();
     }
 
     @Override

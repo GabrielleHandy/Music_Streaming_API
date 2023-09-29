@@ -32,7 +32,7 @@ public class UserProfile {
     private String profileBio;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "UserProfile")
+    @OneToOne(mappedBy = "userProfile")
     private User user;
 
     @OneToMany(mappedBy = "userProfile", orphanRemoval = true)
