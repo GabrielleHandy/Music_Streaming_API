@@ -64,6 +64,10 @@ public class UserServiceTest {
 
         User createdUser = userService.createUser(userToCreate);
 
+        verify(userRepository,times(1)).save(userToCreate);
+        assertNotNull(createdUser.getId());
+        assertEquals("Betselot",createdUser.getName());
+        assertEquals("Bets@gmail.com",createdUser.getEmailAddress());
 
     }
     // UpdateUser
