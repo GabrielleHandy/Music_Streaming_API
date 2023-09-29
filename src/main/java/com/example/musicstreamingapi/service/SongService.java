@@ -9,12 +9,14 @@ import com.example.musicstreamingapi.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Service class for managing songs and genres.
+ */
 @Service
 public class SongService {
     private SongRepository songRepository;
-    private GenreRepository genreRepository; //ADD
-    private final List<Song> songsList; // Define the list of songs
+    private GenreRepository genreRepository;
+    private final List<Song> songsList;
 
     @Autowired
     public void setSongRepository(SongRepository songRepository) {
@@ -25,20 +27,29 @@ public class SongService {
     public void setGenreRepository(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
-
-    public List<Genre> getGenres() {
-        return genreRepository.findAll();
-    }
-
+    /**
+     * Constructor for SongService.
+     *
+     * @param songsList Initial list of songs.
+     */
     public SongService(List<Song> songsList) {
-        this.songsList = songsList; // Initialize the list of songs in the constructor
+        this.songsList = songsList;
     }
-
+    /**
+     * Returns a list of all songs.
+     *
+     * @return List of all songs.
+     */
     public List<Song> getAllSongs() {
         return songRepository.findAll(); // Return the list of songs
     }
 
-
+    /**
+     * Returns a list of songs for a given genre ID.
+     *
+     * @param genreId ID of the genre.
+     * @return List of songs for the specified genre.
+     */
     public List<Song> getAllSongsByGenreId(Long genreId) {
         return songRepository.findByGenreId(genreId);
     }
