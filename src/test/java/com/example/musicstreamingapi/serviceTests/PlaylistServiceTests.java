@@ -5,6 +5,7 @@ import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
+import com.example.musicstreamingapi.repository.SongRepository;
 import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.security.MyUserDetails;
 import com.example.musicstreamingapi.service.PlaylistService;
@@ -21,7 +22,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.mockito.Mockito.doAnswer;
@@ -37,10 +37,13 @@ public class PlaylistServiceTests {
     @Mock
     UserProfileRepository userProfileRepositoryMock;
 
+    @Mock
+    SongRepository songRepositoryMock;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        playlistService = new PlaylistService(playlistRepositoryMock,userProfileRepositoryMock);
+        playlistService = new PlaylistService(playlistRepositoryMock,userProfileRepositoryMock, songRepositoryMock);
         //Creates SecurityContextHolder
         UserDetails userDetails = new MyUserDetails(testUser);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -140,6 +143,19 @@ public class PlaylistServiceTests {
 
         List<Song> result= playlistService.getAllSongsInPlaylist(1L);
         Assert.assertSame(testSong, result.get(0));
+    }
+
+    @Test
+    @DisplayName("Returns a Song when AddSongToPlaylist is called")
+    public void testAddSongToPlaylist(){
+
+        when(playlistRepositoryMock.findByIdAndUserProfile(Mockito.anyLong(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
+        when(songRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testSong));
+        testPlaylist1.addSong(testSong);
+        when(playlistRepositoryMock.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
+
+        Playlist result= playlistService.addSongToPlaylist(1L, 1L);
+        Assert.assertTrue(result.getSongs().contains(testSong));
     }
 
 

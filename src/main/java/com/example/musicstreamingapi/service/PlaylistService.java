@@ -7,6 +7,7 @@ import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
+import com.example.musicstreamingapi.repository.SongRepository;
 import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,20 @@ import java.util.Optional;
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final UserProfileRepository userProfileRepository;
-
+    private final SongRepository songRepository;
     /**
      * Constructor for PlaylistService.
      *
-     * @param playlistRepository     The repository for managing playlists.
+     * @param playlistRepository    The repository for managing playlists.
      * @param userProfileRepository The repository for managing user profiles.
+     * @param songRepository    The repository for managing songs
      */
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository, SongRepository songRepository) {
         this.playlistRepository = playlistRepository;
 
         this.userProfileRepository = userProfileRepository;
+        this.songRepository = songRepository;
     }
 
     /**
@@ -117,7 +120,7 @@ public class PlaylistService {
             playlistRepository.delete(optionalPlaylist);
             return optionalPlaylist;
         }
-        throw new InformationExistException("You don't have a playlist with Id " + playlistId);
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
 
     public Playlist updatePlaylist(Long playlistId, Playlist updatedPlaylist) {
@@ -127,7 +130,7 @@ public class PlaylistService {
             return playlistRepository.save(optionalPlaylist);
 
         }
-        throw new InformationExistException("You don't have a playlist with Id " + playlistId);
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
 
     /**
@@ -138,6 +141,22 @@ public class PlaylistService {
     public List<Song> getAllSongsInPlaylist(Long playlistId) {
         Playlist playlist = getPlaylistById(playlistId);
         return new ArrayList<>(playlist.getSongs());
+    }
+
+    public Playlist addSongToPlaylist(Long playlistId, Long songId) {
+        Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
+
+        if(optionalPlaylist.isPresent()) {
+            Optional<Song> optionalSong = songRepository.findById(songId);
+            if(optionalSong.isPresent()){
+                Playlist playlist =optionalPlaylist.get();
+                playlist.addSong(optionalSong.get());
+
+                return playlistRepository.save(playlist);
+            }
+            throw new InformationNotFoundException("Song with id " + songId + " not found");
+        }
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
 }
 
