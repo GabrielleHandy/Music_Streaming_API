@@ -79,7 +79,6 @@ public class SongControllerTestDefs {
         return response.jsonPath().getString("jwt");
     }
 
-
     @When("I, as a user, attempt to create a new song")
     public void iAsAUserAttemptToCreateANewSong() {
     }
@@ -105,4 +104,5 @@ public class SongControllerTestDefs {
     @Then("The update of a song is not allowed")
     public void theUpdateOfASongIsNotAllowed() {
     }
+
 }
