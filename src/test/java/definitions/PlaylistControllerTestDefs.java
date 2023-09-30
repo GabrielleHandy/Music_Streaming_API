@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,7 +133,7 @@ public class PlaylistControllerTestDefs {
     @When("I remove playlist from my list of playlists")
     public void iRemovePlaylistFromMyListOfPlaylists() {
         Playlist deletePlaylist = response.jsonPath().getObject("data", Playlist.class);
-        logger.info(deletePlaylist.toString());
+
         createRequest();
         response = request.delete(BASE_URL + port + MessageFormat.format("/api/playlists/{0}/", deletePlaylist.getId()));
 
@@ -194,15 +195,21 @@ public class PlaylistControllerTestDefs {
         Playlist playlist = response.jsonPath().getObject("data", Playlist.class);
         Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
         Assert.assertEquals("Song successfully added", message);
-        Assert.assertEquals(1, playlist.getSongs().stream().filter(song -> song.getId() == 1).count());
+        Assert.assertTrue(playlist.getSongs().stream().anyMatch(song -> Objects.equals(song.getId(), 1L)));
     }
 
     @When("I remove a song from playlist")
     public void iRemoveASongFromPlaylist() {
+        createRequest();
+        response = request.delete(BASE_URL + port + "/api/playlists/1/songs/1/");
+        message = response.jsonPath().get("message");
     }
 
     @Then("The song is removed")
     public void theSongIsRemoved() {
+        Playlist playlist = response.jsonPath().getObject("data", Playlist.class);
+        Assert.assertEquals("Song removed from the playlist", message);
+        Assert.assertFalse(playlist.getSongs().stream().anyMatch(song -> Objects.equals(song.getId(), 1L)));
     }
 
 }

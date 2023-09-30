@@ -75,11 +75,19 @@ public class PlaylistController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PostMapping("/{playlistId}/songs/{songId}/")
-    public ResponseEntity<?> getPlaylistSongs(@PathVariable(name = "playlistId") Long playlistId, @PathVariable(name = "songId") Long songId){
+    public ResponseEntity<?> addSongToPlaylist(@PathVariable(name = "playlistId") Long playlistId, @PathVariable(name = "songId") Long songId){
         response.clear();
         Playlist updatedPlaylist = playlistService.addSongToPlaylist(playlistId,songId);
         response.put("data", updatedPlaylist);
         response.put("message", "Song successfully added");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @DeleteMapping("/{playlistId}/songs/{songId}/")
+    public ResponseEntity<?> removeSongFromPlaylist(@PathVariable(name = "playlistId") Long playlistId, @PathVariable(name = "songId") Long songId){
+        response.clear();
+        Playlist updatedPlaylist = playlistService.removeSongFromPlaylist(playlistId,songId);
+        response.put("data", updatedPlaylist);
+        response.put("message", "Song removed from the playlist");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
