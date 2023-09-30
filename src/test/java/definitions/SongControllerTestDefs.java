@@ -29,6 +29,22 @@ public class SongControllerTestDefs {
     // Logger initialization
     private static final Logger log = getLogger(SongControllerTestDefs.class.getName());
 
+    @LocalServerPort
+    String port;
 
-
+    private static Response response;
+    // Verify availability of songs in a genre
+    @Given("A list of songs are available in genre")
+    public void aListOfSongsAreAvailable() {
+        log.info("Calling aListOfSongsAreAvailable");
+        try {
+            // Send a GET request to retrieve the list of songs
+            ResponseEntity<String> response = new RestTemplate().exchange(BASE_URL + port + "/api/songs/", HttpMethod.GET, null, String.class);
+            List<Map<String, String>> songs = JsonPath.from(String.valueOf(response.getBody())).get("data");
+            Assert.assertEquals(response.getStatusCode(), HttpStatus.OK); //status is OK (200)
+            Assert.assertTrue(songs.size() > 0); //list of songs is not empty
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+        }
+    }
 }
