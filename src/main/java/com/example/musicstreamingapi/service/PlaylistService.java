@@ -116,5 +116,15 @@ public class PlaylistService {
         }
         throw new InformationExistException("You don't have a playlist with Id " + playlistId);
     }
+
+    public Playlist updatePlaylist(Long playlistId, Playlist updatedPlaylist) {
+        Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
+        if(optionalPlaylist != null) {
+            optionalPlaylist.setName(updatedPlaylist.getName());
+            return playlistRepository.save(optionalPlaylist);
+
+        }
+        throw new InformationExistException("You don't have a playlist with Id " + playlistId);
+    }
 }
 

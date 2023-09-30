@@ -32,7 +32,7 @@ public class PlaylistControllerTestDefs {
 
     private static Response response;
 
-
+    private static RequestSpecification request;
     private String token;
     private String message;
 
@@ -68,7 +68,7 @@ public class PlaylistControllerTestDefs {
         return response.jsonPath().getString("jwt");
     }
 
-    public RequestSpecification createRequest(){
+    public void createRequest(){
         try{
             if(token == null){
 
@@ -77,21 +77,21 @@ public class PlaylistControllerTestDefs {
 
 
             RestAssured.baseURI = BASE_URL;
-            RequestSpecification request = RestAssured.given();
+            request = RestAssured.given();
             request.header("Content-Type", "application/json");
             request.header("Authorization", "Bearer " + token);
-            return request;
+
 
         }catch(JSONException e){
             logger.info("Json issue " + e.getMessage());
-            return null;
+
         }
 
     }
 
     @Given("A list of playlists are available")
     public void aListOfPlaylistsAreAvailable() {
-            RequestSpecification request = createRequest();
+            createRequest();
             response = request.get(BASE_URL+ port +"/api/playlists/");
 
             List<Playlist> playlists = response.jsonPath().get("data");
@@ -108,7 +108,7 @@ public class PlaylistControllerTestDefs {
     public void iCreateAPlaylist() {
 
         try {
-            RequestSpecification request = createRequest();
+            createRequest();
             JSONObject requestBody = new JSONObject();
             requestBody.put("name", "Party Mix");
 
@@ -129,7 +129,7 @@ public class PlaylistControllerTestDefs {
     public void iRemovePlaylistFromMyListOfPlaylists() {
         Playlist deletePlaylist = response.jsonPath().getObject("data", Playlist.class);
         logger.info(deletePlaylist.toString());
-        RequestSpecification request = createRequest();
+        createRequest();
         response = request.delete(BASE_URL + port + MessageFormat.format("/api/playlists/{0}/", deletePlaylist.getId()));
 
     }
@@ -142,14 +142,28 @@ public class PlaylistControllerTestDefs {
     }
 
 
-//
-//    @When("I update a playlist")
-//    public void iUpdateAPlaylist() {
-//    }
-//
-//    @Then("The playlist is updated")+-
-//    public void thePlaylistIsUpdated() {
-//    }
+
+    @When("I update a playlist")
+    public void iUpdateAPlaylist() {
+        try {
+            createRequest();
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("name", "updatedName");
+            response = request.body(requestBody.toString()).put(BASE_URL + port+ "/api/playlists/1/");
+
+        }catch(JSONException e){
+            logger.info("Json issue " + e.getMessage());
+        }
+
+    }
+
+    @Then("The playlist is updated")
+    public void thePlaylistIsUpdated() {
+        message = response.jsonPath().get("message");
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        Assert.assertEquals("Successfully updated playlist", message);
+
+    }
 //
 //    @Given("A list of songs are available in a playlist")
 //    public void aListOfSongsAreAvailableInAPlaylist() {

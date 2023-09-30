@@ -121,5 +121,13 @@ public class PlaylistServiceTests {
         playlistService.deletePlaylist(1L);
 
     }
+    @Test
+    @DisplayName("When updating playlist updated playlist is returned")
+    public void testUpdatePlaylist(){
+        when(playlistRepositoryMock.findByIdAndUserProfile(Mockito.anyLong(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
+        when(playlistRepositoryMock.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist2);
+        Playlist result = playlistService.updatePlaylist(1L, testPlaylist2);
+        Assert.assertSame(testPlaylist2, result);
+    }
 
 }
