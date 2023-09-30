@@ -2,10 +2,19 @@ package definitions;
 
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 import io.cucumber.spring.CucumberContextConfiguration;
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
@@ -47,4 +56,28 @@ public class SongControllerTestDefs {
             e.printStackTrace();
         }
     }
+
+    // Method to retrieve JWT token for SongController tests
+    public static String getJWTKey(String port) throws JSONException {
+        // Set the base URI and create a request
+
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+
+        // Set the content-type header to indicate JSON data
+        request.header("Content-Type", "application/json");
+
+        // Create a JSON request body with user email and password
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("emailAddress", "suresh@ga.com");
+        requestBody.put("password", "suresh123");
+
+        // Send a POST request to the authentication endpoint
+        response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/login/");
+
+        // Extract and return the JWT key from the authentication response
+        return response.jsonPath().getString("jwt");
+    }
+
+
 }

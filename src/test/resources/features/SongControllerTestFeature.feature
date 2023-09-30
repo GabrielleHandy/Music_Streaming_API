@@ -1,12 +1,12 @@
 Feature: Rest API functionalities
 
-  Scenario: User able to add and remove Song
+  Scenario: User unable to add or remove a song
     Given A list of songs are available in genre
-    When I add a category to my category list
-    Then The category is added
-    When I remove category from my category list
-    Then The category is removed
-    When I update a category
-    Then The category is updated
+    When I, as a user, attempt to create a new song
+    Then The creation of a new song is not allowed
+    When I, as a user, attempt to remove a song
+    Then The removal of a song is not allowed
+    When I, as a user, attempt to update a song
+    Then The update of a song is not allowed
 
 
