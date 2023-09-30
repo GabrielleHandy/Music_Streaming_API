@@ -112,7 +112,7 @@ public class PlaylistService {
      * Deletes a playlist by its unique identifier.
      *
      * @param playlistId The unique identifier of the playlist to delete.
-     * @return The deleted playlist if found, otherwise throws {@link InformationExistException}.
+     * @return The deleted playlist if found, otherwise throws {@link InformationNotFoundException}.
      */
     public Playlist deletePlaylist(Long playlistId) {
         Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
@@ -123,6 +123,13 @@ public class PlaylistService {
         throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
 
+    /**
+     * Updates the details of a user's playlist.
+     *
+     * @param playlistId      The ID of the playlist to be updated.
+     * @param updatedPlaylist The updated playlist object with new information.
+     * @return The updated playlist after the changes otherwise throws {@link InformationNotFoundException}
+     */
     public Playlist updatePlaylist(Long playlistId, Playlist updatedPlaylist) {
         Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
         if(optionalPlaylist != null) {
@@ -142,7 +149,14 @@ public class PlaylistService {
         Playlist playlist = getPlaylistById(playlistId);
         return new ArrayList<>(playlist.getSongs());
     }
-
+    /**
+     * Adds a song to a user's playlist.
+     *
+     * @param playlistId The ID of the playlist to which the song will be added.
+     * @param songId     The ID of the song to be added.
+     * @return The updated playlist after adding the song.
+     * @throws InformationNotFoundException if the playlist or song is not found.
+     */
     public Playlist addSongToPlaylist(Long playlistId, Long songId) {
         Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
 
@@ -159,6 +173,14 @@ public class PlaylistService {
         throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
 
+    /**
+     * Removes a song from a user's playlist.
+     *
+     * @param playlistId The ID of the playlist from which the song will be removed.
+     * @param songId     The ID of the song to be removed.
+     * @return The updated playlist after removing the song.
+     * @throws InformationNotFoundException if the playlist or song is not found.
+     */
     public Playlist removeSongFromPlaylist(Long playlistId, Long songId) {
         Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
 
