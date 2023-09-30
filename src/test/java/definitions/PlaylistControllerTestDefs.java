@@ -60,7 +60,7 @@ public class PlaylistControllerTestDefs {
         // Create a JSON request body with user email and password
         JSONObject requestBody = new JSONObject();
         requestBody.put("email", "suresh@ga.com");
-        requestBody.put("passWord", "suresh123");
+        requestBody.put("password", "suresh123");
 
 
         // Send a POST request to the authentication endpoint

@@ -63,7 +63,7 @@ public class UserService {
             // Update the fields you want to change
             existingUser.setName(updatedUser.getName());
             existingUser.setEmailAddress(updatedUser.getEmailAddress());
-            existingUser.setPassWord(updatedUser.getPassWord());
+            existingUser.setPassword(updatedUser.getPassword());
             // Save the updated user
             return userRepository.save(existingUser);
         } else {

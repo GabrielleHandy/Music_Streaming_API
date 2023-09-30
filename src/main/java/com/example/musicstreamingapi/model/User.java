@@ -29,7 +29,7 @@ public class User {
     // Define the "passWord" property, map it to a table column, and mark it for JSON serialization only.
     @Column
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String passWord;
+    private String password;
 
 
     // Define a one-to-one relationship with UserProfile and specify the foreign key.
@@ -40,11 +40,11 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String emailAddress, String passWord,UserProfile userProfile) {
+    public User(Long id, String name, String emailAddress, String password,UserProfile userProfile) {
         this.id = id;
         this.name = name;
         this.emailAddress = emailAddress;
-        this.passWord = passWord;
+        this.password = password;
         this.userProfile = userProfile;
     }
 
@@ -64,12 +64,12 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    public String getPassWord() {
-        return passWord;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserProfile getUserProfile() {
@@ -86,7 +86,7 @@ public class User {
         return "User{" +
                 "name='" + name + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", passWord='" + passWord + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 

@@ -37,7 +37,7 @@ public class SeedData implements CommandLineRunner {
         User user = new User();
         user.setName("suresh");
         user.setEmailAddress("suresh@ga.com");
-        user.setPassWord(passwordEncoder.encode("suresh123"));
+        user.setPassword(passwordEncoder.encode("suresh123"));
         UserProfile userProfile = new UserProfile();
         userProfile.setUser(user);
         user.setUserProfile(userProfile);
@@ -48,7 +48,7 @@ public class SeedData implements CommandLineRunner {
         Genre rockGenre = new Genre();
         rockGenre.setName("Rock");
         rockGenre.setDescription("A genre of popular music characterized by a strong rhythm and typically played with electric guitars, bass, and drums.");
-//        rockGenre.setUser(user);
+
         genreRepository.save(rockGenre);
 
         //First Song
