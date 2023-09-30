@@ -65,4 +65,13 @@ public class PlaylistController {
         response.put("message", "Successfully deleted playlist named " + deletedPlayList.getName());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/{playlistId}/songs")
+    public ResponseEntity<?> getPlaylistSongs(@PathVariable(name = "playlistId") Long playlistId){
+        response.clear();
+
+        response.put("data", playlistService.getAllSongsInPlaylist(playlistId));
+        response.put("message", "Success");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

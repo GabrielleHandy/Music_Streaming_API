@@ -168,12 +168,18 @@ public class PlaylistControllerTestDefs {
 
     }
 //Scenario: User able to add and remove song from a playlist
+    @Given("A list of songs are available in a playlist")
+    public void aListOfSongsAreAvailableInAPlaylist() {
+        createRequest();
+        response = request.get(BASE_URL+ port +"/api/playlists/1/songs");
+        List<Song> songs = response.jsonPath().get("data");
+        message = response.jsonPath().get("message");
+        Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+        Assert.assertEquals("Success", message);
+        Assert.assertFalse(songs.isEmpty());
 
-//
-//    @Given("A list of songs are available in a playlist")
-//    public void aListOfSongsAreAvailableInAPlaylist() {
-//    }
-//
+    }
+
 //    @When("I add a song to the playlist")
 //    public void iAddASongToThePlaylist() {
 //    }
@@ -189,6 +195,5 @@ public class PlaylistControllerTestDefs {
 //    @Then("The song is removed")
 //    public void theSongIsRemoved() {
 //    }
-//
 
 }
