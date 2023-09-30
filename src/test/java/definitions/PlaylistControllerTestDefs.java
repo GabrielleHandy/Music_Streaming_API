@@ -3,6 +3,7 @@ package definitions;
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.Playlist;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
@@ -32,7 +33,7 @@ public class PlaylistControllerTestDefs {
 
 
     private String token;
-
+    private String message;
 
     @LocalServerPort
     private String port;
@@ -78,7 +79,7 @@ public class PlaylistControllerTestDefs {
             response = request.get(BASE_URL+ port +"/api/playlists/");
 
             List<Playlist> playlists = response.jsonPath().get("data");
-            String message = response.jsonPath().get("message");
+            message = response.jsonPath().get("message");
             Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
             Assert.assertEquals("Success", message);
             Assert.assertFalse(playlists.isEmpty());
@@ -105,10 +106,13 @@ public class PlaylistControllerTestDefs {
             logger.info("Json issue " + e.getMessage());
         }
     }
-//
-//    @Then("The playlist is created")
-//    public void thePlaylistIsCreated() {
-//    }
+
+    @Then("The playlist is created")
+    public void thePlaylistIsCreated() {
+        message = response.jsonPath().get("message");
+        Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
+        Assert.assertEquals("Successfully created playlist named Party Mix", message);
+    }
 //
 //    @When("I remove playlist from my list of playlists")
 //    public void iRemovePlaylistFromMyListOfPlaylists() {

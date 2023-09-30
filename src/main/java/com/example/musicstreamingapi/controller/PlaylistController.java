@@ -39,9 +39,9 @@ public class PlaylistController {
 
     @PostMapping("/")
     public ResponseEntity<?> createPlaylist(@RequestBody Playlist playlist){
-        Playlist playList = playlistService.createPlaylist(playlist);
-        response.put("data", playlist );
-        response.put("message", "Success");
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Playlist createdPlayList = playlistService.createPlaylist(playlist);
+        response.put("data", createdPlayList);
+        response.put("message", "Successfully created playlist named " + createdPlayList.getName());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
