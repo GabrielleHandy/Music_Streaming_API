@@ -32,7 +32,8 @@ public class UserProfile {
     private String profileBio;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "userProfile")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne
     private User user;
 
     @OneToMany(mappedBy = "userProfile", orphanRemoval = true)

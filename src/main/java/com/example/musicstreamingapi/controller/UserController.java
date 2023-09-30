@@ -1,6 +1,8 @@
 package com.example.musicstreamingapi.controller;
 
 import com.example.musicstreamingapi.model.User;
+import com.example.musicstreamingapi.model.request.LoginRequest;
+import com.example.musicstreamingapi.model.response.LoginResponse;
 import com.example.musicstreamingapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register/")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
         response.put("message","success");
@@ -42,5 +44,14 @@ public class UserController {
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
+
+    @PostMapping("/login/")
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest){
+        Optional<String> jwtToken = userService.loginUser(loginRequest);
+        if (jwtToken.isPresent()){
+            return ResponseEntity.ok(new LoginResponse(jwtToken.get()));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Authentication failed"));
+    }
 
 }
