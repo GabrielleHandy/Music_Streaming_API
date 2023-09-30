@@ -1,10 +1,7 @@
 package com.example.musicstreamingapi.seed;
 
 import com.example.musicstreamingapi.model.*;
-import com.example.musicstreamingapi.repository.GenreRepository;
-import com.example.musicstreamingapi.repository.PlaylistRepository;
-import com.example.musicstreamingapi.repository.SongRepository;
-import com.example.musicstreamingapi.repository.UserRepository;
+import com.example.musicstreamingapi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Lazy;
@@ -23,13 +20,16 @@ public class SeedData implements CommandLineRunner {
     private final SongRepository songRepository;
 
     private final PlaylistRepository playlistRepository;
+
+    private final UserProfileRepository userProfileRepository;
     @Autowired
-    public SeedData(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, GenreRepository genreRepository, SongRepository songRepository, PlaylistRepository playlistRepository) {
+    public SeedData(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, GenreRepository genreRepository, SongRepository songRepository, PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.genreRepository = genreRepository;
         this.songRepository = songRepository;
         this.playlistRepository = playlistRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     @Override

@@ -33,8 +33,8 @@ public class User {
 
 
     // Define a one-to-one relationship with UserProfile and specify the foreign key.
-    @OneToOne
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserProfile userProfile;
 
     public User() {

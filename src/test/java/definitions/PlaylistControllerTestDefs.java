@@ -22,14 +22,20 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class PlaylistControllerTestDefs {
+
+    private static Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
     private static final String BASE_URL = "http://localhost:";
 
     private Response response;
 
+
+    private String token;
 
 
     @LocalServerPort
@@ -54,25 +60,32 @@ public class PlaylistControllerTestDefs {
         // Create a JSON request body with user email and password
         JSONObject requestBody = new JSONObject();
         requestBody.put("email", "suresh@ga.com");
-        requestBody.put("password", "password");
+        requestBody.put("passWord", "suresh123");
+
 
         // Send a POST request to the authentication endpoint
         Response response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/auth/users/login");
-
+        logger.log(Level.SEVERE, response.toString());
         // Extract and return the JWT key from the authentication response
         return response.jsonPath().getString("jwt");
     }
 
     @Given("A list of playlists are available")
     public void aListOfPlaylistsAreAvailable() {
-        try {
-            ResponseEntity<String> response = new RestTemplate().exchange(BASE_URL + port + "/api/playlists/", HttpMethod.GET, null, String.class);
+        try{
+            token = getJWTKey();
+
+            RestAssured.baseURI = BASE_URL;
+            RequestSpecification request = RestAssured.given();
+            request.header("Content-Type", "application/json");
+            request.header("Authorization", "Bearer " + token);
+            response = request.get(BASE_URL+ port +"/api/categories/");
+
             List<Map<String, String>> playlists = JsonPath.from(String.valueOf(response.getBody())).get("data");
-            Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+            Assert.assertEquals(response.getStatusCode(), HttpStatus.OK.value());
             Assert.assertFalse(playlists.isEmpty());
-        } catch (HttpClientErrorException e) {
-            e.printStackTrace();
-        }
+
+        }catch(JSONException e){e.printStackTrace();};
 
     }
 

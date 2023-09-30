@@ -42,11 +42,7 @@ public class Playlist {
      * The set of songs contained in the playlist.
      */
     //Many to Many Logic provided by Suresh Sigera and Bezdoker.com https://www.bezkoder.com/jpa-many-to-many/
-    @ManyToMany(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany
     @JoinTable(name = "playlist_songs",
             joinColumns = { @JoinColumn(name = "playlist_id") },
             inverseJoinColumns = { @JoinColumn(name = "song_id") })
