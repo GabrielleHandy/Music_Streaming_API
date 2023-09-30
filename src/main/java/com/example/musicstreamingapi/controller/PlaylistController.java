@@ -46,6 +46,16 @@ public class PlaylistController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{playlistId}/")
+    public ResponseEntity<?> updatePlaylist(@PathVariable(name = "playlistId") Long playlistId, @RequestBody Playlist playlist){
+        response.clear();
+        Playlist updatedPlayList = playlistService.updatePlaylist(playlistId, playlist);
+
+        response.put("data", updatedPlayList);
+        response.put("message", "Successfully updated playlist");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{playlistId}/")
     public ResponseEntity<?> deletePlaylist(@PathVariable(name = "playlistId") Long playlistId){
         response.clear();
