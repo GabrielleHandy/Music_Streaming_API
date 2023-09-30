@@ -158,5 +158,22 @@ public class PlaylistService {
         }
         throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
+
+    public Playlist removeSongFromPlaylist(Long playlistId, Long songId) {
+        Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
+
+        if(optionalPlaylist.isPresent()) {
+            Optional<Song> optionalSong = songRepository.findById(songId);
+            if(optionalSong.isPresent()){
+                Playlist playlist =optionalPlaylist.get();
+                playlist.removeSong(optionalSong.get());
+
+                return playlistRepository.save(playlist);
+            }
+            throw new InformationNotFoundException("Song with id " + songId + " not found");
+        }
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
+    }
+
 }
 

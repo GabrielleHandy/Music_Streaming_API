@@ -196,13 +196,13 @@ public class PlaylistControllerTestDefs {
         Assert.assertEquals("Song successfully added", message);
         Assert.assertEquals(1, playlist.getSongs().stream().filter(song -> song.getId() == 1).count());
     }
-//
-//    @When("I remove a song from playlist")
-//    public void iRemoveASongFromPlaylist() {
-//    }
-//
-//    @Then("The song is removed")
-//    public void theSongIsRemoved() {
-//    }
+
+    @When("I remove a song from playlist")
+    public void iRemoveASongFromPlaylist() {
+    }
+
+    @Then("The song is removed")
+    public void theSongIsRemoved() {
+    }
 
 }

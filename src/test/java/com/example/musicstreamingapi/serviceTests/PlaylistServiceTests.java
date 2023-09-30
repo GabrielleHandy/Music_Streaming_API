@@ -146,7 +146,7 @@ public class PlaylistServiceTests {
     }
 
     @Test
-    @DisplayName("Returns a Song when AddSongToPlaylist is called")
+    @DisplayName("Returns a updated playlist when AddSongToPlaylist is called")
     public void testAddSongToPlaylist(){
 
         when(playlistRepositoryMock.findByIdAndUserProfile(Mockito.anyLong(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
@@ -158,5 +158,24 @@ public class PlaylistServiceTests {
         Assert.assertTrue(result.getSongs().contains(testSong));
     }
 
+    @Test
+    @DisplayName("Returns updated playlist when removeSongFromPlaylist is called")
+    public void testRemoveSongFromPlaylist(){
+        testPlaylist1.addSong(testSong);
+        Assert.assertFalse(testPlaylist1.getSongs().isEmpty());
+
+        when(playlistRepositoryMock.findByIdAndUserProfile(Mockito.anyLong(), Mockito.any(UserProfile.class))).thenReturn(testPlaylist1);
+        when(songRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testSong));
+
+        boolean removed = testPlaylist1.removeSong(testSong);
+        Assert.assertTrue(removed);
+
+        when(playlistRepositoryMock.save(Mockito.any(Playlist.class))).thenReturn(testPlaylist1);
+
+
+        Playlist result= playlistService.removeSongFromPlaylist(1L, 1L);
+        Assert.assertEquals(testPlaylist1, result);
+        Assert.assertTrue(testPlaylist1.getSongs().isEmpty());
+    }
 
 }
