@@ -87,4 +87,13 @@ public class SongControllerTestDefs {
     @Then("The creation of a new song is not allowed")
     public void theCreationOfANewSongIsNotAllowed() {
     }
+
+    @When("I, as a user, attempt to remove a song")
+    public void iAsAUserAttemptToRemoveASong() {
+        
+    }
+
+    @Then("The removal of a song is not allowed")
+    public void theRemovalOfASongIsNotAllowed() {
+    }
 }
