@@ -39,9 +39,20 @@ public class PlaylistController {
 
     @PostMapping("/")
     public ResponseEntity<?> createPlaylist(@RequestBody Playlist playlist){
+        response.clear();
         Playlist createdPlayList = playlistService.createPlaylist(playlist);
         response.put("data", createdPlayList);
         response.put("message", "Successfully created playlist named " + createdPlayList.getName());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{playlistId}/")
+    public ResponseEntity<?> deletePlaylist(@PathVariable(name = "playlistId") Long playlistId){
+        response.clear();
+        Playlist deletedPlayList = playlistService.deletePlaylist(playlistId);
+
+        response.put("data", deletedPlayList);
+        response.put("message", "Successfully deleted playlist named " + deletedPlayList.getName());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

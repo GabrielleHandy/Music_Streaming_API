@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -67,15 +68,30 @@ public class PlaylistControllerTestDefs {
         return response.jsonPath().getString("jwt");
     }
 
-    @Given("A list of playlists are available")
-    public void aListOfPlaylistsAreAvailable() {
+    public RequestSpecification createRequest(){
         try{
-            token = getJWTKey(port);
+            if(token == null){
+
+                token = getJWTKey(port);
+            }
+
 
             RestAssured.baseURI = BASE_URL;
             RequestSpecification request = RestAssured.given();
             request.header("Content-Type", "application/json");
             request.header("Authorization", "Bearer " + token);
+            return request;
+
+        }catch(JSONException e){
+            logger.info("Json issue " + e.getMessage());
+            return null;
+        }
+
+    }
+
+    @Given("A list of playlists are available")
+    public void aListOfPlaylistsAreAvailable() {
+            RequestSpecification request = createRequest();
             response = request.get(BASE_URL+ port +"/api/playlists/");
 
             List<Playlist> playlists = response.jsonPath().get("data");
@@ -84,20 +100,15 @@ public class PlaylistControllerTestDefs {
             Assert.assertEquals("Success", message);
             Assert.assertFalse(playlists.isEmpty());
 
-        }catch(JSONException e){logger.info("Json issue " + e.getMessage());;};
+        }
 
-    }
+
 
     @When("I create a playlist")
     public void iCreateAPlaylist() {
 
         try {
-            token = getJWTKey(port);
-
-            RestAssured.baseURI = BASE_URL;
-            RequestSpecification request = RestAssured.given();
-            request.header("Content-Type", "application/json");
-            request.header("Authorization", "Bearer " + token);
+            RequestSpecification request = createRequest();
             JSONObject requestBody = new JSONObject();
             requestBody.put("name", "Party Mix");
 
@@ -113,16 +124,30 @@ public class PlaylistControllerTestDefs {
         Assert.assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
         Assert.assertEquals("Successfully created playlist named Party Mix", message);
     }
-//
-//    @When("I remove playlist from my list of playlists")
-//    public void iRemovePlaylistFromMyListOfPlaylists() {
-//    }
+
+    @When("I remove playlist from my list of playlists")
+    public void iRemovePlaylistFromMyListOfPlaylists() {
+        Playlist deletePlaylist = response.jsonPath().getObject("data", Playlist.class);
+        logger.info(deletePlaylist.toString());
+        RequestSpecification request = createRequest();
+        response = request.delete(BASE_URL + port + MessageFormat.format("/api/playlists/{0}/", deletePlaylist.getId()));
+
+    }
+
+    @Then("The playlist is removed")
+    public void thePlaylistIsRemoved() {
+        message = response.jsonPath().get("message");
+        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        Assert.assertEquals("Successfully deleted playlist named Party Mix", message);
+    }
+
+
 //
 //    @When("I update a playlist")
 //    public void iUpdateAPlaylist() {
 //    }
 //
-//    @Then("The playlist is updated")
+//    @Then("The playlist is updated")+-
 //    public void thePlaylistIsUpdated() {
 //    }
 //

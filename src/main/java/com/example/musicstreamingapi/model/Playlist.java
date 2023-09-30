@@ -1,5 +1,8 @@
 package com.example.musicstreamingapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -46,6 +49,7 @@ public class Playlist {
     @JoinTable(name = "playlist_songs",
             joinColumns = { @JoinColumn(name = "playlist_id") },
             inverseJoinColumns = { @JoinColumn(name = "song_id") })
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Song> songs = new HashSet<>();
     /**
      * Default constructor for the Playlist class.
