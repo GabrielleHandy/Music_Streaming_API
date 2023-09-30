@@ -48,9 +48,9 @@ public class PlaylistServiceTests {
     private final UserProfile testUserProfile = new UserProfile(1L, "TestUser", "Test", "TestBio", null);
     private final User testUser = new User(1L, "TestUser", "test@test.com", "1234", testUserProfile);
 
-    private final Playlist testPlaylist1 = new Playlist(1L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
-    private final Playlist testPlaylist2 = new Playlist(2L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
-    private final Playlist testPlaylist3 = new Playlist(3L, "Test Playlist", LocalDate.now(), testUserProfile, new HashSet<>());
+    private final Playlist testPlaylist1 = new Playlist(1L, "Test Playlist",testUserProfile, new HashSet<>());
+    private final Playlist testPlaylist2 = new Playlist(2L, "Test Playlist", testUserProfile, new HashSet<>());
+    private final Playlist testPlaylist3 = new Playlist(3L, "Test Playlist", testUserProfile, new HashSet<>());
     private final List<Playlist> testListPlaylist = new ArrayList<>(Arrays.asList(testPlaylist1, testPlaylist2, testPlaylist3));
 
 

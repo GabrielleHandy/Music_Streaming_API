@@ -3,6 +3,7 @@ package definitions;
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.Playlist;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -77,16 +78,33 @@ public class PlaylistControllerTestDefs {
             response = request.get(BASE_URL+ port +"/api/playlists/");
 
             List<Playlist> playlists = response.jsonPath().get("data");
-            Assert.assertEquals(response.getStatusCode(), HttpStatus.OK.value());
+            String message = response.jsonPath().get("message");
+            Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+            Assert.assertEquals("Success", message);
             Assert.assertFalse(playlists.isEmpty());
 
-        }catch(JSONException e){e.printStackTrace();};
+        }catch(JSONException e){logger.info("Json issue " + e.getMessage());;};
 
     }
 
-//    @When("I create a playlist")
-//    public void iCreateAPlaylist() {
-//    }
+    @When("I create a playlist")
+    public void iCreateAPlaylist() {
+
+        try {
+            token = getJWTKey(port);
+
+            RestAssured.baseURI = BASE_URL;
+            RequestSpecification request = RestAssured.given();
+            request.header("Content-Type", "application/json");
+            request.header("Authorization", "Bearer " + token);
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("name", "Party Mix");
+
+            response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/playlists/");
+        }catch(JSONException e){
+            logger.info("Json issue " + e.getMessage());
+        }
+    }
 //
 //    @Then("The playlist is created")
 //    public void thePlaylistIsCreated() {

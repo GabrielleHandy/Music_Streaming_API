@@ -10,9 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +33,14 @@ public class PlaylistController {
     public ResponseEntity<?> getAllPlaylists(){
         List<Playlist> playListList = playlistService.getAllPlaylists();
         response.put("data", playListList );
+        response.put("message", "Success");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createPlaylist(@RequestBody Playlist playlist){
+        Playlist playList = playlistService.createPlaylist(playlist);
+        response.put("data", playlist );
         response.put("message", "Success");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

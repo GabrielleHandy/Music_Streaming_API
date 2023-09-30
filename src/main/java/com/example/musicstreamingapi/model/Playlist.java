@@ -30,7 +30,7 @@ public class Playlist {
      * The date when the playlist was created. It is set to the current date by default.
      */
     @Column
-    private LocalDate dateCreated = LocalDate.now();
+    private LocalDate dateCreated;
     /**
      * The user profile associated with this playlist.
      */
@@ -51,6 +51,7 @@ public class Playlist {
      * Default constructor for the Playlist class.
      */
     public Playlist() {
+        this.dateCreated  = LocalDate.now();
     }
 
     /**
@@ -58,15 +59,14 @@ public class Playlist {
      *
      * @param id           The unique identifier for the playlist.
      * @param name         The name of the playlist.
-     * @param dateCreated  The date when the playlist was created.
      * @param userProfile  The user profile associated with this playlist.
      * @param songs        The set of songs contained in the playlist.
      */
 
-    public Playlist(Long id, String name, LocalDate dateCreated, UserProfile userProfile, Set<Song> songs) {
+    public Playlist(Long id, String name,UserProfile userProfile, Set<Song> songs) {
         this.id = id;
         this.name = name;
-        this.dateCreated = dateCreated;
+        this.dateCreated  = LocalDate.now();
         this.userProfile = userProfile;
         this.songs = songs;
     }
