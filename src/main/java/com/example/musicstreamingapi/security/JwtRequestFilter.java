@@ -36,8 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
-        // Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXJlc2gyQGdhLmNvbSIsImlhdCI6MTY5NDgwMDAzNiwiZXhwIjoxNjk0ODg2NDM2fQ.z3smvkvDJqOYz7699UjvH5JQ51MuWL-KXffegc1UxWU
-        if (StringUtils.hasLength("headerAuth") && headerAuth.startsWith("Bearer")) {
+        if (StringUtils.hasLength(headerAuth) && headerAuth.startsWith("Bearer")) {
             return headerAuth.substring(7);
         }
         return null;

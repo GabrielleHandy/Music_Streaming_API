@@ -98,7 +98,7 @@ public class UserServiceTest {
         verify(userRepository, times(1)).save(currentUser);
         assertNotNull(result);
         assertEquals("Gabrielle H", result.getName());
-        assertEquals("newpassword", result.getPassWord());
+        assertEquals("newpassword", result.getPassword());
     }
     /**
      * This test method verifies the functionality of the deleteUser method
