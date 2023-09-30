@@ -83,5 +83,9 @@ public class UserControllerTests {
         verify(userService, times(1)).createUser(any(User.class));
     }
 
+    @Test
+    public void testUpdateUser() throws Exception{
+
+    }
 
     }
