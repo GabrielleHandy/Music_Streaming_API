@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -171,7 +172,7 @@ public class PlaylistControllerTestDefs {
     @Given("A list of songs are available in a playlist")
     public void aListOfSongsAreAvailableInAPlaylist() {
         createRequest();
-        response = request.get(BASE_URL+ port +"/api/playlists/1/songs");
+        response = request.get(BASE_URL+ port +"/api/playlists/1/songs/");
         List<Song> songs = response.jsonPath().get("data");
         message = response.jsonPath().get("message");
         Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
@@ -180,13 +181,21 @@ public class PlaylistControllerTestDefs {
 
     }
 
-//    @When("I add a song to the playlist")
-//    public void iAddASongToThePlaylist() {
-//    }
-//
-//    @Then("The song is added to playlist")
-//    public void theSongIsAddedToPlaylist() {
-//    }
+    @When("I add a song to the playlist")
+    public void iAddASongToThePlaylist() {
+        createRequest();
+        response = request.post(BASE_URL + port + "/api/playlists/1/songs/1/");
+    }
+
+    @Then("The song is added to playlist")
+    public void theSongIsAddedToPlaylist() {
+        message = response.jsonPath().get("message");
+
+        Playlist playlist = response.jsonPath().getObject("data", Playlist.class);
+        Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+        Assert.assertEquals("Song successfully added", message);
+        Assert.assertEquals(1, playlist.getSongs().stream().filter(song -> song.getId() == 1).count());
+    }
 //
 //    @When("I remove a song from playlist")
 //    public void iRemoveASongFromPlaylist() {

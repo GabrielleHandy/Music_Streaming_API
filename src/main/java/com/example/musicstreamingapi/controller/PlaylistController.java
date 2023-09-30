@@ -66,12 +66,20 @@ public class PlaylistController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{playlistId}/songs")
+    @GetMapping("/{playlistId}/songs/")
     public ResponseEntity<?> getPlaylistSongs(@PathVariable(name = "playlistId") Long playlistId){
         response.clear();
 
         response.put("data", playlistService.getAllSongsInPlaylist(playlistId));
         response.put("message", "Success");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @PostMapping("/{playlistId}/songs/{songId}/")
+    public ResponseEntity<?> getPlaylistSongs(@PathVariable(name = "playlistId") Long playlistId, @PathVariable(name = "songId") Long songId){
+        response.clear();
+        Playlist updatedPlaylist = playlistService.addSongToPlaylist(playlistId,songId);
+        response.put("data", updatedPlaylist);
+        response.put("message", "Song successfully added");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
