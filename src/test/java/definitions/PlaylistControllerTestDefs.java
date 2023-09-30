@@ -2,6 +2,7 @@ package definitions;
 
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.Song;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -89,6 +90,8 @@ public class PlaylistControllerTestDefs {
 
     }
 
+    //Scenario: User able to add and remove a playlist
+
     @Given("A list of playlists are available")
     public void aListOfPlaylistsAreAvailable() {
             createRequest();
@@ -164,6 +167,8 @@ public class PlaylistControllerTestDefs {
         Assert.assertEquals("Successfully updated playlist", message);
 
     }
+//Scenario: User able to add and remove song from a playlist
+
 //
 //    @Given("A list of songs are available in a playlist")
 //    public void aListOfSongsAreAvailableInAPlaylist() {
@@ -185,11 +190,5 @@ public class PlaylistControllerTestDefs {
 //    public void theSongIsRemoved() {
 //    }
 //
-//    @When("I update a playlist name")
-//    public void iUpdateAPlaylistName() {
-//    }
-//
-//    @Then("The playlist name is updated")
-//    public void thePlaylistNameIsUpdated() {
-//    }
+
 }

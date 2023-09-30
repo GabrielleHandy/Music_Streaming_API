@@ -1,6 +1,7 @@
 package com.example.musicstreamingapi.serviceTests;
 
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
@@ -52,6 +53,7 @@ public class PlaylistServiceTests {
     private final Playlist testPlaylist2 = new Playlist(2L, "Test Playlist", testUserProfile, new HashSet<>());
     private final Playlist testPlaylist3 = new Playlist(3L, "Test Playlist", testUserProfile, new HashSet<>());
     private final List<Playlist> testListPlaylist = new ArrayList<>(Arrays.asList(testPlaylist1, testPlaylist2, testPlaylist3));
+    private final Song testSong = new Song(1L,"Bohemian Rhapsody", null);
 
 
     @Test
@@ -129,5 +131,16 @@ public class PlaylistServiceTests {
         Playlist result = playlistService.updatePlaylist(1L, testPlaylist2);
         Assert.assertSame(testPlaylist2, result);
     }
+
+    @Test
+    @DisplayName("Returns a list of songs when getAllSongsInPlaylist is called")
+    public void testGetAllSongsInPlaylist(){
+        testPlaylist1.addSong(testSong);
+        when(playlistRepositoryMock.findById(Mockito.anyLong())).thenReturn(Optional.of(testPlaylist1));
+
+        List<Song> result= playlistService.getAllSongsInPlaylist(1L);
+        Assert.assertSame(testSong, result.get(0));
+    }
+
 
 }

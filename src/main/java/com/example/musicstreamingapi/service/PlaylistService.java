@@ -3,6 +3,7 @@ package com.example.musicstreamingapi.service;
 import com.example.musicstreamingapi.exception.InformationExistException;
 import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
@@ -11,6 +12,8 @@ import com.example.musicstreamingapi.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +128,16 @@ public class PlaylistService {
 
         }
         throw new InformationExistException("You don't have a playlist with Id " + playlistId);
+    }
+
+    /**
+     * Retrieves a list of all songs in a playlist.
+     *
+     * @return A list of all songs in a playlist.
+     */
+    public List<Song> getAllSongsInPlaylist(Long playlistId) {
+        Playlist playlist = getPlaylistById(playlistId);
+        return new ArrayList<>(playlist.getSongs());
     }
 }
 
