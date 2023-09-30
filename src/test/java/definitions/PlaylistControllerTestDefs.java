@@ -1,9 +1,8 @@
 package definitions;
 
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
+import com.example.musicstreamingapi.model.Playlist;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -14,11 +13,7 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -29,17 +24,17 @@ import java.util.logging.Logger;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class PlaylistControllerTestDefs {
 
-    private static Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
+    private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
     private static final String BASE_URL = "http://localhost:";
 
-    private Response response;
+    private static Response response;
 
 
     private String token;
 
 
     @LocalServerPort
-    private static String port;
+    private String port;
     /**
      * Retrieves a JWT (JSON Web Token) key by sending a POST request to the authentication endpoint.
      * This method sets up the necessary HTTP request with user credentials and sends it to the
@@ -49,8 +44,9 @@ public class PlaylistControllerTestDefs {
      * @throws JSONException If there is an issue with JSON processing.
      */
 
-    public static String getJWTKey() throws JSONException {
+    public static String getJWTKey(String port) throws JSONException {
         // Set the base URI and create a request
+
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
 
@@ -59,13 +55,12 @@ public class PlaylistControllerTestDefs {
 
         // Create a JSON request body with user email and password
         JSONObject requestBody = new JSONObject();
-        requestBody.put("email", "suresh@ga.com");
+        requestBody.put("emailAddress", "suresh@ga.com");
         requestBody.put("password", "suresh123");
 
-
         // Send a POST request to the authentication endpoint
-        Response response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/auth/users/login");
-        logger.log(Level.SEVERE, response.toString());
+        response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/login/");
+
         // Extract and return the JWT key from the authentication response
         return response.jsonPath().getString("jwt");
     }
@@ -73,15 +68,15 @@ public class PlaylistControllerTestDefs {
     @Given("A list of playlists are available")
     public void aListOfPlaylistsAreAvailable() {
         try{
-            token = getJWTKey();
+            token = getJWTKey(port);
 
             RestAssured.baseURI = BASE_URL;
             RequestSpecification request = RestAssured.given();
             request.header("Content-Type", "application/json");
             request.header("Authorization", "Bearer " + token);
-            response = request.get(BASE_URL+ port +"/api/categories/");
+            response = request.get(BASE_URL+ port +"/api/playlists/");
 
-            List<Map<String, String>> playlists = JsonPath.from(String.valueOf(response.getBody())).get("data");
+            List<Playlist> playlists = response.jsonPath().get("data");
             Assert.assertEquals(response.getStatusCode(), HttpStatus.OK.value());
             Assert.assertFalse(playlists.isEmpty());
 

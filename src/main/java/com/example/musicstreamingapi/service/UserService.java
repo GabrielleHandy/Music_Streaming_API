@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,15 +18,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final JWTUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+
+    private final PasswordEncoder passwordEncoder;
     /**
      * Constructs a new instance of the UserService class with the provided
      * UserRepository dependency. This constructor is used to initialize the
      * service with the necessary repository for performing user-related operations.
      */
-    public UserService(UserRepository userRepository, JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
     /**
      * Retrieves a user by their unique identifier from the UserRepository.
@@ -42,6 +46,7 @@ public class UserService {
      */
     public User createUser(User user) {
         // You can add validation logic here if needed
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
