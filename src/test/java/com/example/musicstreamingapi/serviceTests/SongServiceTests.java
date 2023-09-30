@@ -1,8 +1,9 @@
-package com.example.musicstreamingapi.service;
+package com.example.musicstreamingapi.serviceTests;
 
 import com.example.musicstreamingapi.model.Genre;
 import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.repository.SongRepository;
+import com.example.musicstreamingapi.service.SongService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -116,6 +116,18 @@ public class Playlist {
     public void setId(Long id) {
         this.id = id;
     }
+    public void addSong(Song song) {
+        this.songs.add(song);
+        song.getPlaylists().add(this);
+    }
+
+    public void removeSong(long songId) {
+        Song songRemove = this.songs.stream().filter(song -> song.getId() == songId).findFirst().orElse(null);
+        if (songRemove != null) {
+            this.songs.remove(songRemove);
+            songRemove.getPlaylists().remove(this);
+        }
+    }
     /**
      * Overrides the toString method to provide a string representation of the Playlist object.
      *
