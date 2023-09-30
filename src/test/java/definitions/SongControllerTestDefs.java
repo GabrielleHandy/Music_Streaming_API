@@ -80,4 +80,11 @@ public class SongControllerTestDefs {
     }
 
 
+    @When("I, as a user, attempt to create a new song")
+    public void iAsAUserAttemptToCreateANewSong() {
+    }
+
+    @Then("The creation of a new song is not allowed")
+    public void theCreationOfANewSongIsNotAllowed() {
+    }
 }
