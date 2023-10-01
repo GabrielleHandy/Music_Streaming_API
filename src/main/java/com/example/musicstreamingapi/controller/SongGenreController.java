@@ -15,18 +15,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller class for managing song-related operations.
+ */
+
 @RestController
 @RequestMapping("/api/songs")
 public class SongGenreController {
 
     private final SongService songService;
 
+    /**
+     * Constructor for SongGenreController.
+     *
+     * @param songService The service responsible for handling song-related operations.
+     */
+
     @Autowired
     public SongGenreController(SongService songService) {
         this.songService = songService;
     }
 
-    // Get all songs
+    /**
+     * Retrieves all songs.
+     *
+     * @return ResponseEntity containing a list of songs or a message indicating no songs are found.
+     */
+
     @GetMapping//"/api/songs"
     public ResponseEntity<?> getAllSongs() {
         List<Song> songsList = songService.getAllSongs();
@@ -42,7 +57,13 @@ public class SongGenreController {
         }
     }
 
-    // Get songs by genre ID
+    /**
+     * Retrieves songs by genre ID.
+     *
+     * @param genreId The ID of the genre for which songs are retrieved.
+     * @return ResponseEntity containing a list of songs for the given genre ID or a message indicating no songs are found.
+     */
+
     @GetMapping("/Genre/{genreId}")
     public ResponseEntity<?> getSongsByGenre(@PathVariable Long genreId) {
         List<Song> songsList = songService.getAllSongsByGenreId(genreId);
@@ -57,8 +78,13 @@ public class SongGenreController {
         }
     }
 
+    /**
+     * Retrieves a song by its ID.
+     *
+     * @param songId The ID of the song to be retrieved.
+     * @return ResponseEntity containing the requested song or a message indicating no song is found.
+     */
 
-    // Get a song by ID
     @GetMapping("/{songId}")
     public ResponseEntity<?> getSongById(@PathVariable Long songId) {
         Optional<Song> optionalSong = songService.getSongById(songId);
