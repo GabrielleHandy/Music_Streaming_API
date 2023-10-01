@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -166,6 +167,7 @@ public class PlaylistService {
      * @param songId     The ID of the song to be added.
      * @return The updated playlist after adding the song.
      * @throws InformationNotFoundException if the playlist or song is not found.
+     * @throws InformationExistException if song is already in playlist
      */
     public Playlist addSongToPlaylist(Long playlistId, Long songId) {
         Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
@@ -174,9 +176,11 @@ public class PlaylistService {
             Optional<Song> optionalSong = songRepository.findById(songId);
             if(optionalSong.isPresent()){
                 Playlist playlist =optionalPlaylist.get();
-                playlist.addSong(optionalSong.get());
-
-                return playlistRepository.save(playlist);
+                if(playlist.getSongs().stream().noneMatch(song -> Objects.equals(song.getId(), songId))){
+                    playlist.addSong(optionalSong.get());
+                    return playlistRepository.save(playlist);
+                }
+                throw new InformationExistException("Song with id " + songId + " already in playlist");
             }
             throw new InformationNotFoundException("Song with id " + songId + " not found");
         }
