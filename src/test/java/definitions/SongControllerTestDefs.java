@@ -78,27 +78,35 @@ public class SongControllerTestDefs {
         // Extract and return the JWT key from the authentication response
         return response.jsonPath().getString("jwt");
     }
+    private void assertMethodNotAllowed() {
 
+        Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
+
+    }
     @When("I, as a user, attempt to create a new song")
     public void iAsAUserAttemptToCreateANewSong() {
+        assertMethodNotAllowed();
     }
 
     @Then("The creation of a new song is not allowed")
     public void theCreationOfANewSongIsNotAllowed() {
+
     }
 
     @When("I, as a user, attempt to remove a song")
     public void iAsAUserAttemptToRemoveASong() {
+        assertMethodNotAllowed();
         
     }
 
     @Then("The removal of a song is not allowed")
     public void theRemovalOfASongIsNotAllowed() {
+
     }
 
     @When("I, as a user, attempt to update a song")
     public void iAsAUserAttemptToUpdateASong() {
-        
+        assertMethodNotAllowed();
     }
 
     @Then("The update of a song is not allowed")
