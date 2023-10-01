@@ -53,4 +53,7 @@ public class SongService {
     public List<Song> getAllSongsByGenreId(Long genreId) {
         return songRepository.findByGenreId(genreId);
     }
+    public Optional<Song> getSongById(Long songId) {
+        return songRepository.findById(songId);
+    }
 }

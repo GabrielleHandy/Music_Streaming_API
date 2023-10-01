@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/songs")
@@ -52,6 +53,25 @@ public class SongGenreController {
         } else {
             message.put("message", "Success");
             message.put("data", songsList);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+
+
+    // Get a song by ID
+    @GetMapping("/{songId}")
+    public ResponseEntity<?> getSongById(@PathVariable Long songId) {
+        Optional<Song> optionalSong = songService.getSongById(songId);
+        HashMap<String, Object> message = new HashMap<>();
+
+        Song song = optionalSong.orElse(null);
+
+        if (song == null) {
+            message.put("message", "No song found for the given ID.");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "Success");
+            message.put("data", song);
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
     }
