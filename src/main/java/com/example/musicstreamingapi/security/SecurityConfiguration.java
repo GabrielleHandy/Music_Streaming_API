@@ -26,7 +26,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/auth/users", "/auth/users/login/", "/auth/users/register/").permitAll()
+        http.authorizeRequests().antMatchers("/auth/users", "/auth/users/login/", "/auth/users/register/", "/v3/api-docs", "/swagger-ui/index.html").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
