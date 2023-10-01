@@ -117,11 +117,23 @@ public class Playlist {
     public void setId(Long id) {
         this.id = id;
     }
+
+    /**
+     * Add a song to the playlist.
+     *
+     * @param song The song to add.
+     */
     public void addSong(Song song) {
         this.songs.add(song);
         song.getPlaylists().add(this);
     }
 
+    /**
+     * Remove a song from the playlist.
+     *
+     * @param songToDelete The song to remove.
+     * @return `true` if the song was removed, `false` otherwise.
+     */
     public boolean removeSong(Song songToDelete) {
         boolean songInList = this.songs.stream().anyMatch(song -> Objects.equals(song.getId(), songToDelete.getId()));
         if (songInList) {

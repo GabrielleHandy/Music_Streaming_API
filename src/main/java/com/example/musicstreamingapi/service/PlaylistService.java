@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 /**
@@ -27,6 +28,11 @@ public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final UserProfileRepository userProfileRepository;
     private final SongRepository songRepository;
+
+    private Logger logger = Logger.getLogger(PlaylistService.class.getName());
+
+
+
     /**
      * Constructor for PlaylistService.
      *
@@ -102,6 +108,9 @@ public class PlaylistService {
     public Playlist createPlaylist(Playlist playlist) {
         Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByNameAndUserProfile(playlist.getName(),getCurrentLoggedInUser().getUserProfile()));
         if(optionalPlaylist.isEmpty()) {
+            if(playlist.getName()== null){
+                playlist.setName("Playlist " + (getCurrentLoggedInUser().getUserProfile().getPlaylists().size() + 1));
+            }
             playlist.setUserProfile(getCurrentLoggedInUser().getUserProfile());
             return playlistRepository.save(playlist);
         }
@@ -131,6 +140,7 @@ public class PlaylistService {
      * @return The updated playlist after the changes otherwise throws {@link InformationNotFoundException}
      */
     public Playlist updatePlaylist(Long playlistId, Playlist updatedPlaylist) {
+        logger.info(updatedPlaylist.getName());
         Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
         if(optionalPlaylist != null) {
             optionalPlaylist.setName(updatedPlaylist.getName());

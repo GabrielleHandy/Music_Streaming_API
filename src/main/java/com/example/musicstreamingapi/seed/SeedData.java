@@ -114,6 +114,7 @@ public class SeedData implements CommandLineRunner {
 
 
         Playlist playlist = new Playlist();
+        playlist.setName("FakePlaylist");
         playlist.setUserProfile(userProfile);
         playlist.addSong(countryRoads);
         playlistRepository.save(playlist);
