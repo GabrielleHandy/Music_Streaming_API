@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 @CucumberContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
-public class PlaylistControllerTestDefs {
+public class  PlaylistControllerTestDefs {
 
     private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
     private static final String BASE_URL = "http://localhost:";
