@@ -36,7 +36,7 @@ public class SongControllerTestDefs {
 
     private static final String BASE_URL = "http://localhost:";
 
-    // Logger initialization
+    // Logger initializatio
     private static final Logger log = getLogger(SongControllerTestDefs.class.getName());
 
     @LocalServerPort
@@ -44,6 +44,7 @@ public class SongControllerTestDefs {
 
     private static Response response;
     // Verify availability of songs in a genre
+
     @Given("A list of songs are available in genre")
     public void aListOfSongsAreAvailable() {
         log.info("Calling aListOfSongsAreAvailable");
@@ -85,40 +86,4 @@ public class SongControllerTestDefs {
         // Extract and return the JWT key from the authentication response
         return response.jsonPath().getString("jwt");
     }
-    private void assertMethodNotAllowed() {
-
-        Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
-
-    }
-    //assertMethodNotAllowed() (status code of 405) method is a reusable method to check if the HTTP response status code indicates that the action is not allowed.
-//    @When("I, as a user, attempt to create a new song")
-//    public void iAsAUserAttemptToCreateANewSong() {
-//        assertMethodNotAllowed();
-//    }
-//
-//    @Then("The creation of a new song is not allowed")
-//    public void theCreationOfANewSongIsNotAllowed() {
-//
-//    }
-//
-//    @When("I, as a user, attempt to remove a song")
-//    public void iAsAUserAttemptToRemoveASong() {
-//        assertMethodNotAllowed();
-//
-//    }
-//
-//    @Then("The removal of a song is not allowed")
-//    public void theRemovalOfASongIsNotAllowed() {
-//
-//    }
-//
-//    @When("I, as a user, attempt to update a song")
-//    public void iAsAUserAttemptToUpdateASong() {
-//        assertMethodNotAllowed();
-//    }
-//
-//    @Then("The update of a song is not allowed")
-//    public void theUpdateOfASongIsNotAllowed() {
-//    }
-
 }
