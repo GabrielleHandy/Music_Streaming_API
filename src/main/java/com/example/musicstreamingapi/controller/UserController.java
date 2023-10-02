@@ -159,6 +159,35 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @Operation(
+            summary = "Update a user profile",
+            description = "Update the users first and last name, and their bio"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User can edit profile",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class),
+                            examples = @ExampleObject(
+                                    name = "Example result",
+                                    value = "{\n" +
+                                            "    \"data\": {\n" +
+                                            "        \"id\": 2,\n" +
+                                            "        \"firstName\": \"Updated name\",\n" +
+                                            "        \"lastName\": \"hello\",\n" +
+                                            "        \"profileBio\": \"some bio\",\n" +
+                                            "        \"playlists\": []\n" +
+                                            "    },\n" +
+                                            "    \"message\": \"success\"\n" +
+                                            "}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User profile cannot be updated")})
 
     @PutMapping("/profile/{profileId}")
     public ResponseEntity<?> updateUserProfile(@PathVariable Long profileId, @RequestBody UserProfile userProfile){
