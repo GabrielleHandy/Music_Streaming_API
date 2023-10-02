@@ -69,12 +69,15 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
-//    @PutMapping("/{userId}")
-//    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
-//        User updated = userService.updateUser(userId, updatedUser);
-//        return ResponseEntity.ok(updated); // Return the updated user
-//    }
-
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        Optional<User> existingUser = userService.getUserById(userId);
+        if (existingUser.isPresent()) {
+            userService.deleteUser(userId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
