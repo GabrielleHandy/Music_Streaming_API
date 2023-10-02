@@ -111,5 +111,8 @@ public class UserControllerTestDefs {
 
     @Then("The user and user profile gets deleted")
     public void theUserAndUserProfileGetsDeleted() {
+        userService.deleteUser(userId);
+        Optional<User> deletedUser = userService.getUserById(userId);
+        Assert.assertFalse(deletedUser.isPresent());
     }
 }
