@@ -97,6 +97,10 @@ public class UserControllerTestDefs {
 
     @Then("The user profile is updated")
     public void theUserProfileIsUpdated() {
+        User updated = userService.updateUser(userId, updatedUser);
+        Assert.assertNotNull(updated);
+        Assert.assertEquals("Updated Name", updated.getName());
+        Assert.assertEquals("updated@example.com", updated.getEmailAddress());
         
     }
 
