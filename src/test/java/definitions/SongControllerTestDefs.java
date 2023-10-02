@@ -36,7 +36,7 @@ public class SongControllerTestDefs {
 
     private static final String BASE_URL = "http://localhost:";
 
-    // Logger initializatio
+    // Logger initialization
     private static final Logger log = getLogger(SongControllerTestDefs.class.getName());
 
     @LocalServerPort
@@ -65,6 +65,39 @@ public class SongControllerTestDefs {
         }
     }
 
+    @When("The user requests to get songs by genre ID")
+    public void theUserRequestsToGetSongsByGenreID() {
+        try {
+            RestAssured.baseURI = BASE_URL;
+            RequestSpecification request = RestAssured.given();
+            request.header("Authorization", "Bearer " + getJWTKey(port));
+            request.header("Content-Type", "application/json");
+
+            Long genreId = 1L; //testing
+
+            log.info("Requesting songs for Genre ID: " + genreId);
+
+            response = request.get(BASE_URL + port + "/api/songs/Genre/" + genreId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Then("The it should return a list of songs by genre ID")
+    public void theItShouldReturnAListOfSongsByGenreID() {
+        try {
+            Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+            List<Song> songs = response.jsonPath().getList("data", Song.class);
+            Assert.assertNotNull(songs);
+            Assert.assertTrue(songs.size() > 0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     // Method to retrieve JWT token for SongController tests
     public static String getJWTKey(String port) throws JSONException {
         // Set the base URI and create a request
@@ -85,5 +118,15 @@ public class SongControllerTestDefs {
 
         // Extract and return the JWT key from the authentication response
         return response.jsonPath().getString("jwt");
+    }
+
+    @When("The user requests to get a list of songs")
+    public void theUserRequestsToGetAListOfSongs() {
+
+    }
+
+    @Then("The system should respond with a list of songs")
+    public void theSystemShouldRespondWithAListOfSongs() {
+
     }
 }

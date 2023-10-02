@@ -5,7 +5,7 @@ Feature: Rest API functionalities
     When The user requests to get a list of songs
     Then The system should respond with a list of songs
     When The user requests to get songs by genre ID
-    Then The system should respond with a list of songs for the specified genre ID
+    Then The it should return a list of songs by genre ID
 
 
 
