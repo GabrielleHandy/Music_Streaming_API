@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.service;
 import com.example.musicstreamingapi.model.User;
+import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
 import com.example.musicstreamingapi.repository.UserRepository;
 import com.example.musicstreamingapi.security.JWTUtils;
@@ -47,7 +48,13 @@ public class UserService {
     public User createUser(User user) {
         // You can add validation logic here if needed
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        UserProfile userProfile = new UserProfile();
+        userProfile.setUser(user);
+        user.setUserProfile(userProfile);
+
         return userRepository.save(user);
+
+
     }
 
     /**

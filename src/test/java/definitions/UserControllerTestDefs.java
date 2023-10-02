@@ -53,5 +53,11 @@ public class UserControllerTestDefs {
 
     @Then("I get an account and user profile")
     public void iGetAnAccountAndUserProfile() {
+        assertNotNull(createdUser);
+        assertNotNull(createdUser.getUserProfile());
+
+
     }
+
+
 }
