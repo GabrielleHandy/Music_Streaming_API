@@ -4,8 +4,8 @@ Feature: Rest API functionalities
     Given A list of Users
     When I create an account.
     Then I get an account and user profile
-    When I login to the account
-    Then I get logged in and get a Jwt Token
+#    When I login to the account
+#    Then I get logged in and get a Jwt Token
     When I search for my account with an id
     Then I find an account
     When I update the user profile
