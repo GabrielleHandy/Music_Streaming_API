@@ -7,7 +7,10 @@ import com.example.musicstreamingapi.model.response.LoginResponse;
 import com.example.musicstreamingapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +32,21 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-// test complete
+        @Operation(
+            summary = "Get user by id",
+            description = "Retrieve a user"
+    )
+    @ApiResponse(
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = User.class),
+                    examples = @ExampleObject(
+                            name = "Example result",
+                            value = ""
+            )
 
-
+         )
+    )
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         Optional<User> user = userService.getUserById(userId);
@@ -41,7 +56,43 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+        @Operation(
+            summary = "Create a user",
+            description = "Create a new user."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Successfully created user",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "Result of example1",
+                                            value = "{\n" +
+                                                    "    \"data\": {\n" +
+                                                    "        \"id\": 2,\n" +
+                                                    "        \"name\": \"marco\",\n" +
+                                                    "        \"emailAddress\": \"@test.com\",\n" +
+                                                    "        \"userProfile\": {\n" +
+                                                    "            \"id\": 2,\n" +
+                                                    "            \"firstName\": null,\n" +
+                                                    "            \"lastName\": null,\n" +
+                                                    "            \"profileBio\": null,\n" +
+                                                    "            \"playlists\": []\n" +
+                                                    "        }\n" +
+                                                    "    },\n" +
+                                                    "    \"message\": \"success\"\n" +
+                                                    "}"
+                                    )
 
+                            }
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "User already exists")})
     @PostMapping("/register/")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
@@ -49,6 +100,7 @@ public class UserController {
         response.put("data", createdUser);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
+
 
 
     @PostMapping("/login/")
@@ -60,6 +112,40 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Authentication failed"));
     }
 
+        @Operation(
+            summary = "Update a user by ID",
+            description = "Update an existing user by ID."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully updated user",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class),
+                            examples = @ExampleObject(
+                                    name = "Example result",
+                                    value = "{\n" +
+                                            "    \"data\": {\n" +
+                                            "        \"id\": 2,\n" +
+                                            "        \"name\": \"Marco\",\n" +
+                                            "        \"emailAddress\": \"@test.com\",\n" +
+                                            "        \"userProfile\": {\n" +
+                                            "            \"id\": 2,\n" +
+                                            "            \"firstName\": null,\n" +
+                                            "            \"lastName\": null,\n" +
+                                            "            \"profileBio\": null,\n" +
+                                            "            \"playlists\": []\n" +
+                                            "        }\n" +
+                                            "    },\n" +
+                                            "    \"message\": \"success\"\n" +
+                                            "}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found")})
     @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
         // Check if the user exists
@@ -75,6 +161,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/profile/{profileId}")
     public ResponseEntity<?> updateUserProfile(@PathVariable Long profileId, @RequestBody UserProfile userProfile){
         Optional<User> userProfileOptional = userService.getUserById(profileId);
