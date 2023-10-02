@@ -106,7 +106,7 @@ public class UserControllerTestDefs {
 
     @When("I delete the user")
     public void iDeleteTheUser() {
-        
+        userId = 1L;
     }
 
     @Then("The user and user profile gets deleted")
