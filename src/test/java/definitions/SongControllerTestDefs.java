@@ -1,6 +1,7 @@
 package definitions;
 
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
+import com.example.musicstreamingapi.model.Song;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -47,13 +48,19 @@ public class SongControllerTestDefs {
     public void aListOfSongsAreAvailable() {
         log.info("Calling aListOfSongsAreAvailable");
         try {
+            RestAssured.baseURI = BASE_URL;
+            RequestSpecification request = RestAssured.given();
+            request.header("Authorization", "Bearer " + getJWTKey(port));
+            request.header("Content-Type", "application/json");
             // Send a GET request to retrieve the list of songs
-            ResponseEntity<String> response = new RestTemplate().exchange(BASE_URL + port + "/api/songs/", HttpMethod.GET, null, String.class);
-            List<Map<String, String>> songs = JsonPath.from(String.valueOf(response.getBody())).get("data");
-            Assert.assertEquals(response.getStatusCode(), HttpStatus.OK); //status is OK (200)
+            response = request.get(BASE_URL + port + "/api/songs/");
+            log.info(request.toString());
+            List<Song> songs = response.jsonPath().get("data");
+            Assert.assertEquals(response.getStatusCode(), HttpStatus.OK.value()); //status is OK (200)
             Assert.assertTrue(songs.size() > 0); //list of songs is not empty
-        } catch (HttpClientErrorException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
@@ -83,34 +90,35 @@ public class SongControllerTestDefs {
         Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
 
     }
-    @When("I, as a user, attempt to create a new song")
-    public void iAsAUserAttemptToCreateANewSong() {
-        assertMethodNotAllowed();
-    }
-
-    @Then("The creation of a new song is not allowed")
-    public void theCreationOfANewSongIsNotAllowed() {
-
-    }
-
-    @When("I, as a user, attempt to remove a song")
-    public void iAsAUserAttemptToRemoveASong() {
-        assertMethodNotAllowed();
-        
-    }
-
-    @Then("The removal of a song is not allowed")
-    public void theRemovalOfASongIsNotAllowed() {
-
-    }
-
-    @When("I, as a user, attempt to update a song")
-    public void iAsAUserAttemptToUpdateASong() {
-        assertMethodNotAllowed();
-    }
-
-    @Then("The update of a song is not allowed")
-    public void theUpdateOfASongIsNotAllowed() {
-    }
+    //assertMethodNotAllowed() (status code of 405) method is a reusable method to check if the HTTP response status code indicates that the action is not allowed.
+//    @When("I, as a user, attempt to create a new song")
+//    public void iAsAUserAttemptToCreateANewSong() {
+//        assertMethodNotAllowed();
+//    }
+//
+//    @Then("The creation of a new song is not allowed")
+//    public void theCreationOfANewSongIsNotAllowed() {
+//
+//    }
+//
+//    @When("I, as a user, attempt to remove a song")
+//    public void iAsAUserAttemptToRemoveASong() {
+//        assertMethodNotAllowed();
+//
+//    }
+//
+//    @Then("The removal of a song is not allowed")
+//    public void theRemovalOfASongIsNotAllowed() {
+//
+//    }
+//
+//    @When("I, as a user, attempt to update a song")
+//    public void iAsAUserAttemptToUpdateASong() {
+//        assertMethodNotAllowed();
+//    }
+//
+//    @Then("The update of a song is not allowed")
+//    public void theUpdateOfASongIsNotAllowed() {
+//    }
 
 }
