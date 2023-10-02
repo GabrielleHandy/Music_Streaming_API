@@ -50,6 +50,7 @@ public class UserControllerTestDefs {
     private String loginEmailAddress;
     private String loginPassword;
     private static final String BASE_URL = "http://localhost:";
+
     public static void getJWTKey(String port) throws JSONException {
         // Set the base URI and create a request
 
@@ -77,20 +78,19 @@ public class UserControllerTestDefs {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         JSONObject requestBody = new JSONObject();
-        requestBody.put("name","John Doe");
-        requestBody.put("emailAddress","johndoe@example.com");
-        requestBody.put("password","password123");
-        request.header("Content-Type","application/json");
+        requestBody.put("name", "John Doe");
+        requestBody.put("emailAddress", "johndoe@example.com");
+        requestBody.put("password", "password123");
+        request.header("Content-Type", "application/json");
         response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/register/");
 
     }
 
 
-
     @Then("I get an account and user profile")
     public void iGetAnAccountAndUserProfile() {
-        assertNotNull( response.jsonPath().getString("data"));
-        createdUser = ( response.jsonPath().getObject("data", User.class));
+        assertNotNull(response.jsonPath().getString("data"));
+        createdUser = (response.jsonPath().getObject("data", User.class));
 
     }
 
@@ -115,7 +115,7 @@ public class UserControllerTestDefs {
     public void iFindAnAccount() {
         Optional<User> findUser = userService.getUserById(userId);
         Assert.assertTrue(findUser.isPresent());
-        
+
     }
 
     @When("I update the user profile")
@@ -124,10 +124,10 @@ public class UserControllerTestDefs {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         JSONObject requestBody = new JSONObject();
-        request.header("Content-Type","application/json");
-        request.header("Authorization","Bearer "+ token);
-        requestBody.put("name","Updated Name");
-        response = request.body(requestBody.toString()).put(BASE_URL + port + "/auth/users/"+ createdUser.getId()+"/");
+        request.header("Content-Type", "application/json");
+        request.header("Authorization", "Bearer " + token);
+        requestBody.put("name", "Updated Name");
+        response = request.body(requestBody.toString()).put(BASE_URL + port + "/auth/users/" + createdUser.getId() + "/");
 
     }
 
