@@ -4,6 +4,9 @@ import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.request.LoginRequest;
 import com.example.musicstreamingapi.model.response.LoginResponse;
 import com.example.musicstreamingapi.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,8 @@ public class UserController {
         this.userService = userService;
     }
 // test complete
+
+
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         Optional<User> user = userService.getUserById(userId);
