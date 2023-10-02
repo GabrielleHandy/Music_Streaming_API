@@ -54,4 +54,27 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Authentication failed"));
     }
 
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+        // Check if the user exists
+        Optional<User> existingUser = userService.getUserById(userId);
+
+        if (existingUser.isPresent()) {
+            User updated = userService.updateUser(userId, updatedUser);
+            response.put("message", "success");
+            response.put("data", updated);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            // Handle the case where the user with the given ID doesn't exist
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+//    @PutMapping("/{userId}")
+//    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
+//        User updated = userService.updateUser(userId, updatedUser);
+//        return ResponseEntity.ok(updated); // Return the updated user
+//    }
+
+
 }
