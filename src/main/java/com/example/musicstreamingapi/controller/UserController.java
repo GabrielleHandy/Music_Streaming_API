@@ -1,5 +1,6 @@
 package com.example.musicstreamingapi.controller;
 
+import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
@@ -32,30 +33,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-        @Operation(
-            summary = "Get user by id",
-            description = "Retrieve a user"
-    )
-    @ApiResponse(
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = User.class),
-                    examples = @ExampleObject(
-                            name = "Example result",
-                            value = ""
-            )
 
-         )
-    )
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
-        Optional<User> user = userService.getUserById(userId);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
         @Operation(
             summary = "Create a user",
             description = "Create a new user."
@@ -103,6 +81,26 @@ public class UserController {
 
 
 
+    @Operation(
+            summary = "login the user",
+            description = "login user using email and password"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User is able to login",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class),
+                            examples = @ExampleObject(
+                                    name = "Example result",
+                                    value = "\"jwt\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJAdGVzdC5jb20iLCJpYXQiOjE2OTYyODE1NTIsImV4cCI6MTY5NzE0NTU1Mn0.WmrJODyd3qGzYKHA2tSXtpzhwSQQJNI-GviJ5vopCDs\""
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User is not found")})
     @PostMapping("/login/")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest){
         Optional<String> jwtToken = userService.loginUser(loginRequest);
