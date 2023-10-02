@@ -205,6 +205,40 @@ public class UserController {
     }
 
 
+    @Operation(
+            summary = "Remove a song from a playlist by ID",
+            description = "Remove a song from a playlist by specifying both playlist and song IDs."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User has been deleted",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class),
+                            examples = @ExampleObject(
+                                    name = "Example result",
+                                    value = "{\n" +
+                                            "    \"data\": {\n" +
+                                            "        \"id\": 2,\n" +
+                                            "        \"name\": \"marco\",\n" +
+                                            "        \"emailAddress\": \"@test.com\",\n" +
+                                            "        \"userProfile\": {\n" +
+                                            "            \"id\": 2,\n" +
+                                            "            \"firstName\": null,\n" +
+                                            "            \"lastName\": null,\n" +
+                                            "            \"profileBio\": null,\n" +
+                                            "            \"playlists\": []\n" +
+                                            "        }\n" +
+                                            "    },\n" +
+                                            "    \"message\": \"deleted successfully\"\n" +
+                                            "}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User cannot be deleted")})
     @DeleteMapping("/{userId}/")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
            User user = userService.deleteUser(userId);
