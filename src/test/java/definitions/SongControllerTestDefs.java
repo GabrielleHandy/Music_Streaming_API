@@ -96,7 +96,33 @@ public class SongControllerTestDefs {
             e.printStackTrace();
         }
     }
+    @When("The user requests to get a list of songs")
+    public void theUserRequestsToGetAListOfSongs() {
+        try {
+            RestAssured.baseURI = BASE_URL;
+            RequestSpecification request = RestAssured.given();
+            request.header("Authorization", "Bearer " + getJWTKey(port));
+            request.header("Content-Type", "application/json");
 
+            log.info("Requesting a list of songs");
+
+            response = request.get(BASE_URL + port + "/api/songs/");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("The system should respond with a list of songs")
+    public void theSystemShouldRespondWithAListOfSongs() {
+        try {
+            Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+            List<Song> songs = response.jsonPath().getList("data", Song.class);
+            Assert.assertNotNull(songs);
+            Assert.assertTrue(songs.size() > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // Method to retrieve JWT token for SongController tests
     public static String getJWTKey(String port) throws JSONException {
@@ -120,13 +146,4 @@ public class SongControllerTestDefs {
         return response.jsonPath().getString("jwt");
     }
 
-    @When("The user requests to get a list of songs")
-    public void theUserRequestsToGetAListOfSongs() {
-
-    }
-
-    @Then("The system should respond with a list of songs")
-    public void theSystemShouldRespondWithAListOfSongs() {
-
-    }
 }
