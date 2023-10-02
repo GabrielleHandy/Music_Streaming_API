@@ -86,8 +86,13 @@ public class UserControllerTestDefs {
 
     @When("I update the user profile")
     public void iUpdateTheUserProfile() {
+        userId = 1L;
+        updatedUser = new User();
+        updatedUser.setName("Updated Name");
+        updatedUser.setEmailAddress("updated@example.com");
+        updatedUser.setPassword("newpassword");
 
-        
+
     }
 
     @Then("The user profile is updated")
