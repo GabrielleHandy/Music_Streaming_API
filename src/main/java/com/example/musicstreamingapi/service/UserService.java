@@ -3,6 +3,7 @@ import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
+import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.repository.UserRepository;
 import com.example.musicstreamingapi.security.JWTUtils;
 import com.example.musicstreamingapi.security.MyUserDetails;
@@ -18,6 +19,8 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
+    private final UserProfileRepository userProfileRepository;
     private final JWTUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
@@ -29,8 +32,9 @@ public class UserService {
      * UserRepository dependency. This constructor is used to initialize the
      * service with the necessary repository for performing user-related operations.
      */
-    public UserService(UserRepository userRepository, JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository, JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
@@ -82,6 +86,25 @@ public class UserService {
         } else {
             // Handle the case where the user with the given ID doesn't exist
             throw new IllegalArgumentException();
+        }
+    }
+
+    public UserProfile updateUserProfile(Long profileid, UserProfile userProfile){
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findById(profileid);
+        if(userProfileOptional.isPresent()){
+            if(userProfile.getFirstName()!= null){
+                userProfileOptional.get().setFirstName(userProfile.getFirstName());
+        }
+            if(userProfile.getLastName()!= null){
+                userProfileOptional.get().setLastName(userProfile.getLastName());
+            }
+            if(userProfile.getProfileBio()!=null){
+                userProfileOptional.get().setProfileBio(userProfile.getProfileBio());
+            }
+        return userProfileRepository.save(userProfileOptional.get());
+
+        }else {
+            throw new InformationNotFoundException("your profile info was not found");
         }
     }
     public static void getCurrentLoggedInUser(){

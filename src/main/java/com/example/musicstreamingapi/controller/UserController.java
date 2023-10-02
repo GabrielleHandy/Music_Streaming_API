@@ -1,6 +1,7 @@
 package com.example.musicstreamingapi.controller;
 
 import com.example.musicstreamingapi.model.User;
+import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
 import com.example.musicstreamingapi.model.response.LoginResponse;
 import com.example.musicstreamingapi.service.UserService;
@@ -74,6 +75,22 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/profile/{profileId}")
+    public ResponseEntity<?> updateUserProfile(@PathVariable Long profileId, @RequestBody UserProfile userProfile){
+        Optional<User> userProfileOptional = userService.getUserById(profileId);
+
+        if(userProfileOptional.isPresent()){
+            UserProfile updated = userService.updateUserProfile(profileId, userProfile);
+            response.put("message", "success");
+            response.put("data", updated);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+
     @DeleteMapping("/{userId}/")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
            User user = userService.deleteUser(userId);
