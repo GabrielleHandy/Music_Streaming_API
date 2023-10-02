@@ -1,4 +1,5 @@
 package com.example.musicstreamingapi.service;
+import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
@@ -19,6 +20,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final JWTUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+
+    private static User loggedinUser;
 
     private final PasswordEncoder passwordEncoder;
     /**
@@ -83,14 +86,26 @@ public class UserService {
             throw new IllegalArgumentException();
         }
     }
+    public static void getCurrentLoggedInUser(){
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        loggedinUser = userDetails.getUser();
+    }
     /**
      * Deletes a user with the specified unique identifier (ID) from the UserRepository.
      * This method deletes the user with the given ID from the repository using the deleteById method.
      * @param userId The unique identifier (ID) of the user to delete.
      */
-    public  void deleteUser(Long userId){
-        userRepository.deleteById(userId);
+    public User deleteUser(Long userId){
+        getCurrentLoggedInUser();
+        if(loggedinUser.getId() == userId){
+            userRepository.deleteById(userId);
+            return loggedinUser;
+        }else {
+            throw new InformationNotFoundException("can't delete profile");
+        }
+
     }
+
 
     public User findUserByEmailAddress(String emailAddress) {
         return userRepository.findByEmailAddress(emailAddress);
@@ -106,7 +121,7 @@ public class UserService {
         }catch (Exception e){
             return Optional.empty();
         }
-
-
     }
+
+
 }

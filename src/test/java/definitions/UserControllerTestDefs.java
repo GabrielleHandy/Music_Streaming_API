@@ -20,6 +20,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,7 +37,7 @@ public class UserControllerTestDefs {
     private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
     private static Response response;
     private static RequestSpecification request;
-    private String token;
+    private static String token;
     private String message;
     @LocalServerPort
     private String port;
@@ -49,7 +50,7 @@ public class UserControllerTestDefs {
     private String loginEmailAddress;
     private String loginPassword;
     private static final String BASE_URL = "http://localhost:";
-    public static String getJWTKey(String port) throws JSONException {
+    public static void getJWTKey(String port) throws JSONException {
         // Set the base URI and create a request
 
         RestAssured.baseURI = BASE_URL;
@@ -67,7 +68,7 @@ public class UserControllerTestDefs {
         response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/login/");
 
         // Extract and return the JWT key from the authentication response
-        return response.jsonPath().getString("jwt");
+        token = response.jsonPath().getString("jwt");
     }
 
 
@@ -89,20 +90,20 @@ public class UserControllerTestDefs {
     @Then("I get an account and user profile")
     public void iGetAnAccountAndUserProfile() {
         assertNotNull( response.jsonPath().getString("data"));
+        createdUser = ( response.jsonPath().getObject("data", User.class));
 
     }
 
 
     @When("I login to the account")
-    public void iLoginToTheAccount() {
-
-
+    public void iLoginToTheAccount() throws JSONException {
+        getJWTKey(port);
 
     }
 
     @Then("I get logged in and get a Jwt Token")
     public void iGetLoggedInAndGetAJwtToken() {
-
+        assertNotNull(token);
     }
 
     @When("I search for my account with an id")
@@ -118,34 +119,42 @@ public class UserControllerTestDefs {
     }
 
     @When("I update the user profile")
-    public void iUpdateTheUserProfile() {
-        userId = 1L;
-        updatedUser = new User();
-        updatedUser.setName("Updated Name");
-        updatedUser.setEmailAddress("updated@example.com");
-        updatedUser.setPassword("newpassword");
+    public void iUpdateTheUserProfile() throws JSONException {
 
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        JSONObject requestBody = new JSONObject();
+        request.header("Content-Type","application/json");
+        request.header("Authorization","Bearer "+ token);
+        requestBody.put("name","Updated Name");
+        response = request.body(requestBody.toString()).put(BASE_URL + port + "/auth/users/"+ createdUser.getId()+"/");
 
     }
 
     @Then("The user profile is updated")
     public void theUserProfileIsUpdated() {
-        User updated = userService.updateUser(userId, updatedUser);
-        Assert.assertNotNull(updated);
-        Assert.assertEquals("Updated Name", updated.getName());
-        Assert.assertEquals("updated@example.com", updated.getEmailAddress());
-        
+        Assert.assertEquals("Updated Name", response.jsonPath().getObject("data", User.class).getName());
     }
 
     @When("I delete the user")
-    public void iDeleteTheUser() {
-        userId = 1L;
+    public void iDeleteTheUser() throws JSONException {
+        getJWTKey(port);
+        System.out.println(token);
+//        RestAssured.baseURI = BASE_URL;
+        request = RestAssured.given();
+        request.header("Content-Type","application/json");
+        request.header("Authorization","Bearer "+ token);
+
+        response = request.delete(BASE_URL + port + "/auth/users/"+ createdUser.getId()+"/");
+//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
     }
 
     @Then("The user and user profile gets deleted")
     public void theUserAndUserProfileGetsDeleted() {
-        userService.deleteUser(userId);
-        Optional<User> deletedUser = userService.getUserById(userId);
-        Assert.assertFalse(deletedUser.isPresent());
+//       Assert.assertSame(createdUser,response.jsonPath().getObject("data", User.class));
+        System.out.println(response.toString());
+        System.out.println(Optional.ofNullable(response.jsonPath().get()));
+Assert.assertEquals(createdUser.getId(),response.jsonPath().getObject("data", User.class).getId());
     }
 }
