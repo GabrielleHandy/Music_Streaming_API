@@ -15,5 +15,3 @@ Feature: Rest API functionalities
     Then The song is added to playlist
     When I remove a song from playlist
     Then The song is removed
-    When I update a playlist name
-    Then The playlist name is updated

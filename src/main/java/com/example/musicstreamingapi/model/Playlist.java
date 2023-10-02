@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -116,17 +117,31 @@ public class Playlist {
     public void setId(Long id) {
         this.id = id;
     }
+
+    /**
+     * Add a song to the playlist.
+     *
+     * @param song The song to add.
+     */
     public void addSong(Song song) {
         this.songs.add(song);
         song.getPlaylists().add(this);
     }
 
-    public void removeSong(long songId) {
-        Song songRemove = this.songs.stream().filter(song -> song.getId() == songId).findFirst().orElse(null);
-        if (songRemove != null) {
-            this.songs.remove(songRemove);
-            songRemove.getPlaylists().remove(this);
+    /**
+     * Remove a song from the playlist.
+     *
+     * @param songToDelete The song to remove.
+     * @return `true` if the song was removed, `false` otherwise.
+     */
+    public boolean removeSong(Song songToDelete) {
+        boolean songInList = this.songs.stream().anyMatch(song -> Objects.equals(song.getId(), songToDelete.getId()));
+        if (songInList) {
+            this.songs.remove(songToDelete);
+            songToDelete.getPlaylists().remove(this);
+            return true;
         }
+        return false;
     }
     /**
      * Overrides the toString method to provide a string representation of the Playlist object.

@@ -2,6 +2,7 @@ package definitions;
 
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.Song;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,6 +92,8 @@ public class PlaylistControllerTestDefs {
 
     }
 
+    //Scenario: User able to add and remove a playlist
+
     @Given("A list of playlists are available")
     public void aListOfPlaylistsAreAvailable() {
             createRequest();
@@ -128,7 +133,7 @@ public class PlaylistControllerTestDefs {
     @When("I remove playlist from my list of playlists")
     public void iRemovePlaylistFromMyListOfPlaylists() {
         Playlist deletePlaylist = response.jsonPath().getObject("data", Playlist.class);
-        logger.info(deletePlaylist.toString());
+
         createRequest();
         response = request.delete(BASE_URL + port + MessageFormat.format("/api/playlists/{0}/", deletePlaylist.getId()));
 
@@ -164,32 +169,47 @@ public class PlaylistControllerTestDefs {
         Assert.assertEquals("Successfully updated playlist", message);
 
     }
-//
-//    @Given("A list of songs are available in a playlist")
-//    public void aListOfSongsAreAvailableInAPlaylist() {
-//    }
-//
-//    @When("I add a song to the playlist")
-//    public void iAddASongToThePlaylist() {
-//    }
-//
-//    @Then("The song is added to playlist")
-//    public void theSongIsAddedToPlaylist() {
-//    }
-//
-//    @When("I remove a song from playlist")
-//    public void iRemoveASongFromPlaylist() {
-//    }
-//
-//    @Then("The song is removed")
-//    public void theSongIsRemoved() {
-//    }
-//
-//    @When("I update a playlist name")
-//    public void iUpdateAPlaylistName() {
-//    }
-//
-//    @Then("The playlist name is updated")
-//    public void thePlaylistNameIsUpdated() {
-//    }
+//Scenario: User able to add and remove song from a playlist
+    @Given("A list of songs are available in a playlist")
+    public void aListOfSongsAreAvailableInAPlaylist() {
+        createRequest();
+        response = request.get(BASE_URL+ port +"/api/playlists/1/songs/");
+        List<Song> songs = response.jsonPath().get("data");
+        message = response.jsonPath().get("message");
+        Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+        Assert.assertEquals("Success", message);
+        Assert.assertFalse(songs.isEmpty());
+
+    }
+
+    @When("I add a song to the playlist")
+    public void iAddASongToThePlaylist() {
+        createRequest();
+        response = request.post(BASE_URL + port + "/api/playlists/1/songs/1/");
+    }
+
+    @Then("The song is added to playlist")
+    public void theSongIsAddedToPlaylist() {
+        message = response.jsonPath().get("message");
+
+        Playlist playlist = response.jsonPath().getObject("data", Playlist.class);
+        Assert.assertEquals(HttpStatus.OK.value(),response.getStatusCode());
+        Assert.assertEquals("Song successfully added", message);
+        Assert.assertTrue(playlist.getSongs().stream().anyMatch(song -> Objects.equals(song.getId(), 1L)));
+    }
+
+    @When("I remove a song from playlist")
+    public void iRemoveASongFromPlaylist() {
+        createRequest();
+        response = request.delete(BASE_URL + port + "/api/playlists/1/songs/1/");
+        message = response.jsonPath().get("message");
+    }
+
+    @Then("The song is removed")
+    public void theSongIsRemoved() {
+        Playlist playlist = response.jsonPath().getObject("data", Playlist.class);
+        Assert.assertEquals("Song removed from the playlist", message);
+        Assert.assertFalse(playlist.getSongs().stream().anyMatch(song -> Objects.equals(song.getId(), 1L)));
+    }
+
 }
