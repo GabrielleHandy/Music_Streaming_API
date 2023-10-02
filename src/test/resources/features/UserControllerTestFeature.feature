@@ -1,7 +1,6 @@
 Feature: Rest API functionalities
 
   Scenario: User is manage account
-    Given A list of Users
     When I create an account.
     Then I get an account and user profile
 #    When I login to the account

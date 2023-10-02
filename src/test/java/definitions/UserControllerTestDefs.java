@@ -7,13 +7,24 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -37,40 +48,62 @@ public class UserControllerTestDefs {
     private Long userId;
     private String loginEmailAddress;
     private String loginPassword;
-    @Given("A list of Users")
-    public void aListOfUsers() {
+    private static final String BASE_URL = "http://localhost:";
+    public static String getJWTKey(String port) throws JSONException {
+        // Set the base URI and create a request
 
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+
+        // Set the content-type header to indicate JSON data
+        request.header("Content-Type", "application/json");
+
+        // Create a JSON request body with user email and password
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("emailAddress", "johndoe@example.com");
+        requestBody.put("password", "password123");
+
+        // Send a POST request to the authentication endpoint
+        response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/login/");
+
+        // Extract and return the JWT key from the authentication response
+        return response.jsonPath().getString("jwt");
     }
+
 
     @When("I create an account.")
-    public void iCreateAnAccount() {
-        User newUser = new User();
-        newUser.setName("John Doe");
-        newUser.setEmailAddress("johndoe@example.com");
-        newUser.setPassword("password123");
+    public void iCreateAnAccount() throws JSONException {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("name","John Doe");
+        requestBody.put("emailAddress","johndoe@example.com");
+        requestBody.put("password","password123");
+        request.header("Content-Type","application/json");
+        response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/register/");
 
-        createdUser = userService.createUser(newUser);
-        assertNotNull(createdUser);
     }
+
+
 
     @Then("I get an account and user profile")
     public void iGetAnAccountAndUserProfile() {
-        assertNotNull(createdUser);
-        assertNotNull(createdUser.getUserProfile());
-
+        assertNotNull( response.jsonPath().getString("data"));
 
     }
 
 
-//    @When("I login to the account")
-//    public void iLoginToTheAccount() {
-//
-//    }
-//
-//    @Then("I get logged in and get a Jwt Token")
-//    public void iGetLoggedInAndGetAJwtToken() {
-//
-//    }
+    @When("I login to the account")
+    public void iLoginToTheAccount() {
+
+
+
+    }
+
+    @Then("I get logged in and get a Jwt Token")
+    public void iGetLoggedInAndGetAJwtToken() {
+
+    }
 
     @When("I search for my account with an id")
     public void iSearchForMyAccountWithAnId() {
