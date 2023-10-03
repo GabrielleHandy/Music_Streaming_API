@@ -179,7 +179,15 @@ authorize the deletion request. This resolved the authentication issue.
 asserted that the HTTP response code was 200 to ensure that the user and user profile were deleted successfully. By implementing these 
 code changes and debugging techniques, we were able to overcome the challenge and ensure that the DeleteUser test functioned correctly.
 
+
 - While applying TDD to test controllers, we faced some challenges when utilizing the traditional mockMVC testing method. Mocking the behavior of controllers can sometimes be complex, leading to difficulties in writing effective unit tests. To address these challenges, we decided to take an alternative testing approach. Instead of relying on mockMVS, we decided to implement Cucumber testing. Cucumber is a testing framework that supports Behavior Driven Development(BDD). By choosing Cucumber testing, we shifted the focus from unit testing the controllers to testing the behavior of the entire application. This approach helps ensure that the different components of the system work together seamlessly to deliver the expected functionality. It additionally offers a more clear and thorough understanding of how the application functions in real-world situations.
+
+
+- We faced a challenge when implementing  MockMVC testing to the playlistService. Everytime we tried to run the tests we would get a '@Mock params are null' error. This caused the test to automatically fail.
+    - First attempt at fixing the issue was running debug and rewriting the test to see if the issue was in how the text was executed.       
+    - In the end with help from [Suresh Sigera](https://git.generalassemb.ly/sureshmelvinsigera), our instructor, We were able to figure out that we had a couple processes we forgot to mock which caused it to fail.
+    - We also noticed that there were more efficient ways to test the service, so we added more assertions.
+  
 # Acknowledgments
 <img src="src/main/resources/static/Betselot.jpg" height="100" alt="Picture of Betselot">
 
