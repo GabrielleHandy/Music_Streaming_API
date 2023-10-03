@@ -39,9 +39,6 @@ As a User, I want to have a user profile that I can securely login to where I ca
 
 
 
-As a User, I want to see information about the currently playing song, including its title, and artist.
-
-
 
 As a User, I want to be able to edit my playlist by adding and removing songs.
 
@@ -53,7 +50,8 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 
 ## Entity Relationship Diagram (ERD)
 ***
-![ERD](src/main/resources/static/ERD image.png)
+![ERD image](https://github.com/GabrielleHandy/Music_Streaming_API/assets/91081738/9e3f0c72-f188-4697-9709-160bb5939c8f)
+
 
 # Dependencies
 ***
