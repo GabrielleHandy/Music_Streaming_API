@@ -3,7 +3,9 @@
 ## Description
 
 
-This project is focused on developing a Music Streaming API that implements user profiles, music categorization, and personalized playlists. It is a monolithic backend that uses Spring Boot Application. In addition, it integrates key modules like Spring Security and JWT tokens, while also implementing CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, this project uses Open API to document endpoints.
+This project is focused on developing a Music Streaming API that implements user profiles, music categorization, and personalized playlists. The Music Streaming API is designed to incorporate user profiles. This means that users of the music streaming service will have their own personalized accounts. The API will implement a system for categorizing music, by organizing songs into multiple genres, and playlists. This categorization is important for enabling users to explore and discover music in alignment with their preferences. In addition, the API allows users to create and manage their own playlists. Users will have the ability to curate their own playlists, adding, updating and removing songs based on their preferences. Personalized playlists enhance the user experience by allowing individuals to create a customized collection of songs tailored to their specific preference. 
+
+Moreover, this project employs a monolithic backend that uses Spring Boot framework. It integrates key modules such as Spring Security and JWT tokens, enabling secure user authentication. In order to manage data effectively the project also encompasses implementation of CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, Open API is employed to document endpoints for better understanding and utilization.
 
 ![Dev approach photo](src/main/resources/static/dev approach image.jpeg)
 ## Development Approach
@@ -18,12 +20,14 @@ and daily progress checks. Here's a detailed look at the specific steps we took:
 - Use Git branches for project development: This strategy allowed us to work on separate features or models without code conflicts, facilitating a smooth development process.
 - Follow the KISS and DRY principles.
 - Conform to the MVC design pattern with separate controllers and services.
-- Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each endpoints.
+- Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each end points.
 - Documented each method using doc strings and inline comments.
+
+
 
 # User Stories
 
-As a User, I want to be able to create my own playlists so I can curate my own collection of music.
+As a User, I want to be able to create my own playlists, so I can curate my own collection of music.
 
 
 As a User I want to be able to search for songs by title, artist, or genre, so I can easily find the music I want to listen to.
@@ -40,10 +44,22 @@ As a User, I want to see information about the currently playing song, including
 
 As a User, I want to be able to edit my playlist by adding and removing songs.
 
+## MVC Design Pattern
+***
+
+![Models.png](src%2Fmain%2Fresources%2Fstatic%2FModels.png)
+
+
+## Entity Relationship Diagram (ERD)
+***
+![ERD](src/main/resources/static/ERD image.png)
 
 # Dependencies
 ***
-### Spring Boot Dependencies:
+![Spring Boot](src/main/resources/static/springboot.png)
+
+<details>
+  <summary> Spring Boot Dependencies </summary>
 
 - Spring Boot Starter Data JPA
 - Spring Boot Starter Security
@@ -53,7 +69,15 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 - Spring Boot Starter Test (scope: test)
 - Spring Security Test (scope: test)
 - Spring Boot Starter OAuth2 Resource Server
-### Testing Dependencies:
+
+</details>
+<br>
+
+<img src="src/main/resources/static/cucumber.png" width="auto" height="50"> -- and  -- <img src="src/main/resources/static/mockito.png" width="auto" height="50">
+
+
+<details>
+  <summary> Testing Dependencies </summary>
 
 - JUnit: 4.12 (scope: test)
 - Cucumber Java: 6.8.1 (scope: test)
@@ -64,21 +88,40 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 - Hamcrest: 2.2 (scope: test)
 - Mockito Inline: 4.10.0 (scope: test)
 - Rest Assured (scope: test, excluding groovy-xml)
-### Database Dependencies:
+
+
+</details>
+<br>
+<img src="src/main/resources/static/h2-logo.svg" height="50" style="margin-left: 50px">
+<details>
+  <summary> H2 Dependency </summary>
 
 - H2 Database (scope: runtime)
-### JWT (JSON Web Token) Dependencies:
+
+
+</details>
+
+
+![JWT](src/main/resources/static/JWT.png)
+<details>
+  <summary> JWT Dependencies </summary>
 
 - jjwt-api: 0.11.5
 - jjwt-impl: 0.11.5 (scope: runtime)
 - jjwt-jackson: 0.11.5 (scope: runtime)
-### Documentation and UI:
+
+
+</details>
+<br>
+<img src="src/main/resources/static/openapi-logo.png" height="50px">
+
+<details>
+  <summary> OpenAPI Dependency </summary>
 
 - Springdoc OpenAPI UI: 1.6.12
 
-## Entity Relationship Diagram (ERD)
-***
-![ERD](src/main/resources/static/ERD image.png)
+
+</details>
 
 ## API Endpoints
 ***
@@ -136,6 +179,30 @@ authorize the deletion request. This resolved the authentication issue.
 asserted that the HTTP response code was 200 to ensure that the user and user profile were deleted successfully. By implementing these 
 code changes and debugging techniques, we were able to overcome the challenge and ensure that the DeleteUser test functioned correctly.
 
-### Acknowledgment:
+- While applying TDD to test controllers, we faced some challenges when utilizing the traditional mockMVC testing method. Mocking the behavior of controllers can sometimes be complex, leading to difficulties in writing effective unit tests. To address these challenges, we decided to take an alternative testing approach. Instead of relying on mockMVS, we decided to implement Cucumber testing. Cucumber is a testing framework that supports Behavior Driven Development(BDD). By choosing Cucumber testing, we shifted the focus from unit testing the controllers to testing the behavior of the entire application. This approach helps ensure that the different components of the system work together seamlessly to deliver the expected functionality. It additionally offers a more clear and thorough understanding of how the application functions in real-world situations.
+# Acknowledgments
+<img src="src/main/resources/static/Betselot.jpg" height="100" alt="Picture of Betselot">
 
 
+
+### Betselot Bezabeh
+
+[<img src="src/main/resources/static/LinkedIn.png" height="50px" style="margin-right:10px">](http://www.linkedin.com/in/betselot-bezabeh-94643420a)
+[<img src="src/main/resources/static/GithubIcon.png" height= "100" style="margin-bottom:-19px">](https://github.com/betselotbz)
+
+<br>
+
+<img src="src/main/resources/static/Gabrielle.jpg" height="100" alt="Picture of Gabrielle">
+
+### Gabrielle Handy
+
+[<img src="src/main/resources/static/LinkedIn.png" height="50px" style="margin-right:10px">](https://www.linkedin.com/in/gabriellehandyswe/)
+[<img src="src/main/resources/static/GithubIcon.png" height= "100" style="margin-bottom:-19px">](https://github.com/GabrielleHandy)
+
+<br>
+<img src="src/main/resources/static/Marco.jpg" height="100" alt="Picture of Marco">
+
+### Marco Gallegos
+
+[<img src="src/main/resources/static/LinkedIn.png" height="50px" style="margin-right:10px">](https://www.linkedin.com/in/marco-gallegos-679ba21a1/)
+[<img src="src/main/resources/static/GithubIcon.png" height= "100" style="margin-bottom:-19px">](https://github.com/mgall021)
