@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@CucumberContextConfiguration()
+//@CucumberContextConfiguration()
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class  PlaylistControllerTestDefs {
 

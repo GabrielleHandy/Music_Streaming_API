@@ -3,14 +3,11 @@ package definitions;
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.service.UserService;
-import com.fasterxml.jackson.databind.JsonNode;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
@@ -19,26 +16,10 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.AssertTrue;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-
+@CucumberContextConfiguration()
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class UserControllerTestDefs {
     private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
@@ -59,7 +40,6 @@ public class UserControllerTestDefs {
     /**
      * Retrieve a JSON Web Token (JWT) key by sending a POST request to the authentication endpoint
      * with a predefined user email and password.
-     *
      * @return The JWT key obtained from the authentication response.
      * @throws JSONException If there are issues with JSON parsing while processing the response.
      */
@@ -146,3 +126,7 @@ public class UserControllerTestDefs {
 
     }
 }
+
+
+
+
