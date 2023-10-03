@@ -56,6 +56,12 @@ public class UserControllerTestDefs {
     private static RequestSpecification request = RestAssured.given();
 
 
+    /**
+     * Retrieve a JSON Web Token (JWT) key by sending a POST request to the authentication endpoint
+     * with a predefined user email and password.
+     * @return The JWT key obtained from the authentication response.
+     * @throws JSONException If there are issues with JSON parsing while processing the response.
+     */
     public String getJWTKey() throws JSONException {
         // Set the base URI and create a request
         RestAssured.baseURI = BASE_URL;
