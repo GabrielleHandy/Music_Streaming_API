@@ -138,7 +138,7 @@ public class UserControllerTestDefs {
 
     @When("I delete the user")
     public void iDeleteTheUser() throws JSONException {
-        getJWTKey(port);
+
         System.out.println(token);
 //        RestAssured.baseURI = BASE_URL;
         request = RestAssured.given();

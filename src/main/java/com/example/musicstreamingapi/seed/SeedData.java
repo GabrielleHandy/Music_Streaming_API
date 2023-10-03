@@ -48,7 +48,6 @@ public class SeedData implements CommandLineRunner {
         Genre rockGenre = new Genre();
         rockGenre.setName("Rock");
         rockGenre.setDescription("A genre of popular music characterized by a strong rhythm and typically played with electric guitars, bass, and drums.");
-
         genreRepository.save(rockGenre);
 
         //First Song

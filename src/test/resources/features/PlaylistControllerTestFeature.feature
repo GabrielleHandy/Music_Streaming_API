@@ -15,3 +15,4 @@ Feature: Rest API functionalities
     Then The song is added to playlist
     When I remove a song from playlist
     Then The song is removed
+
