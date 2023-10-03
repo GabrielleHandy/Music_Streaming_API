@@ -4,13 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-
 import javax.persistence.*;
-/**
- * creates all variables associated with a user profile
- * returns a one to one relationship with User
- * returns firstname, lastname, and a profile bio
- */
 import java.util.ArrayList;
 import java.util.List;
 
