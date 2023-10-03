@@ -1,8 +1,14 @@
 package com.example.musicstreamingapi.controller;
 
 
+import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.service.SongService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +48,59 @@ public class SongGenreController {
      * @return ResponseEntity containing a list of songs or a message indicating no songs are found.
      */
 
-    @GetMapping//"/api/songs"
+    @Operation(
+            summary = "Get songlist by ID",
+            description = "Retrieve a  playlist."
+    )
+    @ApiResponse(
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Playlist.class),
+                    examples = @ExampleObject(
+                            name = "Example result",
+                            value = "{\n" +
+                                    "    \"data\": [\n" +
+                                    "        {\n" +
+                                    "            \"id\": 1,\n" +
+                                    "            \"title\": \"Bohemian Rhapsody\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 2,\n" +
+                                    "            \"title\": \"Hotel California\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 3,\n" +
+                                    "            \"title\": \"Imagine\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 4,\n" +
+                                    "            \"title\": \"Lose Yourself\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 5,\n" +
+                                    "            \"title\": \"Sicko Mode\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 6,\n" +
+                                    "            \"title\": \"Jolene\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 7,\n" +
+                                    "            \"title\": \"Wagon Wheel\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 8,\n" +
+                                    "            \"title\": \"Take Me Home, Country Roads\"\n" +
+                                    "        }\n" +
+                                    "    ],\n" +
+                                    "    \"message\": \"Success\"\n" +
+                                    "}"
+                    )
+            )
+    )
+
+
+    @GetMapping
     public ResponseEntity<?> getAllSongs() {
         List<Song> songsList = songService.getAllSongs();
         HashMap<String, Object> message = new HashMap<>();
@@ -63,6 +121,36 @@ public class SongGenreController {
      * @param genreId The ID of the genre for which songs are retrieved.
      * @return ResponseEntity containing a list of songs for the given genre ID or a message indicating no songs are found.
      */
+    @Operation(
+            summary = "Get playlist by ID",
+            description = "Retrieve a  playlist."
+    )
+    @ApiResponse(
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Playlist.class),
+                    examples = @ExampleObject(
+                            name = "Example result",
+                            value = "{\n" +
+                                    "    \"data\": [\n" +
+                                    "        {\n" +
+                                    "            \"id\": 1,\n" +
+                                    "            \"title\": \"Bohemian Rhapsody\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 2,\n" +
+                                    "            \"title\": \"Hotel California\"\n" +
+                                    "        },\n" +
+                                    "        {\n" +
+                                    "            \"id\": 3,\n" +
+                                    "            \"title\": \"Imagine\"\n" +
+                                    "        }\n" +
+                                    "    ],\n" +
+                                    "    \"message\": \"Success\"\n" +
+                                    "}"
+                    )
+            )
+    )
 
     @GetMapping("/Genre/{genreId}")
     public ResponseEntity<?> getSongsByGenre(@PathVariable Long genreId) {
@@ -84,6 +172,27 @@ public class SongGenreController {
      * @param songId The ID of the song to be retrieved.
      * @return ResponseEntity containing the requested song or a message indicating no song is found.
      */
+
+    @Operation(
+            summary = "Get playlist by ID",
+            description = "Retrieve a  playlist."
+    )
+    @ApiResponse(
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Playlist.class),
+                    examples = @ExampleObject(
+                            name = "Example result",
+                            value = "{\n" +
+                                    "    \"data\": {\n" +
+                                    "        \"id\": 1,\n" +
+                                    "        \"title\": \"Bohemian Rhapsody\"\n" +
+                                    "    },\n" +
+                                    "    \"message\": \"Success\"\n" +
+                                    "}"
+                    )
+            )
+    )
 
     @GetMapping("/{songId}")
     public ResponseEntity<?> getSongById(@PathVariable Long songId) {
