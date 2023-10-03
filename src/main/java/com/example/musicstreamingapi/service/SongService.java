@@ -5,7 +5,6 @@ import com.example.musicstreamingapi.repository.GenreRepository;
 import com.example.musicstreamingapi.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.musicstreamingapi.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +51,8 @@ public class SongService {
      */
     public List<Song> getAllSongsByGenreId(Long genreId) {
         return songRepository.findByGenreId(genreId);
+    }
+    public Optional<Song> getSongById(Long songId) {
+        return songRepository.findById(songId);
     }
 }

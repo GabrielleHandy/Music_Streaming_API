@@ -3,16 +3,22 @@ package com.example.musicstreamingapi.service;
 import com.example.musicstreamingapi.exception.InformationExistException;
 import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.Playlist;
+import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.repository.PlaylistRepository;
+import com.example.musicstreamingapi.repository.SongRepository;
 import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 /**
@@ -22,18 +28,25 @@ import java.util.Optional;
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final UserProfileRepository userProfileRepository;
+    private final SongRepository songRepository;
+
+    private final Logger logger = Logger.getLogger(PlaylistService.class.getName());
+
+
 
     /**
      * Constructor for PlaylistService.
      *
-     * @param playlistRepository     The repository for managing playlists.
+     * @param playlistRepository    The repository for managing playlists.
      * @param userProfileRepository The repository for managing user profiles.
+     * @param songRepository    The repository for managing songs
      */
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository) {
+    public PlaylistService(PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository, SongRepository songRepository) {
         this.playlistRepository = playlistRepository;
 
         this.userProfileRepository = userProfileRepository;
+        this.songRepository = songRepository;
     }
 
     /**
@@ -96,6 +109,9 @@ public class PlaylistService {
     public Playlist createPlaylist(Playlist playlist) {
         Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByNameAndUserProfile(playlist.getName(),getCurrentLoggedInUser().getUserProfile()));
         if(optionalPlaylist.isEmpty()) {
+            if(playlist.getName()== null){
+                playlist.setName("Playlist " + (getCurrentLoggedInUser().getUserProfile().getPlaylists().size() + 1));
+            }
             playlist.setUserProfile(getCurrentLoggedInUser().getUserProfile());
             return playlistRepository.save(playlist);
         }
@@ -106,7 +122,7 @@ public class PlaylistService {
      * Deletes a playlist by its unique identifier.
      *
      * @param playlistId The unique identifier of the playlist to delete.
-     * @return The deleted playlist if found, otherwise throws {@link InformationExistException}.
+     * @return The deleted playlist if found, otherwise throws {@link InformationNotFoundException}.
      */
     public Playlist deletePlaylist(Long playlistId) {
         Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
@@ -114,7 +130,86 @@ public class PlaylistService {
             playlistRepository.delete(optionalPlaylist);
             return optionalPlaylist;
         }
-        throw new InformationExistException("You don't have a playlist with Id " + playlistId);
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
     }
+
+    /**
+     * Updates the details of a user's playlist.
+     *
+     * @param playlistId      The ID of the playlist to be updated.
+     * @param updatedPlaylist The updated playlist object with new information.
+     * @return The updated playlist after the changes otherwise throws {@link InformationNotFoundException}
+     */
+    public Playlist updatePlaylist(Long playlistId, Playlist updatedPlaylist) {
+        logger.info(updatedPlaylist.getName());
+        Playlist optionalPlaylist = playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile());
+        if(optionalPlaylist != null) {
+            optionalPlaylist.setName(updatedPlaylist.getName());
+            return playlistRepository.save(optionalPlaylist);
+
+        }
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
+    }
+
+    /**
+     * Retrieves a list of all songs in a playlist.
+     *
+     * @return A list of all songs in a playlist.
+     */
+    public List<Song> getAllSongsInPlaylist(Long playlistId) {
+        Playlist playlist = getPlaylistById(playlistId);
+        return new ArrayList<>(playlist.getSongs());
+    }
+    /**
+     * Adds a song to a user's playlist.
+     *
+     * @param playlistId The ID of the playlist to which the song will be added.
+     * @param songId     The ID of the song to be added.
+     * @return The updated playlist after adding the song.
+     * @throws InformationNotFoundException if the playlist or song is not found.
+     * @throws InformationExistException if song is already in playlist
+     */
+    public Playlist addSongToPlaylist(Long playlistId, Long songId) {
+        Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
+
+        if(optionalPlaylist.isPresent()) {
+            Optional<Song> optionalSong = songRepository.findById(songId);
+            if(optionalSong.isPresent()){
+                Playlist playlist =optionalPlaylist.get();
+                if(playlist.getSongs().stream().noneMatch(song -> Objects.equals(song.getId(), songId))){
+                    playlist.addSong(optionalSong.get());
+                    return playlistRepository.save(playlist);
+                }
+                throw new InformationExistException("Song with id " + songId + " already in playlist");
+            }
+            throw new InformationNotFoundException("Song with id " + songId + " not found");
+        }
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
+    }
+
+    /**
+     * Removes a song from a user's playlist.
+     *
+     * @param playlistId The ID of the playlist from which the song will be removed.
+     * @param songId     The ID of the song to be removed.
+     * @return The updated playlist after removing the song.
+     * @throws InformationNotFoundException if the playlist or song is not found.
+     */
+    public Playlist removeSongFromPlaylist(Long playlistId, Long songId) {
+        Optional<Playlist> optionalPlaylist = Optional.ofNullable(playlistRepository.findByIdAndUserProfile(playlistId ,getCurrentLoggedInUser().getUserProfile()));
+
+        if(optionalPlaylist.isPresent()) {
+            Optional<Song> optionalSong = songRepository.findById(songId);
+            if(optionalSong.isPresent()){
+                Playlist playlist =optionalPlaylist.get();
+                playlist.removeSong(optionalSong.get());
+
+                return playlistRepository.save(playlist);
+            }
+            throw new InformationNotFoundException("Song with id " + songId + " not found");
+        }
+        throw new InformationNotFoundException("You don't have a playlist with Id " + playlistId);
+    }
+
 }
 

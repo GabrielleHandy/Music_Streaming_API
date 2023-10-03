@@ -1,30 +1,35 @@
 package com.example.musicstreamingapi.seed;
 
-import com.example.musicstreamingapi.model.Genre;
-import com.example.musicstreamingapi.model.Song;
-import com.example.musicstreamingapi.model.User;
-import com.example.musicstreamingapi.repository.GenreRepository;
-import com.example.musicstreamingapi.repository.PlaylistRepository;
-import com.example.musicstreamingapi.repository.SongRepository;
-import com.example.musicstreamingapi.repository.UserRepository;
+import com.example.musicstreamingapi.model.*;
+import com.example.musicstreamingapi.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SeedData implements CommandLineRunner {
+
     private final PasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
+
     private final GenreRepository genreRepository;
+
     private final SongRepository songRepository;
+
     private final PlaylistRepository playlistRepository;
 
-    public SeedData(PasswordEncoder passwordEncoder, UserRepository userRepository, GenreRepository genreRepository, SongRepository songRepository, PlaylistRepository playlistRepository) {
+    private final UserProfileRepository userProfileRepository;
+    @Autowired
+    public SeedData(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, GenreRepository genreRepository, SongRepository songRepository, PlaylistRepository playlistRepository, UserProfileRepository userProfileRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.genreRepository = genreRepository;
         this.songRepository = songRepository;
         this.playlistRepository = playlistRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 
     @Override
@@ -32,14 +37,17 @@ public class SeedData implements CommandLineRunner {
         User user = new User();
         user.setName("suresh");
         user.setEmailAddress("suresh@ga.com");
-        user.setPassWord(passwordEncoder.encode("suresh123"));
+        user.setPassword(passwordEncoder.encode("suresh123"));
+        UserProfile userProfile = new UserProfile();
+        userProfile.setUser(user);
+        user.setUserProfile(userProfile);
         userRepository.save(user);
+
 
         // Seed Genre: Rock
         Genre rockGenre = new Genre();
         rockGenre.setName("Rock");
         rockGenre.setDescription("A genre of popular music characterized by a strong rhythm and typically played with electric guitars, bass, and drums.");
-//        rockGenre.setUser(user);
         genreRepository.save(rockGenre);
 
         //First Song
@@ -103,6 +111,12 @@ public class SeedData implements CommandLineRunner {
         countryRoads.setGenre(countryGenre);
         songRepository.save(countryRoads);
 
+
+        Playlist playlist = new Playlist();
+        playlist.setName("FakePlaylist");
+        playlist.setUserProfile(userProfile);
+        playlist.addSong(countryRoads);
+        playlistRepository.save(playlist);
     }
 
 

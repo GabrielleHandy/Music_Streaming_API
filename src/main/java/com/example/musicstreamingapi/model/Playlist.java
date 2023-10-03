@@ -1,8 +1,12 @@
 package com.example.musicstreamingapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -30,7 +34,7 @@ public class Playlist {
      * The date when the playlist was created. It is set to the current date by default.
      */
     @Column
-    private LocalDate dateCreated = LocalDate.now();
+    private LocalDate dateCreated;
     /**
      * The user profile associated with this playlist.
      */
@@ -42,19 +46,17 @@ public class Playlist {
      * The set of songs contained in the playlist.
      */
     //Many to Many Logic provided by Suresh Sigera and Bezdoker.com https://www.bezkoder.com/jpa-many-to-many/
-    @ManyToMany(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany
     @JoinTable(name = "playlist_songs",
             joinColumns = { @JoinColumn(name = "playlist_id") },
             inverseJoinColumns = { @JoinColumn(name = "song_id") })
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Song> songs = new HashSet<>();
     /**
      * Default constructor for the Playlist class.
      */
     public Playlist() {
+        this.dateCreated  = LocalDate.now();
     }
 
     /**
@@ -62,15 +64,14 @@ public class Playlist {
      *
      * @param id           The unique identifier for the playlist.
      * @param name         The name of the playlist.
-     * @param dateCreated  The date when the playlist was created.
      * @param userProfile  The user profile associated with this playlist.
      * @param songs        The set of songs contained in the playlist.
      */
 
-    public Playlist(Long id, String name, LocalDate dateCreated, UserProfile userProfile, Set<Song> songs) {
+    public Playlist(Long id, String name,UserProfile userProfile, Set<Song> songs) {
         this.id = id;
         this.name = name;
-        this.dateCreated = dateCreated;
+        this.dateCreated  = LocalDate.now();
         this.userProfile = userProfile;
         this.songs = songs;
     }
@@ -115,6 +116,32 @@ public class Playlist {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * Add a song to the playlist.
+     *
+     * @param song The song to add.
+     */
+    public void addSong(Song song) {
+        this.songs.add(song);
+        song.getPlaylists().add(this);
+    }
+
+    /**
+     * Remove a song from the playlist.
+     *
+     * @param songToDelete The song to remove.
+     * @return `true` if the song was removed, `false` otherwise.
+     */
+    public boolean removeSong(Song songToDelete) {
+        boolean songInList = this.songs.stream().anyMatch(song -> Objects.equals(song.getId(), songToDelete.getId()));
+        if (songInList) {
+            this.songs.remove(songToDelete);
+            songToDelete.getPlaylists().remove(this);
+            return true;
+        }
+        return false;
     }
     /**
      * Overrides the toString method to provide a string representation of the Playlist object.

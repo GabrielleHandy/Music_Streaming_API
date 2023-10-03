@@ -1,33 +1,23 @@
-package com.example.musicstreamingapi.service;
+package com.example.musicstreamingapi.serviceTests;
 
 import com.example.musicstreamingapi.model.Genre;
 import com.example.musicstreamingapi.model.Song;
 import com.example.musicstreamingapi.repository.SongRepository;
-import org.junit.Assert;
+import com.example.musicstreamingapi.service.SongService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-
-
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SongServiceTests {
@@ -40,7 +30,6 @@ public class SongServiceTests {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-         // Create an instance of your service with the mock repository
     }
 
     private final Genre testGenre = new Genre(1L, "Test Genre", "Test Genre Description");
@@ -55,7 +44,7 @@ public class SongServiceTests {
         songServiceMock.setSongRepository(songRepository);
         when(songRepository.findAll()).thenReturn(testListSongs);
         List<Song> songs = songServiceMock.getAllSongs();
-        assertEquals(3, songs.size()); // Add more assertions based on the expected behavior
+        assertEquals(3, songs.size());
 
     }
     @Test
@@ -64,8 +53,6 @@ public class SongServiceTests {
         List<Song> songs = songServiceMock.getAllSongsByGenreId(testGenre.getId());
         assertEquals(3, songs.size());
     }
-
-
 
 }
 
