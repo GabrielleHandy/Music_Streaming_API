@@ -7,7 +7,8 @@ This project is focused on developing a Music Streaming API that implements user
 
 Moreover, this project employs a monolithic backend that uses Spring Boot framework. It integrates key modules such as Spring Security and JWT tokens, enabling secure user authentication. In order to manage data effectively the project also encompasses implementation of CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, Open API is employed to document endpoints for better understanding and utilization.
 
-![Dev approach photo](src/main/resources/static/dev approach image.jpeg)
+![dev approach image](https://github.com/GabrielleHandy/Music_Streaming_API/assets/91081738/ffeffb44-4466-4aa3-864b-4a876a1ff598)
+
 ## Development Approach
 Our team actively pursued an efficient and secure development strategy, dividing our 
 tasks based on different models. Our approach, shaped by these distinct measures, 
