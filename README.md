@@ -1,3 +1,20 @@
+# Unit 2 Project: Monolithic Backend with Spring Boot
+## Description
+
+
+This project is focused on developing a monolithic backend using Spring Boot. It integrates key modules like Spring Security and JWT tokens, while also implementing CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server.
+
+## Development Approach
+
+- Incorporating driver and navigator roles when debugging and solving problems.
+- Follow the KISS and DRY principles.
+- Use Git branches for project development.
+- Conform to the MVC design pattern with separate controllers and services.
+- Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each endpoints.
+- Documented each method that using doc strings and inline comments.
+
+
+
 # Music Streaming API
 # Dependencies
 
