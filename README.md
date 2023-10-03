@@ -121,12 +121,20 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 
 </details>
 
-### Challenges 
-
-- A challenge we faced was implementing Cucumber tests. We had to work together using driver navigator and code reviews to  get better at testing our endpoints.
-- One of our challenges was learning how to merge and create branches, we overcame this by coming up with a merge plan that helped to avoid merge conflicts and made sure that when we pushed to main all the code was double-checked and okayed by everyone in the group.
-- Another challenge was using MockMVC to test service classes, we overcame this by working together using driver/navigator and through code reviews.
-- While following the TDD testing, there were some challenges while trying to test for controllers. Hence, taking a different approach of testing was needed, so instead of utilizing mockMVC we decided to implement Cucumber testing.
+### Challenges
+  - We faced a significant challenge with the project when encountering a "Token returning null" issue during the DeleteUser test, 
+  specifically in the authentication portion. The error message indicated "Authentication failed" and highlighted that the JWT 
+  token was invalid, resulting in a null value. 
+    - To overcome this issue, we took several steps to refactor and debug the code. First, 
+we refactored the getJWTKey() method to ensure that it correctly obtained the JWT key by sending a POST request to the authentication 
+endpoint. I ensured that the request body included the necessary user credentials. 
+    - Additionally, we made changes to the iCreateAnAccount() 
+method to create a user account successfully. This change was essential for generating a valid user ID for the subsequent deletion.
+    - In the iDeleteTheUser() method, we modified the code to extract the user ID from the response and use the JWT token obtained earlier to 
+authorize the deletion request. This resolved the authentication issue. 
+    - Finally, in the theUserAndUserProfileGetsDeleted() method, we 
+asserted that the HTTP response code was 200 to ensure that the user and user profile were deleted successfully. By implementing these 
+code changes and debugging techniques, we were able to overcome the challenge and ensure that the DeleteUser test functioned correctly.
 
 ### Acknowledgment:
 
