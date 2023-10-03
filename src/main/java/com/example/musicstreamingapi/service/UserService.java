@@ -1,6 +1,9 @@
 package com.example.musicstreamingapi.service;
+import com.example.musicstreamingapi.exception.InformationNotFoundException;
 import com.example.musicstreamingapi.model.User;
+import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
+import com.example.musicstreamingapi.repository.UserProfileRepository;
 import com.example.musicstreamingapi.repository.UserRepository;
 import com.example.musicstreamingapi.security.JWTUtils;
 import com.example.musicstreamingapi.security.MyUserDetails;
@@ -16,8 +19,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
+    private final UserProfileRepository userProfileRepository;
     private final JWTUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+
+    private static User loggedinUser;
 
     private final PasswordEncoder passwordEncoder;
     /**
@@ -25,8 +32,9 @@ public class UserService {
      * UserRepository dependency. This constructor is used to initialize the
      * service with the necessary repository for performing user-related operations.
      */
-    public UserService(UserRepository userRepository, JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, UserProfileRepository userProfileRepository, JWTUtils jwtUtils, @Lazy AuthenticationManager authenticationManager, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userProfileRepository = userProfileRepository;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
@@ -47,7 +55,13 @@ public class UserService {
     public User createUser(User user) {
         // You can add validation logic here if needed
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        UserProfile userProfile = new UserProfile();
+        userProfile.setUser(user);
+        user.setUserProfile(userProfile);
+
         return userRepository.save(user);
+
+
     }
 
     /**
@@ -67,8 +81,6 @@ public class UserService {
             User existingUser = existingUserOptional.get();
             // Update the fields you want to change
             existingUser.setName(updatedUser.getName());
-            existingUser.setEmailAddress(updatedUser.getEmailAddress());
-            existingUser.setPassword(updatedUser.getPassword());
             // Save the updated user
             return userRepository.save(existingUser);
         } else {
@@ -76,14 +88,45 @@ public class UserService {
             throw new IllegalArgumentException();
         }
     }
+
+    public UserProfile updateUserProfile(Long profileid, UserProfile userProfile){
+        Optional<UserProfile> userProfileOptional = userProfileRepository.findById(profileid);
+        if(userProfileOptional.isPresent()){
+            if(userProfile.getFirstName()!= null){
+                userProfileOptional.get().setFirstName(userProfile.getFirstName());
+        }
+            if(userProfile.getLastName()!= null){
+                userProfileOptional.get().setLastName(userProfile.getLastName());
+            }
+            if(userProfile.getProfileBio()!=null){
+                userProfileOptional.get().setProfileBio(userProfile.getProfileBio());
+            }
+        return userProfileRepository.save(userProfileOptional.get());
+
+        }else {
+            throw new InformationNotFoundException("your profile info was not found");
+        }
+    }
+    public static void getCurrentLoggedInUser(){
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        loggedinUser = userDetails.getUser();
+    }
     /**
      * Deletes a user with the specified unique identifier (ID) from the UserRepository.
      * This method deletes the user with the given ID from the repository using the deleteById method.
      * @param userId The unique identifier (ID) of the user to delete.
      */
-    public  void deleteUser(Long userId){
-        userRepository.deleteById(userId);
+    public User deleteUser(Long userId){
+        getCurrentLoggedInUser();
+        if(loggedinUser.getId() == userId){
+            userRepository.deleteById(userId);
+            return loggedinUser;
+        }else {
+            throw new InformationNotFoundException("can't delete profile");
+        }
+
     }
+
 
     public User findUserByEmailAddress(String emailAddress) {
         return userRepository.findByEmailAddress(emailAddress);
@@ -99,7 +142,7 @@ public class UserService {
         }catch (Exception e){
             return Optional.empty();
         }
-
-
     }
+
+
 }

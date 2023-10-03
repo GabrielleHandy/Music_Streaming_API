@@ -83,5 +83,30 @@ public class UserControllerTests {
         verify(userService, times(1)).createUser(any(User.class));
     }
 
+    @Test
+    public void testUpdateUser() throws Exception{
+        Long userId = 1L;
+        User existingUser = new User(1L, "Alice", "alice@gmail.com", "oldpassword", null);
+        User updatedUser = new User(userId, "Updated Alice", "updatedalice@gmail.com", "newpassword", null);
+
+        when(userService.getUserById(userId)).thenReturn(Optional.of(existingUser));
+        when(userService.updateUser(eq(userId), any(User.class))).thenReturn(updatedUser);
+
+//        when(userService.updateUser(userId, updatedUser)).thenReturn(updatedUser);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/auth/users/{userId}", userId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Updated Alice\",\"emailAddress\":\"updatedalice@gmail.com\",\"passWord\":\"newpassword\"}"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.data.id").value(userId))
+                .andExpect(jsonPath("$.data.name").value("Updated Alice"))
+                .andExpect(jsonPath("$.data.emailAddress").value("updatedalice@gmail.com"))
+                .andDo(print());
+        verify(userService, times(1)).getUserById(userId);
+        verify(userService, times(1)).updateUser(userId, updatedUser);
+
+    }
 
     }
