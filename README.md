@@ -1,5 +1,51 @@
-# Music Streaming API
+# Music Streaming API: Monolithic Backend with Spring Boot
+
+## Description
+
+
+This project is focused on developing a Music Streaming API that implements user profiles, music categorization, and personalized playlists. It is a monolithic backend that uses Spring Boot Application. In addition, it integrates key modules like Spring Security and JWT tokens, while also implementing CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, this project uses Open API to document endpoints.
+
+## Development Approach
+Our team actively pursued an efficient and secure development strategy, dividing our 
+tasks based on different models. Our approach, shaped by these distinct measures, 
+enabled us to craft an application that is both secure and efficient, with a well-structured foundation. 
+We maintained a strong focus on our goals, quality standards, and project objectives through ongoing communication
+and daily progress checks. Here's a detailed look at the specific steps we took:
+- Roles and Responsibilities: We designated specific team members to focus on distinct models such as User, Playlist, Security, Songs, and Genre. 
+- Daily Stand-ups: We instituted a daily goal-setting routine, defining both team progress objectives and project milestones. This proactive approach ensured steady progress and alignment with project goals.
+- Incorporating driver and navigator roles when debugging and solving problems.
+- Use Git branches for project development: This strategy allowed us to work on separate features or models without code conflicts, facilitating a smooth development process.
+- Follow the KISS and DRY principles.
+- Conform to the MVC design pattern with separate controllers and services.
+- Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each endpoints.
+- Documented each method using doc strings and inline comments.
+### Challenges 
 ***
+- A challenge we faced was implementing Cucumber tests. We had to work together using driver navigator and code reviews to  get better at testing our endpoints.
+- One of our challenges was learning how to merge and create branches, we overcame this by coming up with a merge plan that helped to avoid merge conflicts and made sure that when we pushed to main all the code was double-checked and okayed by everyone in the group.
+- Another challenge was using MockMVC to test service classes, we overcame this by working together using driver/navigator and through code reviews.
+- While following the TDD testing, there were some challenges while trying to test for controllers. Hence, taking a different approach of testing was needed, so instead of utilizing mockMVC we decided to implement Cucumber testing.
+
+# User Stories
+
+As a User, I want to be able to create my own playlists so I can curate my own collection of music.
+
+
+As a User I want to be able to search for songs by title, artist, or genre, so I can easily find the music I want to listen to.
+
+
+
+As a User, I want to have a user profile that I can securely login to where I can view my  playlists.
+
+
+
+As a User, I want to see information about the currently playing song, including its title, and artist.
+
+
+
+As a User, I want to be able to edit my playlist by adding and removing songs.
+
+
 # Dependencies
 ***
 ### Spring Boot Dependencies:
@@ -37,7 +83,7 @@
 
 ## Entity Relationship Diagram (ERD)
 ***
-![ERD]()
+![ERD](/Users/betselotbezabeh/Desktop/Music Straming Service.png)
 
 ## API Endpoints
 ***
@@ -80,7 +126,5 @@
 
 </details>
 
-<Planning>
-
-</Planning>
+### Acknowledgment:
 
