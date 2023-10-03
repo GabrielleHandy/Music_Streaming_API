@@ -30,7 +30,7 @@ public class PlaylistService {
     private final UserProfileRepository userProfileRepository;
     private final SongRepository songRepository;
 
-    private Logger logger = Logger.getLogger(PlaylistService.class.getName());
+    private final Logger logger = Logger.getLogger(PlaylistService.class.getName());
 
 
 
