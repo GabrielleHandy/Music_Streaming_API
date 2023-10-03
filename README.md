@@ -23,9 +23,8 @@ and daily progress checks. Here's a detailed look at the specific steps we took:
 - Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each end points.
 - Documented each method using doc strings and inline comments.
 
-### Challenges 
-***
-- While applying TDD to test controllers, we faced some challenges when utilizing the traditional mockMVC testing method. Mocking the behavior of controllers can sometimes be complex, leading to difficulties in writing effective unit tests. To address these challenges, we decided to take an alternative testing approach. Instead of relying on mockMVS, we decided to implement Cucumber testing. Cucumber is a testing framework that supports Behavior Driven Development(BDD). By choosing Cucumber testing, we shifted the focus from unit testing the controllers to testing the behavior of the entire application. This approach helps ensure that the different components of the system work together seamlessly to deliver the expected functionality. It additionally offers a more clear and thorough understanding of how the application functions in real-world situations.
+
+
 # User Stories
 
 As a User, I want to be able to create my own playlists, so I can curate my own collection of music.
@@ -165,9 +164,22 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 
 </details>
 
+### Challenges
+  - We faced a significant challenge with the project when encountering a "Token returning null" issue during the DeleteUser test, 
+  specifically in the authentication portion. The error message indicated "Authentication failed" and highlighted that the JWT 
+  token was invalid, resulting in a null value. 
+    - To overcome this issue, we took several steps to refactor and debug the code. First, 
+we refactored the getJWTKey() method to ensure that it correctly obtained the JWT key by sending a POST request to the authentication 
+endpoint. I ensured that the request body included the necessary user credentials. 
+    - Additionally, we made changes to the iCreateAnAccount() 
+method to create a user account successfully. This change was essential for generating a valid user ID for the subsequent deletion.
+    - In the iDeleteTheUser() method, we modified the code to extract the user ID from the response and use the JWT token obtained earlier to 
+authorize the deletion request. This resolved the authentication issue. 
+    - Finally, in the theUserAndUserProfileGetsDeleted() method, we 
+asserted that the HTTP response code was 200 to ensure that the user and user profile were deleted successfully. By implementing these 
+code changes and debugging techniques, we were able to overcome the challenge and ensure that the DeleteUser test functioned correctly.
 
-
-
+- While applying TDD to test controllers, we faced some challenges when utilizing the traditional mockMVC testing method. Mocking the behavior of controllers can sometimes be complex, leading to difficulties in writing effective unit tests. To address these challenges, we decided to take an alternative testing approach. Instead of relying on mockMVS, we decided to implement Cucumber testing. Cucumber is a testing framework that supports Behavior Driven Development(BDD). By choosing Cucumber testing, we shifted the focus from unit testing the controllers to testing the behavior of the entire application. This approach helps ensure that the different components of the system work together seamlessly to deliver the expected functionality. It additionally offers a more clear and thorough understanding of how the application functions in real-world situations.
 # Acknowledgments
 <img src="src/main/resources/static/Betselot.jpg" height="100" alt="Picture of Betselot">
 
