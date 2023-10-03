@@ -5,6 +5,7 @@
 
 This project is focused on developing a Music Streaming API that implements user profiles, music categorization, and personalized playlists. It is a monolithic backend that uses Spring Boot Application. In addition, it integrates key modules like Spring Security and JWT tokens, while also implementing CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, this project uses Open API to document endpoints.
 
+![Dev approach photo](src/main/resources/static/dev approach image.jpeg)
 ## Development Approach
 Our team actively pursued an efficient and secure development strategy, dividing our 
 tasks based on different models. Our approach, shaped by these distinct measures, 
@@ -19,12 +20,6 @@ and daily progress checks. Here's a detailed look at the specific steps we took:
 - Conform to the MVC design pattern with separate controllers and services.
 - Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each endpoints.
 - Documented each method using doc strings and inline comments.
-### Challenges 
-***
-- A challenge we faced was implementing Cucumber tests. We had to work together using driver navigator and code reviews to  get better at testing our endpoints.
-- One of our challenges was learning how to merge and create branches, we overcame this by coming up with a merge plan that helped to avoid merge conflicts and made sure that when we pushed to main all the code was double-checked and okayed by everyone in the group.
-- Another challenge was using MockMVC to test service classes, we overcame this by working together using driver/navigator and through code reviews.
-- While following the TDD testing, there were some challenges while trying to test for controllers. Hence, taking a different approach of testing was needed, so instead of utilizing mockMVC we decided to implement Cucumber testing.
 
 # User Stories
 
@@ -126,5 +121,13 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 
 </details>
 
+### Challenges 
+
+- A challenge we faced was implementing Cucumber tests. We had to work together using driver navigator and code reviews to  get better at testing our endpoints.
+- One of our challenges was learning how to merge and create branches, we overcame this by coming up with a merge plan that helped to avoid merge conflicts and made sure that when we pushed to main all the code was double-checked and okayed by everyone in the group.
+- Another challenge was using MockMVC to test service classes, we overcame this by working together using driver/navigator and through code reviews.
+- While following the TDD testing, there were some challenges while trying to test for controllers. Hence, taking a different approach of testing was needed, so instead of utilizing mockMVC we decided to implement Cucumber testing.
+
 ### Acknowledgment:
+
 
