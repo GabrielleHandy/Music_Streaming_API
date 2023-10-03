@@ -3,14 +3,11 @@ package definitions;
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.service.UserService;
-import com.fasterxml.jackson.databind.JsonNode;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
@@ -19,26 +16,10 @@ import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.AssertTrue;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-
+@CucumberContextConfiguration()
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class UserControllerTestDefs {
     private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
@@ -145,17 +126,6 @@ public class UserControllerTestDefs {
 
     }
 }
-
-    @When("I delete the user")
-    public void iDeleteTheUser() throws JSONException {
-        getJWTKey(port);
-        System.out.println(token);
-//        RestAssured.baseURI = BASE_URL;
-        request = RestAssured.given();
-        request.header("Content-Type","application/json");
-        request.header("Authorization","Bearer "+ token);
-
-
 
 
 
