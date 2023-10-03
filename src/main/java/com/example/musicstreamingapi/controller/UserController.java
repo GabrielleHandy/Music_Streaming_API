@@ -206,7 +206,14 @@ public class UserController {
             @ApiResponse(
                     responseCode = "404",
                     description = "User profile cannot be updated")})
-
+/**
+ * Updates an existing user's profile information by providing the profile ID and updated profile details.
+ * @param profileId The ID of the user's profile to be updated.
+ * @param userProfile The updated user profile object containing the new profile information.
+ * @return ResponseEntity containing a success message and the updated user profile data with HTTP status code 200 (OK)
+ *         if the user profile with the provided ID exists. If the user profile with the provided ID does not exist,
+ *         it returns a ResponseEntity with HTTP status code 404 (Not Found).
+ */
     @PutMapping("/profile/{profileId}")
     public ResponseEntity<?> updateUserProfile(@PathVariable Long profileId, @RequestBody UserProfile userProfile){
         Optional<User> userProfileOptional = userService.getUserById(profileId);
