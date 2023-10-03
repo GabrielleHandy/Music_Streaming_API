@@ -154,6 +154,14 @@ public class UserController {
             @ApiResponse(
                     responseCode = "404",
                     description = "User not found")})
+            /**
+             * Updates an existing user's information by providing the user's ID and updated user details.
+             * @param userId The ID of the user to be updated.
+             * @param updatedUser The updated user object containing the new user information.
+             * @return ResponseEntity containing a success message and the updated user's data with HTTP status code 200 (OK)
+             *         if the user with the provided ID exists. If the user with the provided ID does not exist, it returns a
+             *         ResponseEntity with HTTP status code 404 (Not Found).
+         */
     @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
         // Check if the user exists
