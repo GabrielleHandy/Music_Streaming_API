@@ -38,10 +38,22 @@ As a User, I want to see information about the currently playing song, including
 
 As a User, I want to be able to edit my playlist by adding and removing songs.
 
+## MVC Design Pattern
+***
+
+![Models.png](src%2Fmain%2Fresources%2Fstatic%2FModels.png)
+
+
+## Entity Relationship Diagram (ERD)
+***
+![ERD](src/main/resources/static/ERD image.png)
 
 # Dependencies
 ***
-### Spring Boot Dependencies:
+![Spring Boot](src/main/resources/static/springboot.png)
+
+<details>
+  <summary> Spring Boot Dependencies </summary>
 
 - Spring Boot Starter Data JPA
 - Spring Boot Starter Security
@@ -51,7 +63,15 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 - Spring Boot Starter Test (scope: test)
 - Spring Security Test (scope: test)
 - Spring Boot Starter OAuth2 Resource Server
-### Testing Dependencies:
+
+</details>
+<br>
+
+<img src="src/main/resources/static/cucumber.png" width="auto" height="50"> -- and  -- <img src="src/main/resources/static/mockito.png" width="auto" height="50">
+
+
+<details>
+  <summary> Testing Dependencies </summary>
 
 - JUnit: 4.12 (scope: test)
 - Cucumber Java: 6.8.1 (scope: test)
@@ -62,21 +82,40 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 - Hamcrest: 2.2 (scope: test)
 - Mockito Inline: 4.10.0 (scope: test)
 - Rest Assured (scope: test, excluding groovy-xml)
-### Database Dependencies:
+
+
+</details>
+<br>
+<img src="src/main/resources/static/h2-logo.svg" height="50" style="margin-left: 50px">
+<details>
+  <summary> H2 Dependency </summary>
 
 - H2 Database (scope: runtime)
-### JWT (JSON Web Token) Dependencies:
+
+
+</details>
+
+
+![JWT](src/main/resources/static/JWT.png)
+<details>
+  <summary> JWT Dependencies </summary>
 
 - jjwt-api: 0.11.5
 - jjwt-impl: 0.11.5 (scope: runtime)
 - jjwt-jackson: 0.11.5 (scope: runtime)
-### Documentation and UI:
+
+
+</details>
+<br>
+<img src="src/main/resources/static/openapi-logo.png" height="50px">
+
+<details>
+  <summary> OpenAPI Dependency </summary>
 
 - Springdoc OpenAPI UI: 1.6.12
 
-## Entity Relationship Diagram (ERD)
-***
-![ERD](src/main/resources/static/ERD image.png)
+
+</details>
 
 ## API Endpoints
 ***
@@ -119,4 +158,28 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 
 </details>
 
-### Acknowledgment:
+
+# Acknowledgments
+<img src="src/main/resources/static/Betselot.jpg" height="100" alt="Picture of Betselot">
+
+### Betselot Bezabeh
+
+[<img src="src/main/resources/static/LinkedIn.png" height="50px" style="margin-right:10px">](http://www.linkedin.com/in/betselot-bezabeh-94643420a)
+[<img src="src/main/resources/static/GithubIcon.png" height= "100" style="margin-bottom:-19px">](https://github.com/betselotbz)
+
+<br>
+
+<img src="src/main/resources/static/Gabrielle.jpg" height="100" alt="Picture of Gabrielle">
+
+### Gabrielle Handy
+
+[<img src="src/main/resources/static/LinkedIn.png" height="50px" style="margin-right:10px">](https://www.linkedin.com/in/gabriellehandyswe/)
+[<img src="src/main/resources/static/GithubIcon.png" height= "100" style="margin-bottom:-19px">](https://github.com/GabrielleHandy)
+
+<br>
+<img src="src/main/resources/static/Marco.jpg" height="100" alt="Picture of Marco">
+
+### Marco Gallegos
+
+[<img src="src/main/resources/static/LinkedIn.png" height="50px" style="margin-right:10px">](https://www.linkedin.com/in/marco-gallegos-679ba21a1/)
+[<img src="src/main/resources/static/GithubIcon.png" height= "100" style="margin-bottom:-19px">](https://github.com/mgall021)
