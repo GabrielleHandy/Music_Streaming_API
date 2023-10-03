@@ -264,6 +264,13 @@ public class UserController {
             @ApiResponse(
                     responseCode = "404",
                     description = "User cannot be deleted")})
+    /**
+     * Deletes a user by providing the user's ID.
+     * @param userId The ID of the user to be deleted.
+     * @return ResponseEntity containing a success message and the deleted user's data with HTTP status code 200 (OK)
+     *         if the user with the provided ID was successfully deleted. If the user with the provided ID does not exist,
+     *         it returns a ResponseEntity with HTTP status code 200 (OK) but with a message indicating that the user was not found.
+     */
     @DeleteMapping("/{userId}/")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
            User user = userService.deleteUser(userId);
