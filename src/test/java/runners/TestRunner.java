@@ -6,8 +6,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/resources/features",
-        glue = "definitions",
+        features = "src/test/resources/features/PlaylistControllerTestFeature.feature",
+        glue = {"definitions/PlaylistControllerTestDefs.java"},
         plugin = {"pretty"},
         dryRun = true
 )

@@ -17,6 +17,7 @@ import org.junit.Assert;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@CucumberContextConfiguration
+@CucumberContextConfiguration()
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class  PlaylistControllerTestDefs {
 
@@ -73,9 +74,11 @@ public class  PlaylistControllerTestDefs {
 
     public void createRequest(){
         try{
+            System.out.println(token);
             if(token == null){
 
                 token = getJWTKey(port);
+
             }
 
 
