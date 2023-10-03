@@ -1,6 +1,5 @@
 package com.example.musicstreamingapi.controller;
 
-import com.example.musicstreamingapi.model.Playlist;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.model.UserProfile;
 import com.example.musicstreamingapi.model.request.LoginRequest;
@@ -16,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Optional;
 @RestController
 @RequestMapping("/auth/users")
