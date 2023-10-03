@@ -83,7 +83,7 @@ As a User, I want to be able to edit my playlist by adding and removing songs.
 
 ## Entity Relationship Diagram (ERD)
 ***
-![ERD](/Users/betselotbezabeh/Desktop/Music Straming Service.png)
+![ERD](src/main/resources/static/ERD image.png)
 
 ## API Endpoints
 ***
