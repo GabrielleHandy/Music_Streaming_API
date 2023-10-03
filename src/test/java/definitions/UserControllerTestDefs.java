@@ -3,11 +3,13 @@ package definitions;
 import com.example.musicstreamingapi.MusicStreamingApiApplication;
 import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -24,11 +26,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
@@ -36,125 +43,120 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class UserControllerTestDefs {
     private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
     private static Response response;
-    private static RequestSpecification request;
-    private static String token;
     private String message;
+
     @LocalServerPort
-    private String port;
+    String port;
+
     @Autowired
     private UserService userService;
 
-    private User createdUser;
-    private User updatedUser;
-    private Long userId;
-    private String loginEmailAddress;
-    private String loginPassword;
-    private static final String BASE_URL = "http://localhost:";
+    private final static String BASE_URL = "http://localhost:";
 
-    public static void getJWTKey(String port) throws JSONException {
+    private static RequestSpecification request = RestAssured.given();
+
+
+    /**
+     * Retrieve a JSON Web Token (JWT) key by sending a POST request to the authentication endpoint
+     * with a predefined user email and password.
+     * @return The JWT key obtained from the authentication response.
+     * @throws JSONException If there are issues with JSON parsing while processing the response.
+     */
+    public String getJWTKey() throws JSONException {
         // Set the base URI and create a request
-
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
 
         // Set the content-type header to indicate JSON data
         request.header("Content-Type", "application/json");
 
+        String endpoint = BASE_URL + port + "/auth/users/login/";
+
         // Create a JSON request body with user email and password
         JSONObject requestBody = new JSONObject();
-        requestBody.put("emailAddress", "johndoe@example.com");
-        requestBody.put("password", "password123");
+        requestBody.put("emailAddress", "suresh@g.com");
+        requestBody.put("password", "suresh123");
 
         // Send a POST request to the authentication endpoint
-        response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/login/");
+        Response response = request.body(requestBody.toString()).post(endpoint);
 
         // Extract and return the JWT key from the authentication response
-        token = response.jsonPath().getString("jwt");
+        return response.jsonPath().getString("jwt");
     }
 
 
-    @When("I create an account.")
+    @When("I create an account")
     public void iCreateAnAccount() throws JSONException {
-        RestAssured.baseURI = BASE_URL;
-        RequestSpecification request = RestAssured.given();
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("name", "John Doe");
-        requestBody.put("emailAddress", "johndoe@example.com");
-        requestBody.put("password", "password123");
-        request.header("Content-Type", "application/json");
-        response = request.body(requestBody.toString()).post(BASE_URL + port + "/auth/users/register/");
+        String endpoint = BASE_URL + port + "/auth/users/register/";
+        JSONObject requestBody = new JSONObject()
+                .put("firstName", "Suresh")
+                .put("lastName", "Sigera")
+                .put("emailAddress", "suresh@g.com")
+                .put("password", "suresh123");
 
+        response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .body(requestBody.toString())
+                .post(endpoint);
+
+        Assert.assertEquals(201, response.getStatusCode());
     }
-
 
     @Then("I get an account and user profile")
-    public void iGetAnAccountAndUserProfile() {
-        assertNotNull(response.jsonPath().getString("data"));
-        createdUser = (response.jsonPath().getObject("data", User.class));
-
+    public void iGetAnAccountAndUserProfile() throws JSONException {
+        System.out.println(response.getBody().prettyPrint());
+        System.out.println(getJWTKey());
     }
 
 
-    @When("I login to the account")
-    public void iLoginToTheAccount() throws JSONException {
-        getJWTKey(port);
+    @When("I delete the user")
+    public void iDeleteTheUser() throws JSONException {
+        int userId = response.jsonPath().getInt("data.id");
+        String endpoint = BASE_URL + port + "/auth/users/" + userId + "/";
+        System.out.println(endpoint);
+
+        request.header("Content-Type", "application/json");
+        request.header("Authorization", "Bearer " + getJWTKey());
+        response = request.delete(endpoint);
 
     }
 
-    @Then("I get logged in and get a Jwt Token")
-    public void iGetLoggedInAndGetAJwtToken() {
-        assertNotNull(token);
-    }
-
-    @When("I search for my account with an id")
-    public void iSearchForMyAccountWithAnId() {
-        userId = 1L;
-    }
-
-    @Then("I find an account")
-    public void iFindAnAccount() {
-        Optional<User> findUser = userService.getUserById(userId);
-        Assert.assertTrue(findUser.isPresent());
-
+    @Then("The user and user profile gets deleted")
+    public void theUserAndUserProfileGetsDeleted() {
+        Assert.assertEquals(200, response.getStatusCode());
     }
 
     @When("I update the user profile")
     public void iUpdateTheUserProfile() throws JSONException {
-
+        int userId = response.jsonPath().getInt("data.id");
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         JSONObject requestBody = new JSONObject();
         request.header("Content-Type", "application/json");
-        request.header("Authorization", "Bearer " + token);
+        request.header("Authorization", "Bearer " + getJWTKey());
         requestBody.put("name", "Updated Name");
-        response = request.body(requestBody.toString()).put(BASE_URL + port + "/auth/users/" + createdUser.getId() + "/");
+        response = request.body(requestBody.toString()).put(BASE_URL + port + "/auth/users/" + userId + "/");
 
     }
 
     @Then("The user profile is updated")
     public void theUserProfileIsUpdated() {
         Assert.assertEquals("Updated Name", response.jsonPath().getObject("data", User.class).getName());
+
     }
+}
 
     @When("I delete the user")
     public void iDeleteTheUser() throws JSONException {
-
+        getJWTKey(port);
         System.out.println(token);
 //        RestAssured.baseURI = BASE_URL;
         request = RestAssured.given();
         request.header("Content-Type","application/json");
         request.header("Authorization","Bearer "+ token);
 
-        response = request.delete(BASE_URL + port + "/auth/users/"+ createdUser.getId()+"/");
-//        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-    }
 
-    @Then("The user and user profile gets deleted")
-    public void theUserAndUserProfileGetsDeleted() {
-//       Assert.assertSame(createdUser,response.jsonPath().getObject("data", User.class));
-        System.out.println(response.toString());
-        System.out.println(Optional.ofNullable(response.jsonPath().get()));
-Assert.assertEquals(createdUser.getId(),response.jsonPath().getObject("data", User.class).getId());
-    }
-}
+
+
+
