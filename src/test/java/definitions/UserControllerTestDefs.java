@@ -5,6 +5,7 @@ import com.example.musicstreamingapi.model.User;
 import com.example.musicstreamingapi.service.UserService;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -18,7 +19,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.util.logging.Logger;
 
-
+@CucumberContextConfiguration()
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class UserControllerTestDefs {
     private static final Logger logger = Logger.getLogger(PlaylistControllerTestDefs.class.getName());
@@ -33,7 +34,7 @@ public class UserControllerTestDefs {
 
     private final static String BASE_URL = "http://localhost:";
 
-    private static final RequestSpecification request = RestAssured.given();
+    private static RequestSpecification request = RestAssured.given();
 
 
     /**
@@ -125,10 +126,6 @@ public class UserControllerTestDefs {
 
     }
 }
-
-
-
-
 
 
 

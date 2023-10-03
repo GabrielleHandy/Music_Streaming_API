@@ -74,7 +74,6 @@ public class UserServiceTest {
         assertNotNull(createdUser.getId());
         assertEquals("Betselot",createdUser.getName());
         assertEquals("Bets@gmail.com",createdUser.getEmailAddress());
-
     }
     // UpdateUser
     /**

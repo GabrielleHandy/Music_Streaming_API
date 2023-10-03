@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-@CucumberContextConfiguration()
+//@CucumberContextConfiguration()
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MusicStreamingApiApplication.class)
 public class  PlaylistControllerTestDefs {
 

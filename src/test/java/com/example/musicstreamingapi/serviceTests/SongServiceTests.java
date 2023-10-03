@@ -30,7 +30,6 @@ public class SongServiceTests {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-         // Create an instance of your service with the mock repository
     }
 
     private final Genre testGenre = new Genre(1L, "Test Genre", "Test Genre Description");
@@ -45,7 +44,7 @@ public class SongServiceTests {
         songServiceMock.setSongRepository(songRepository);
         when(songRepository.findAll()).thenReturn(testListSongs);
         List<Song> songs = songServiceMock.getAllSongs();
-        assertEquals(3, songs.size()); // Add more assertions based on the expected behavior
+        assertEquals(3, songs.size());
 
     }
     @Test
