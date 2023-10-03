@@ -2,7 +2,9 @@
 ## Description
 
 
-This project is focused on developing a Music Streaming API that implements user profiles, music categorization, and personalized playlists. It is a monolithic backend that uses Spring Boot Application. In addition, it integrates key modules like Spring Security and JWT tokens, while also implementing CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, this project uses Open API to document endpoints.
+This project is focused on developing a Music Streaming API that implements user profiles, music categorization, and personalized playlists. The Music Streaming API is designed to incorporate user profiles. This means that users of the music streaming service will have their own personalized accounts. The API will implement a system for categorizing music, by organizing songs into multiple genres, and playlists. This categorization is important for enabling users to explore and discover music in alignment with their preferences. In addition, the API allows users to create and manage their own playlists. Users will have the ability to curate their own playlists, adding, updating and removing songs based on their preferences. Personalized playlists enhance the user experience by allowing individuals to create a customized collection of songs tailored to their specific preference. 
+
+Moreover, this project employs a monolithic backend that uses Spring Boot framework. It integrates key modules such as Spring Security and JWT tokens, enabling secure user authentication. In order to manage data effectively the project also encompasses implementation of CRUD (Create, Read, Update, Delete) operations. The application utilizes an in-memory H2 database and runs on the Tomcat server. Lastly, Open API is employed to document endpoints for better understanding and utilization.
 
 ## Development Approach
 
@@ -10,18 +12,14 @@ This project is focused on developing a Music Streaming API that implements user
 - Follow the KISS and DRY principles.
 - Use Git branches for project development.
 - Conform to the MVC design pattern with separate controllers and services.
-- Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each endpoints.
+- Implement TDD using mockMvc for controller unit tests and Cucumber with Rest Assured for service class testing, for each end points.
 - Documented each method using doc strings and inline comments.
 ### Challenges 
 ***
-- A challenge we faced was implementing Cucumber tests. We had to work together using driver navigator and code reviews to  get better at testing our endpoints.
-- One of our challenges was learning how to merge and create branches, we overcame this by coming up with a merge plan that helped to avoid merge conflicts and made sure that when we pushed to main all the code was double-checked and okayed by everyone in the group.
-- Another challenge was using MockMVC to test service classes, we overcame this by working together using driver/navigator and through code reviews.
-- While following the TDD testing, there were some challenges while trying to test for controllers. Hence, taking a different approach of testing was needed, so instead of utilizing mockMVC we decided to implement Cucumber testing.
-
+- While applying TDD to test controllers, we faced some challenges when utilizing the traditional mockMVC testing method. Mocking the behavior of controllers can sometimes be complex, leading to difficulties in writing effective unit tests. To address these challenges, we decided to take an alternative testing approach. Instead of relying on mockMVS, we decided to implement Cucumber testing. Cucumber is a testing framework that supports Behavior Driven Development(BDD). By choosing Cucumber testing, we shifted the focus from unit testing the controllers to testing the behavior of the entire application. This approach helps ensure that the different components of the system work together seamlessly to deliver the expected functionality. It additionally offers a more clear and thorough understanding of how the application functions in real-world situations.
 # User Stories
 
-As a User, I want to be able to create my own playlists so I can curate my own collection of music.
+As a User, I want to be able to create my own playlists, so I can curate my own collection of music.
 
 
 As a User I want to be able to search for songs by title, artist, or genre, so I can easily find the music I want to listen to.
