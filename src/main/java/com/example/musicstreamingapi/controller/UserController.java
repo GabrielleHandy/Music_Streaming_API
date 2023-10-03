@@ -16,24 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
-
 @RestController
 @RequestMapping("/auth/users")
 public class UserController {
-
     private final UserService userService;
-
     HashMap<String, Object > response = new HashMap<>();
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
         @Operation(
             summary = "Create a user",
             description = "Create a new user."
@@ -79,7 +73,7 @@ public class UserController {
          */
 
         @PostMapping("/register/")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+        public ResponseEntity<?> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
         response.put("message","success");
         response.put("data", createdUser);
@@ -119,7 +113,6 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Authentication failed"));
     }
-
         @Operation(
             summary = "Update a user by ID",
             description = "Update an existing user by ID."
@@ -166,7 +159,6 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
         // Check if the user exists
         Optional<User> existingUser = userService.getUserById(userId);
-
         if (existingUser.isPresent()) {
             User updated = userService.updateUser(userId, updatedUser);
             response.put("message", "success");
@@ -226,10 +218,7 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
-
-
     @Operation(
             summary = "Remove a song from a playlist by ID",
             description = "Remove a song from a playlist by specifying both playlist and song IDs."
@@ -277,8 +266,5 @@ public class UserController {
            response.put("message","deleted successfully");
            response.put("data",user);
             return new ResponseEntity<>(response,HttpStatus.OK);
-
         }
-
-
 }
