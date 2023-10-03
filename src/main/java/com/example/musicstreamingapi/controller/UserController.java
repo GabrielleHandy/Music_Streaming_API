@@ -71,16 +71,20 @@ public class UserController {
             @ApiResponse(
                     responseCode = "409",
                     description = "User already exists")})
-    @PostMapping("/register/")
+        /**
+         * Create new user by providing user information in the request body.
+         * @param user The user object containing the user's information.
+         * @return ResponseEntity containing a success message and the created user's data
+         *         with HTTP status code 201
+         */
+
+        @PostMapping("/register/")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
         response.put("message","success");
         response.put("data", createdUser);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
-
-
-
     @Operation(
             summary = "login the user",
             description = "login user using email and password"
@@ -101,6 +105,12 @@ public class UserController {
             @ApiResponse(
                     responseCode = "401",
                     description = "User is not found")})
+    /**
+     * Authenticate a user by processing a login request and returning a JSON Web Token (JWT) if successful.
+     * @param loginRequest The login request containing user credentials.
+     * @return ResponseEntity containing a LoginResponse object with a JWT token if authentication is successful,
+     *         or a ResponseEntity with HTTP status code 401 (Unauthorized) and an error message if authentication fails.
+     */
     @PostMapping("/login/")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest){
         Optional<String> jwtToken = userService.loginUser(loginRequest);
