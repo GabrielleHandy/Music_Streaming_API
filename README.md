@@ -16,7 +16,7 @@ enabled us to craft an application that is both secure and efficient, with a wel
 We maintained a strong focus on our goals, quality standards, and project objectives through ongoing communication
 and daily progress checks. Here's a detailed look at the specific steps we took:
 - Roles and Responsibilities: We designated specific team members to focus on distinct models such as User, Playlist, Security, Songs, and Genre. 
-- Daily Stand-ups: We instituted a daily goal-setting routine, defining both team progress objectives and project milestones. This proactive approach ensured steady progress and alignment with project goals.
+- Daily Stand-ups: We instituted a daily goal-setting routine, defining both team progress, objectives, and project milestones. This proactive approach ensured steady progress and alignment with project goals.
 - Incorporating driver and navigator roles when debugging and solving problems.
 - Use Git branches for project development: This strategy allowed us to work on separate features or models without code conflicts, facilitating a smooth development process.
 - Follow the KISS and DRY principles.
